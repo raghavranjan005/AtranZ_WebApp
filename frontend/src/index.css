@@ -1,16 +1,19 @@
 html {
   font-size: 62.5%; /* 16px * 62.5 = 10px = 1rem */
   box-sizing: border-box;
+  height: 100%;
 }
 body {
   font: 1.6rem Helvetica;
-  height: 100vh;
+  min-height: 100%;
   margin: 0;
 }
 
 #root {
   height: 100%;
 }
+
+
 .grid-container {
   display: grid;
   grid-template-areas:
@@ -21,20 +24,30 @@ body {
   grid-template-rows: 5rem 1fr 5rem;
   height: 100%;
 }
+
 .header {
   grid-area: header;
   background-color: #533696;
   color: #ffffff;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; 
   align-items: center;
   padding: 0.5rem;
 }
 
+
 .header-links a {
+  float:left;
+  text-align: center;
   color: #ffffff;
   text-decoration: none;
   padding: 1rem;
+  margin-left: auto;
+}
+ 
+.logo{
+  position: absolute;
+  left:1cm;
 }
 
 .brand a {
@@ -47,10 +60,7 @@ body {
   color: #ff8000;
 }
 
-.logo {
-  position: fixed;
-  left: 1cm;
-}
+
 
 input {
   width: 500px;
@@ -127,13 +137,15 @@ input {
 /*Footer*/
 
 .footer {
+ 
   grid-area: footer;
   position: absolute;
-  bottom: 0;
-  height: 40px;
+  padding-top: 0.5cm;
   width: 100%;
+  margin-top: auto;
   background-color: #533696;
   color: #ffffff;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
