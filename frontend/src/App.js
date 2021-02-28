@@ -33,7 +33,7 @@ function App() {
       <div className="content">
 
         <Route path="/" exact={true} component={HomeScreen}/>
-        <Route path="/products/:id" component={ProductScreen}/>
+        <Route path="/products/:id" component = {ProductScreen}/>
 
         <footer className="footer">
         © 2021 AtranZ WebD Team. All rights reserved.
