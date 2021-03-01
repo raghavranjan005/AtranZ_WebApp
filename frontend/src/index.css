@@ -13,7 +13,6 @@ body {
   height: 100%;
 }
 
-
 .grid-container {
   display: grid;
   grid-template-areas:
@@ -30,24 +29,23 @@ body {
   background-color: #533696;
   color: #ffffff;
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
 }
 
-
 .header-links a {
-  float:left;
+  float: left;
   text-align: center;
   color: #ffffff;
   text-decoration: none;
   padding: 1rem;
   margin-left: auto;
 }
- 
-.logo{
+
+.logo {
   position: absolute;
-  left:1cm;
+  left: 1cm;
 }
 
 .brand a {
@@ -59,8 +57,6 @@ body {
 .header-links a:hover {
   color: #ff8000;
 }
-
-
 
 input {
   width: 500px;
@@ -137,7 +133,6 @@ input {
 /*Footer*/
 
 .footer {
- 
   grid-area: footer;
   position: absolute;
   padding-top: 0.5cm;
@@ -149,4 +144,35 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.product-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* Create two equal columns that floats next to each other */
+.product-column1 {
+  float: left;
+  width: 50%;
+}
+.product-column2 {
+  float: right;
+  width: 50%;
+}
+.product-brand {
+  margin: 10px;
+  font-size: 30px;
+  font-family: cursive;
+}
+.product-price {
+  margin: 10px;
+}
+.product-rating {
+  margin: 10px;
+}
+.product-cartButton {
+  margin: 10px;
+}
+.product-wishlistButton {
+  margin: 10px;
 }
