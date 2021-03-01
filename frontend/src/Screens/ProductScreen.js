@@ -9,14 +9,22 @@ function ProductScreen(props){
     console.log("Hello");
     return(
         <div>
-            <h1>This is Product Screen </h1>
-            <h1>This is {pID} screen</h1>  
-            <img className="product-image" src={data.products[pID-1].image1} alt="product" />
-            <img className="product-image" src={data.products[pID-1].image2} alt="product" />
-            <div className="product-brand">{data.products[pID-1].brand}</div>
-            <div className="product-price">&#8377; &nbsp;{data.products[pID-1].price}</div>
-            <div className="product-rating">{data.products[pID-1].rating} Stars ({data.products[pID-1].numReviews} Reviews)</div> 
-            <button className = "cartButton">Add to Cart</button>
+            <div class="product-row">
+            <div class="product-column1">
+                <img className="product-image" src={data.products[pID-1].image1} alt="product" />
+                <img className="product-image" src={data.products[pID-1].image2} alt="product" />
+            </div>
+            <div class="product-column2">
+                <div className="product-brand">{data.products[pID-1].brand}</div>
+                <div className="product-price">&#8377; &nbsp;{data.products[pID-1].price}</div>
+                <div className="product-rating">{data.products[pID-1].rating} Stars ({data.products[pID-1].numReviews} Reviews)</div> 
+                <button className = "product-cartButton">Add to Cart</button>
+                <br></br>
+                <button className = "product-wishlistButton">Add to Wishlist</button>
+            </div>
+            </div>
+            
+
         </div>
 
     )
