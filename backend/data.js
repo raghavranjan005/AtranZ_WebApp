@@ -65,6 +65,7 @@ export default {
         rating: 4.5,
         numReviews: 15
     },
+    
 
 ],
 
