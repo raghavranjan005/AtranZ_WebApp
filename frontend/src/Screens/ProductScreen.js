@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../index.css';
 import axios from 'axios';
-import data from '../data';
-
 
 function ProductScreen(props){
 
@@ -30,7 +28,7 @@ function ProductScreen(props){
     // console.log(products);
     return(
         <div>
-            {products.length!=0&&
+            {products.length!==0&&
             <div class="product-row">
             <div class="product-column1">
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -44,15 +42,15 @@ function ProductScreen(props){
                 {/* <!-- Wrapper for slides --> */}
                 <div class="carousel-inner">
                     <div class="item active">
-                    <img src={data.products[1].image1} alt="Los Angeles"/>
+                    <img src={products[0].image1} alt="Los Angeles"/>
                     </div>
 
                     <div class="item">
-                    <img src={data.products[1].image2} alt="Chicago"/>  
+                    <img src={products[0].image2} alt="Chicago"/>  
                     </div>
 
                     <div class="item">
-                    <img src={data.products[1].image1} alt="New York"/>
+                    <img src={products[1].image1} alt="New York"/>
                     </div>
                 </div>
 
@@ -85,7 +83,9 @@ function ProductScreen(props){
             </div>
             
             }
+    
         </div>
+        
 
     )
 }
