@@ -22,6 +22,7 @@ function HomeScreen(props){
       //
     };
   }, [])
+  console.log(products);
 
     return  <ul className="products">
           {
