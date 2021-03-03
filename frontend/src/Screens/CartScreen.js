@@ -21,6 +21,10 @@ function CartScreen(props){
       };
     }, [])
     console.log(products);
+    console.log(products);
+    const pID = props.location.state.pId;
+    console.log(pID);
+    console.log("Hello");
 
      return (
          <div>

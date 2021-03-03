@@ -22,6 +22,10 @@ function WishlistScreen(props){
     }, [])
 
     console.log(products);
+    console.log(products);
+    const pID = props.location.state.pId;
+    console.log(pID);
+    console.log("Hello");
     return (
         <div>
             <h1>this is wishlist screen</h1>
