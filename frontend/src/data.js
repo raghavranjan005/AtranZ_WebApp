@@ -10,7 +10,7 @@ export default {
         brand: 'Random',
         rating: 4.0,
         numReviews: 10,
-        Qty:5,
+        countInStock:5,
     },
     {
         _id:2,
@@ -22,7 +22,7 @@ export default {
         brand: 'Random',
         rating: 4.5,
         numReviews: 100,
-        Qty:5
+        countInStock:5
     },
     {
         _id:3,
@@ -34,7 +34,7 @@ export default {
         brand: 'Random',
         rating: 4.5,
         numReviews: 15,
-        Qty:5
+        countInStock:5
     },
     {
         _id:4,
@@ -46,7 +46,7 @@ export default {
         brand: 'Random',
         rating: 4.5,
         numReviews: 15,
-        Qty:5
+        countInStock:5
     },
     {
         _id:5,
@@ -57,7 +57,7 @@ export default {
         price: 2500,
         brand: 'Random',
         numReviews: 15,
-        Qty:5
+        countInStock:5
     },
     {
         _id:6,
@@ -69,7 +69,7 @@ export default {
         brand: 'Random',
         rating: 4.5,
         numReviews: 15,
-        Qty:5
+        countInStock:5
     },
 
 ],

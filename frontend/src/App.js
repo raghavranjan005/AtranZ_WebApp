@@ -2,7 +2,6 @@ import './App.css';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
-import WishlistScreen from './screens/WishlistScreen';
 import {BrowserRouter, Link, Route} from 'react-router-dom';
 
 
@@ -37,7 +36,6 @@ function App() {
         <Route path="/" exact={true} component={HomeScreen}/>
         <Route path="/products/:id" component = {ProductScreen}/>
         <Route path="/cart/" component = {CartScreen}/>
-        <Route path="/wishlist/" component = {WishlistScreen}/>
 
         <footer className="footer">
         © 2021 AtranZ WebD Team. All rights reserved.
