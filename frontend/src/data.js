@@ -9,7 +9,8 @@ export default {
         price: 6000,
         brand: 'Random',
         rating: 4.0,
-        numReviews: 10
+        numReviews: 10,
+        Qty:5,
     },
     {
         _id:2,
@@ -20,7 +21,8 @@ export default {
         price: 2000,
         brand: 'Random',
         rating: 4.5,
-        numReviews: 100
+        numReviews: 100,
+        Qty:5
     },
     {
         _id:3,
@@ -31,7 +33,8 @@ export default {
         price: 5000,
         brand: 'Random',
         rating: 4.5,
-        numReviews: 15
+        numReviews: 15,
+        Qty:5
     },
     {
         _id:4,
@@ -42,7 +45,8 @@ export default {
         price: 1500,
         brand: 'Random',
         rating: 4.5,
-        numReviews: 15
+        numReviews: 15,
+        Qty:5
     },
     {
         _id:5,
@@ -52,7 +56,8 @@ export default {
         image2: '/images/suit21.jpg',
         price: 2500,
         brand: 'Random',
-        numReviews: 15
+        numReviews: 15,
+        Qty:5
     },
     {
         _id:6,
@@ -63,9 +68,11 @@ export default {
         price: 1500,
         brand: 'Random',
         rating: 4.5,
-        numReviews: 15
+        numReviews: 15,
+        Qty:5
     },
 
 ],
 
 }
+

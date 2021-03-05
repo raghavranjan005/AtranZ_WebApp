@@ -1,64 +1,86 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../index.css';
 import axios from 'axios';
 import AliceCarousel from 'react-alice-carousel';
 import "react-alice-carousel/lib/alice-carousel.css";
+import data from '../data';
+import { useDispatch, useSelector } from 'react-redux';
+import { detailsProduct } from '../actions/productActions';
 
 
 function ProductScreen(props){
 
-
-    const [products, setProduct] = useState([]);
+    
+    const productDetails = useSelector(state => state.productDetails);
+    const {product,loading,error} = productDetails;
+    const dispatch = useDispatch();
 
     useEffect(() => {
-      
-      const fetchData = async () =>{
-        const {data} = await axios.get("/api/products");
-        setProduct(data);
-  
-      }
-      fetchData();
-  
-      return () => {
-        //
-      };
-    }, [])
+    
+        dispatch(detailsProduct(props.match.params.id));
+        return () => {
+          //
+        };
+      }, [])
 
-    console.log(products);
-    const pID = props.location.state.pId;
-    console.log(pID);
-    console.log("Hello");
-    // console.log(products);
+    console.log(product);
+    console.log("hello");
+    
     return(
         <div>
-            {products.length!==0&&
-            <div class="product-row">
-            <div class="product-column1">
-                <div className = "slider">
-                <AliceCarousel autoPlay autoPlayInterval="3000">
-                    <img src={products[pID-1].image1} className="sliderimg" alt = "product"/>          
-                    <img src={products[pID-1].image2} className="sliderimg" alt = "product"/>
-                </AliceCarousel>   
-                </div>  
+            {loading?<div>Loading...</div>:
+            error?<div>{error}</div>:(
+                <div className = "details">
+                <div className = "details-image">
+                    <div className = "slider">
+                    <AliceCarousel autoPlay autoPlayInterval="3000">
+                        <img src={product.image1} className="sliderimg" alt = "product"/>          
+                        <img src={product.image2} className="sliderimg" alt = "product"/>
+                    </AliceCarousel>   
+                    </div>  
+                </div>
+                <div className = "details-info">
+                     <ul>
+                         <li>
+                             <h4>{product.name}</h4>
+                         </li>
+                         <li>
+                             {product.brand}
+                         </li>
+                         <li>
+                            &#8377; &nbsp;{product.price}
+                         </li>
+                         <li>
+                            {product.rating} Stars ({product.numReviews} Reviews)
+                         </li>
+                     </ul>
+                </div>
+                <div className = "details-action">
+                    <ul>
+                        <li>
+                            Price: {product.price}
+                        </li>
+                        <li>
+                            Status: {product.price}
+                        </li>
+                        <li>
+                            Qty:<select>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </li>
+                        <li>
+                            <button className="cart-button">Add to Cart</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="product-column2">
-                <div className="product-brand">{products[pID-1].brand}</div>
-                <div className="product-price">&#8377; &nbsp;{products[pID-1].price}</div>
-                <div className="product-rating">{products[pID-1].rating} Stars ({products[pID-1].numReviews} Reviews)</div> 
-                <Link to={{pathname:'/cart/',state:{pId:pID}}} >
-                    <button className = "product-cartButton">Add to Cart</button>
-                </Link>
-                <br></br>
-                <Link to={{pathname:'/wishlist/',state:{pId:pID}}}>
-                    <button className = "product-wishlistButton">Add to Wishlist</button>
-                </Link>
-
-            </div>
-            </div>
-            
+            )
             }
-    
+            
         </div>
         
 

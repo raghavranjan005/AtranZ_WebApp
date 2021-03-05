@@ -20,6 +20,12 @@ function CartScreen(props){
         //
       };
     }, [])
+
+    const items = new Map();
+    items.set(1,2);
+    items.set(3,5);
+    items.set(4,6);
+
     console.log(products);
     console.log(products);
     const pID = props.location.state.pId;
@@ -29,6 +35,7 @@ function CartScreen(props){
      return (
          <div>
              <h1>this is cart screen</h1>
+
          </div>
      )
 }

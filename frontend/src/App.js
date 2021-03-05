@@ -1,8 +1,8 @@
 import './App.css';
-import HomeScreen from './Screens/HomeScreen';
-import ProductScreen from './Screens/ProductScreen';
-import CartScreen from './Screens/CartScreen';
-import WishlistScreen from './Screens/WishlistScreen';
+import HomeScreen from './screens/HomeScreen';
+import ProductScreen from './screens/ProductScreen';
+import CartScreen from './screens/CartScreen';
+import WishlistScreen from './screens/WishlistScreen';
 import {BrowserRouter, Link, Route} from 'react-router-dom';
 
 
