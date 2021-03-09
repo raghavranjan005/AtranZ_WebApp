@@ -30,7 +30,7 @@ function ProductScreen(props){
       }
 
     return(
-        <div>
+        <div className >
             {loading?<div>Loading...</div>:
             error?<div>{error}</div>:(
                 <div className = "details">
