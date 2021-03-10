@@ -1,11 +1,18 @@
 import './App.css';
-import HomeScreen from './screens/HomeScreen';
-import ProductScreen from './screens/ProductScreen';
-import CartScreen from './screens/CartScreen';
+import HomeScreen from './Screens/HomeScreen';
+import ProductScreen from './Screens/ProductScreen';
+import CartScreen from './Screens/CartScreen';
 import {BrowserRouter, Link, Route} from 'react-router-dom';
+import SigninScreen from './Screens/SigninScreen';
+import { useSelector } from 'react-redux';
+import RegisterScreen from './Screens/RegisterScreen';
 
 
 function App() {
+
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
+
   return (
 
     <BrowserRouter>
@@ -21,11 +28,17 @@ function App() {
         </div>
 
     <form>
-    <input type="search" placeholder="Search.."/>
+    <input className="search-box" type="search" placeholder="Search.."/>
     </form>
         <div className="header-links">
-        <a href="bag.html">My Bag</a>
-        <a href="signin.html">Sign In</a>
+        <a href="/cart/">My Bag</a>
+
+        {userInfo ? (
+              <Link to="/profile">{userInfo.name}</Link>
+            ) : (
+              <Link to="/signin">Sign In</Link>
+            )}
+        {/* <a href="signin.html">Sign In</a> */}
       </div>
 
     </header>
@@ -34,8 +47,10 @@ function App() {
       <div className="content">
 
         <Route path="/" exact={true} component={HomeScreen}/>
+        <Route path="/signin" component = {SigninScreen}/>
+        <Route path="/register" component={RegisterScreen}/>
         <Route path="/products/:id" component = {ProductScreen}/>
-        <Route path="/cart/" component = {CartScreen}/>
+        <Route path="/cart/:id?" component = {CartScreen}/>
 
         <footer className="footer">
         © 2021 AtranZ WebD Team. All rights reserved.
