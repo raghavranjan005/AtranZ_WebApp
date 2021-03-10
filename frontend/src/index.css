@@ -102,7 +102,26 @@ button {
   text-indent: 20px;
 }
 /* Sidebar */
+.sidebar {
+  position: fixed;
+  transform: translateX(-30rem);
+  width: 30rem;
+  background-color: #ffffff;
+  height: 100%;
+}
 
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-close-button {
+  border-radius: 50%;
+  border: 0.1rem #000000 solid;
+  width: 3rem;
+  height: 3rem;
+  padding: 0.5rem;
+  font-size: 2rem;
+}
 .brand button {
   font-size: 3rem;
   padding: 0.5rem;
@@ -157,9 +176,10 @@ button {
   font-weight: bold;
 }
 .product-images {
-  max-width: 34rem;
-  max-height: 34rem;
-  overflow: hidden;
+  width: 30rem;
+  height: 30rem;
+  /* overflow: hidden; */
+  object-fit: fill;
 }
 .product-ratings {
   margin-bottom: 1rem;
@@ -170,6 +190,7 @@ button {
 .footer {
   grid-area: footer;
   position: absolute;
+  /* bottom: 0; */
   padding-top: 0.5cm;
   width: 100%;
   margin-top: auto;
@@ -184,27 +205,46 @@ button {
 /* product Details */
 .details {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: flex-start;
   flex-wrap: wrap;
   padding: 1 rem;
+  margin-top: 10px;
 }
 
 .details-image {
-  flex: 2 1 60 rem;
+  /* flex: 2 1 60 rem; */
+  /* flex: 0 50%; */
+  flex-grow: 1;
+  width: 33%;
 }
 
+.sliderimg {
+  width: 30rem;
+  height: 30rem;
+  /* overflow: hidden; */
+  object-fit: fill;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .slider {
   display: flex;
   flex-direction: column;
 }
 
 .details-info {
-  flex: 1 1 30 rem;
+  /* flex: 1 1 30 rem; */
+  /* flex: 0 25%; */
+  flex-grow: 1;
+  width: 33%;
 }
 
 .details-action {
-  flex: 1 1 30 rem;
+  /* flex: 1 1 30 rem; */
+  /* flex: 0 25%; */
+  flex-grow: 1;
+  width: 33%;
 }
 
 .details-info ul,

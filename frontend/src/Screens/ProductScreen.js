@@ -28,7 +28,7 @@ function ProductScreen(props){
         props.history.push('/cart/' + props.match.params.id + '?qty=' + qty);
       };
     return(
-        <div>
+        <div className >
             {loading?<div>Loading...</div>:
             error?<div>{error}</div>:(
                 <div className = "details">
