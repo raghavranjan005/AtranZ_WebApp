@@ -87,6 +87,10 @@ input {
   height: 3rem;
   padding: 0.5rem;
   font-size: 2rem;
+  padding-top: 0;
+  cursor: pointer;
+  position: absolute;
+  right: .5rem;
 }
 .brand button {
   font-size: 3rem;
