@@ -1,5 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import '../index.css';
 import AliceCarousel from 'react-alice-carousel';
 import "react-alice-carousel/lib/alice-carousel.css";
@@ -22,13 +21,12 @@ function ProductScreen(props){
         };
       }, [])
 
-    console.log(product);
-    console.log("hello");
+    // console.log(product);
+    // console.log("hello");
     
-      const handleAddToCart = () => {
-          props.history.push("/cart/" + props.match.params.id +"?qty="+qty)
-      }
-
+    const handleAddToCart = () => {
+        props.history.push('/cart/' + props.match.params.id + '?qty=' + qty);
+      };
     return(
         <div className >
             {loading?<div>Loading...</div>:
@@ -64,18 +62,19 @@ function ProductScreen(props){
                             Price: {product.price}
                         </li>
                         <li>
-                            Status: {product.countInStock>0?"In Stock":""}
+                            Status: {product.countInStock>0?"In Stock":"Unavailable right now"}
                         </li>
                         <li>
-                            Qty:<select value = {qty} onChange = {(e)=>{setQty(e.target.value)}}>
-                               {[...Array(product.countInStock).keys()].map(x=>
-                               <option key = {x+1} value = {x+1}>{x+1}</option>)
-                               }
+                            Qty:{' '}
+                            <select value = {qty} onChange = {(e)=>{setQty(e.target.value)}}>
+                               {[...Array(product.countInStock).keys()].map(x =>
+                               (<option key = {x+1} value = {x+1}>  {x+1}  </option>)
+                               )}
                             </select>
                         </li>
                         <li>
 
-                            {product.countInStock>0&&<button className="cart-button" onClick={handleAddToCart}>Add to Cart</button>}
+                            {product.countInStock>0 && <button className="cart-button" onClick={handleAddToCart}>Add to Bag</button>}
                         </li>
                     </ul>
                 </div>
