@@ -6,6 +6,7 @@ import {BrowserRouter, Link, Route} from 'react-router-dom';
 import SigninScreen from './Screens/SigninScreen';
 import { useSelector } from 'react-redux';
 import RegisterScreen from './Screens/RegisterScreen';
+import ProductsScreen from './Screens/ProductsScreen';
 
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
 
         <Route path="/" exact={true} component={HomeScreen}/>
         <Route path="/signin" component = {SigninScreen}/>
+        <Route path="/products" component = {ProductsScreen}/>
         <Route path="/register" component={RegisterScreen}/>
         <Route path="/products/:id" component = {ProductScreen}/>
         <Route path="/cart/:id?" component = {CartScreen}/>
