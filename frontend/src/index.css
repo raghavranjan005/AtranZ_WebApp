@@ -8,9 +8,9 @@ body {
   min-height: 100%;
   margin: 0;
 }
-.cart-button {
+.cart-button{
   font-size: 1.6rem;
-  width: 100%;
+  width:100%;
 }
 button {
   font-size: 1.6rem;
@@ -26,10 +26,11 @@ button {
 }
 .button.primary {
   background-color: #b396f7;
-  color: white;
+  color:white;
 }
 .button.primary:hover {
   background-color: #533696;
+  
 }
 .button.secondary {
   background-color: #f0f0f0;
@@ -123,7 +124,7 @@ button {
   padding-top: 0;
   cursor: pointer;
   position: absolute;
-  right: 0.5rem;
+  right: .5rem;
 }
 .brand button {
   font-size: 3rem;
@@ -334,6 +335,7 @@ button {
   text-align: right;
 }
 
+
 /* form*/
 .form {
   display: flex;
@@ -362,23 +364,3 @@ input {
   border-radius: 0.5rem;
 }
 
-/* Products */
-.product-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.content-margined {
-  margin: 1rem;
-}
-.table {
-  width: 100%;
-}
-
-th {
-  text-align: left;
-}
-tbody > tr:nth-child(odd) {
-  background-color: #f0f0f0;
-}
