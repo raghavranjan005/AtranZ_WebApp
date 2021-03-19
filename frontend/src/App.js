@@ -6,6 +6,14 @@ import {BrowserRouter, Link, Route} from 'react-router-dom';
 import SigninScreen from './Screens/SigninScreen';
 import { useSelector } from 'react-redux';
 import RegisterScreen from './Screens/RegisterScreen';
+import ProductsScreen from './Screens/ProductsScreen';
+import OrdersScreen from './Screens/OrdersScreen';
+import ProfileScreen from './Screens/ProfileScreen';
+import OrderScreen from './Screens/OrderScreen';
+import ShippingScreen from './Screens/ShippingScreen';
+import PaymentScreen from './Screens/PaymentScreen';
+import PlaceOrderScreen from './Screens/PlaceOrderScreen';
+import './index.css'
 
 
 function App() {
@@ -33,19 +41,25 @@ function App() {
         <Link to="/"><img src="/AtranZ-final.png" alt="Logo" height="150px" width="250px"/></Link>
         </div>
 
-    <form>
-    <input className="search-box" type="search" placeholder="Search.."/>
-    </form>
         <div className="header-links">
-        <a href="/cart/">My Bag</a>
-
-        {userInfo ? (
+            <a href="/cart/">Cart</a>
+            {userInfo ? (
               <Link to="/profile">{userInfo.name}</Link>
             ) : (
               <Link to="/signin">Sign In</Link>
             )}
-        {/* <a href="signin.html">Sign In</a> */}
-      </div>
+            {userInfo && userInfo.isAdmin && (
+              <div className="dropdown">
+                <a href="#">Admin</a>
+                <ul className="dropdown-content">
+                  <li>
+                    <Link to="/orders">Orders</Link>
+                    <Link to="/products">Products</Link>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
 
     </header>
     <aside className = "sidebar">
@@ -53,21 +67,29 @@ function App() {
       <button className = "sidebar-close-button" onClick = {closeMenu}>x</button>
       <ul>
         <li>
-          <a href = "index.html">Saree</a>
+          <Link to = "/category/saree">saree</Link>
         </li>
         <li>
-          <a href = "index.html">suit</a>
+        <Link to = "/category/suit">suit</Link>
         </li>
       </ul>
     </aside>
     <main className="main">
       <div className="content">
 
-        <Route path="/" exact={true} component={HomeScreen}/>
-        <Route path="/signin" component = {SigninScreen}/>
-        <Route path="/register" component={RegisterScreen}/>
-        <Route path="/products/:id" component = {ProductScreen}/>
-        <Route path="/cart/:id?" component = {CartScreen}/>
+      <Route path="/orders" component={OrdersScreen} />
+            <Route path="/profile" component={ProfileScreen} />
+            <Route path="/order/:id" component={OrderScreen} />
+            <Route path="/products" component={ProductsScreen} />
+            <Route path="/shipping" component={ShippingScreen} />
+            <Route path="/payment" component={PaymentScreen} />
+            <Route path="/placeorder" component={PlaceOrderScreen} />
+            <Route path="/signin" component={SigninScreen} />
+            <Route path="/register" component={RegisterScreen} />
+            <Route path="/product/:id" component={ProductScreen} />
+            <Route path="/cart/:id?" component={CartScreen} />
+            <Route path="/category/:id" component={HomeScreen} />
+            <Route path="/" exact={true} component={HomeScreen} />
 
         <footer className="footer">
         © 2021 AtranZ WebD Team. All rights reserved.
