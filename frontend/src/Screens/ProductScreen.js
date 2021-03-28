@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { detailsProduct, saveProductReview } from '../actions/productActions';
 import Rating from '../components/Rating';
 import { PRODUCT_REVIEW_SAVE_RESET } from '../constants/productConstants';
+import { Magnifier, GlassMagnifier, SideBySideMagnifier} from "react-image-magnifiers";
 
 
 
@@ -54,7 +55,13 @@ function ProductScreen(props){
     return(
         <div>
       <div className="back-to-result">
-        <Link to="/">Back to result</Link>
+      
+        <Link to="/"><span>
+        <i
+          className='fa fa-arrow-circle-left'
+        ></i>
+      </span>
+      Back to result</Link>
       </div>
       {loading ? (
         <div>Loading...</div>
@@ -62,21 +69,21 @@ function ProductScreen(props){
         <div>{error} </div>
       ) : (
         <>
-          <div className="details">
-          <div className = "details-image">
+          <div className="row top">
+          <div className = "details-image col-2">
                     <div className = "slider">
                     <AliceCarousel autoPlay autoPlayInterval="3000">
-                        <img src={product.image1} className="sliderimg" alt = "product"/>          
-                        <img src={product.image2} className="sliderimg" alt = "product"/>
+                        <img src={product.image1} className="sliderimg large" alt = "product"/>          
+                        <img src={product.image2} className="sliderimg large" alt = "product"/>
                     </AliceCarousel>   
                     </div>  
                 </div>
-            <div className="details-info">
+            <div className="details-info col-1">
               <ul>
                 <li>
                   <h4>{product.name}</h4>
                 </li>
-                <li>
+                <li className="rating-text">
                   <a href="#reviews">
                     <Rating
                       value={product.rating}
@@ -85,49 +92,73 @@ function ProductScreen(props){
                   </a>
                 </li>
                 <li>
-                  Price: <b>${product.price}</b>
+                  Price: <b>&#8377;{product.price}</b>
                 </li>
                 <li>
+                  <br></br>
                   Description:
-                  <div>{product.description}</div>
+                  <p className="Description" >{product.description}</p>
                 </li>
               </ul>
             </div>
-            <div className="details-action">
+            <div className="details-action card card-body col-1">
               <ul>
-                <li>Price: {product.price}</li>
+                
                 <li>
-                  Status:{' '}
-                  {product.countInStock > 0 ? 'In Stock' : 'Unavailable.'}
+                  <div className="row">
+                      <div>Price</div>
+                      <div className="price">&#8377;{product.price}</div>
+                  </div>
                 </li>
+                
                 <li>
-                  Qty:{' '}
-                  <select
-                    value={qty}
-                    onChange={(e) => {
-                      setQty(e.target.value);
-                    }}
-                  >
-                    {[...Array(product.countInStock).keys()].map((x) => (
-                      <option key={x + 1} value={x + 1}>
-                        {x + 1}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="row">
+                      <div>Status</div>
+                      <div>
+                        {product.countInStock > 0 ? (
+                          <span className="success">In Stock</span>
+                        ) : (
+                          <span className="danger">Unavailable</span>
+                        )}
+                      </div>
+                    </div>
                 </li>
-                <li>
-                  {product.countInStock > 0 && (
-                    <button
-                      onClick={handleAddToCart}
-                      className="button primary"
-                    >
-                      Add to Cart
-                    </button>
+                {product.countInStock > 0 && (
+                    <>
+                      <li>
+                        <div className="row">
+                          <div>Qty</div>
+                          <div>
+                            <select
+                              value={qty}
+                              onChange={(e) => setQty(e.target.value)}
+                            >
+                              {[...Array(product.countInStock).keys()].map(
+                                (x) => (
+                                  <option key={x + 1} value={x + 1}>
+                                    {x + 1}
+                                  </option>
+                                )
+                              )}
+                            </select>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <button
+                          onClick={handleAddToCart}
+                          className="button primary full-width"
+                        >
+                          Add to Cart
+                        </button>
+                      </li>
+                    </>
                   )}
-                </li>
-              </ul>
+                </ul>
             </div>
           </div>
+
+
           <div className="content-margined">
             <h2>Reviews</h2>
             {!product.reviews.length && <div>There is no review</div>}
@@ -146,7 +177,7 @@ function ProductScreen(props){
                 <h3>Write a customer review</h3>
                 {userInfo ? (
                   <form onSubmit={submitHandler}>
-                    <ul className="form-container">
+                    <ul className="form-container-rating">
                       <li>
                         <label htmlFor="rating">Rating</label>
                         <select
@@ -187,6 +218,14 @@ function ProductScreen(props){
           </div>
         </>
       )}
+      <div>
+      {/* <Magnifier
+  imageSrc="p3.jpg"
+  imageAlt="Example"
+  largeImageSrc="p3.jpg" // Optional
+/> */}
+
+      </div>
     </div>
         
 

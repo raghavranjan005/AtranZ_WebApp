@@ -34,10 +34,10 @@ function App() {
 
     <BrowserRouter>
     <div className="grid-container">
-    <header className="header">
+    <header className="row header">
       <div className="brand">
-        <button onClick = {openMenu}>
-          &#9776;
+        <button className="sidebar-button" onClick = {openMenu}>
+        <i className="fa fa-bars"></i>
         </button>
       </div>
       <div className="logo">
@@ -46,6 +46,10 @@ function App() {
 
         <div className="header-links">
             <a href="/cart/">
+            <span>
+              <i className='fa fa-shopping-bag'></i>
+            </span>
+             &nbsp;
               My Bag
               {cartItems.length > 0 && (
                 <span className="badge">{cartItems.length}</span>
@@ -99,13 +103,14 @@ function App() {
             <Route path="/cart/:id?" component={CartScreen} />
             <Route path="/category/:id" component={HomeScreen} />
             <Route path="/" exact={true} component={HomeScreen} />
-
+      </div>
+    </main>
         <footer className="footer">
         © 2021 AtranZ WebD Team. All rights reserved.
         </footer>
 
-      </div>
-    </main>
+     
+ 
 
 
 

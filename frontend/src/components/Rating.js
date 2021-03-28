@@ -61,7 +61,7 @@ export default function Rating(props) {
           }
         ></i>
       </span>
-      <span>{props.text ? props.text : ''}</span>
+      <span id="rating-text">&nbsp;&nbsp;{props.text ? props.text : ''}</span>
     </div>
   );
 }
