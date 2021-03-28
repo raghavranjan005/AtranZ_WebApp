@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { createOrder } from '../actions/orderActions';
+import MessageBox from '../components/MessageBox';
+import LoadingBox from '../components/LoadingBox';
 
 function PlaceOrderScreen(props) {
 
@@ -44,16 +46,17 @@ function PlaceOrderScreen(props) {
     <div className="placeorder">
       <div className="placeorder-info">
         <div>
-          <h3>
+          <h4>
             Shipping
-          </h3>
+          </h4>
           <div>
-            {cart.shipping.address}, {cart.shipping.city},
-          {cart.shipping.postalCode}, {cart.shipping.country},
+            <b>Name: </b>{cart.shipping.name},<br></br>
+            <b>Deivery Address: </b>{cart.shipping.address}, {cart.shipping.city},
+          {cart.shipping.postalCode}, {cart.shipping.country}
           </div>
         </div>
         <div>
-          <h3>Payment</h3>
+          <h4>Payment</h4>
           <div>
             Payment Method: {cart.payment.paymentMethod}
           </div>
@@ -61,11 +64,10 @@ function PlaceOrderScreen(props) {
         <div>
           <ul className="cart-list-container">
             <li>
-              <h3>
-                Shopping Cart
-          </h3>
+              <h4>
+                Order Items
+          </h4>
               <div>
-                Price
           </div>
             </li>
             {
@@ -90,8 +92,8 @@ function PlaceOrderScreen(props) {
                         Qty: {item.qty}
                       </div>
                     </div>
-                    <div className="cart-price">
-                    &#8377;{item.price}
+                    <div className="cart-price-small">
+                    {item.qty} x &#8377;{item.price} = <b>&#8377;{item.qty * item.price}</b>
                     </div>
                   </li>
                 )
@@ -101,36 +103,56 @@ function PlaceOrderScreen(props) {
 
       
       </div>
-      <div className="placeorder-action">
-        <ul>
-          <li>
-            <button className="button primary full-width" onClick={placeOrderHandler} >Place Order</button>
-          </li>
-          <li>
-            <h3>Order Summary</h3>
-          </li>
-          <li>
-            <div>Items</div>
-            <div>&#8377;{itemsPrice}</div>
-          </li>
-          <li>
-            <div>Shipping</div>
-            <div>+ &#8377;{shippingPrice}</div>
-          </li>
-          <li>
-            <div>Tax</div>
-            <div>+ &#8377;{taxPrice}</div>
-          </li>
-          <hr></hr>
-          <li>
-            <div>Order Total</div>
-            <div>&#8377;{totalPrice}</div>
-          </li>
-        </ul>
-
-
-
-      </div>
+      <div className="col-1">
+          <div className="card card-body">
+            <ul>
+              <li>
+                <h2>Order Summary</h2>
+              </li>
+              <li>
+                <div className="row">
+                  <div>Items</div>
+                  <div>&#8377;{itemsPrice}</div>
+                </div>
+              </li>
+              <li>
+                <div className="row">
+                  <div>Shipping</div>
+                  <div>+ &#8377;{shippingPrice}</div>
+                </div>
+              </li>
+              <li>
+                <div className="row">
+                  <div>Tax</div>
+                  <div>+ &#8377;{taxPrice}</div>
+                </div>
+              </li>
+              <li>
+              <hr></hr>
+                <div className="row">
+                  <div>
+                    <strong> Order Total</strong>
+                  </div>
+                  <div>
+                    <strong>&#8377;{totalPrice}</strong>
+                  </div>
+                </div>
+              </li>
+              <hr></hr>
+              <li>
+                <button
+                  onClick={placeOrderHandler}
+                  className="button primary full-width"
+                  disabled={cartItems.length === 0}
+                >
+                  Place Order
+                </button>
+              </li>
+              {loading && <LoadingBox></LoadingBox>}
+              {error && <MessageBox variant="danger">{error}</MessageBox>}
+            </ul>
+          </div>
+        </div>
 
     </div>
   </div>

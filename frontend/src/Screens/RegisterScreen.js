@@ -4,6 +4,8 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {register} from '../actions/userActions';
+import MessageBox from '../components/MessageBox';
+import LoadingBox from '../components/LoadingBox';
 
 
 function RegisterScreen(props){
@@ -15,17 +17,17 @@ function RegisterScreen(props){
     const userRegister = useSelector(state => state.userRegister);
     const { loading, userInfo, error } = userRegister;
 
+    const redirect = props.location.search
+    ? props.location.search.split('=')[1]
+    : '/';
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (userInfo) {
-            props.history.push("/");
-          }
-    
-        return () => {
-          //
-        };
-      }, [userInfo])
+          props.history.push(redirect);
+        }
+      }, [props.history, redirect, userInfo]);
 
     // console.log(User);
     // console.log("hello");
@@ -33,9 +35,13 @@ function RegisterScreen(props){
    
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(register(name,email,password));
-    
-      }
+        if (password !== rePassword) {
+          alert('Password and confirm password are not match');
+        } else {
+          dispatch(register(name, email, password));
+        }
+      };
+
     return <div className="form">
         <form onSubmit={submitHandler}>
             <ul className = "form-container">
@@ -43,8 +49,8 @@ function RegisterScreen(props){
                     <h2> Create an AtranZ Account</h2>
                     </li>
                     <li>
-                        {loading && <div>Loading...</div>}
-                        {error && <div>{error}</div>}
+                    {loading && <LoadingBox ></LoadingBox>}
+                    {error && <MessageBox variant="danger">{error}</MessageBox>}
                     </li>
 
                     <li>
@@ -67,7 +73,7 @@ function RegisterScreen(props){
                 </li>
 
                 <li>
-                <label htmlFor="rePassword">Re-enter Password</label>
+                <label htmlFor="rePassword">Confirm Password</label>
                     <input type="Password" id="rePassword" name="rePassword" onChange={(e) => setRePassword(e.target.value)}></input>
                 </li>
 

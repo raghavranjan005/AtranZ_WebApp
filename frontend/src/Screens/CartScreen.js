@@ -2,11 +2,14 @@ import React, { useEffect } from 'react';
 import { addToCart, removeFromCart } from '../actions/cartActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import MessageBox from '../components/MessageBox';
+
+
 function CartScreen(props) {
 
   const cart = useSelector(state => state.cart);
 
-  const { cartItems } = cart;
+  const { cartItems, error } = cart;
 
   const productId = props.match.params.id;
   const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
@@ -25,13 +28,14 @@ function CartScreen(props) {
     props.history.push("/signin?redirect=shipping");
   }
 
-  return <div className="cart">
+  return <div className="row top cart">
     <div className="cart-list">
       <ul className="cart-list-container">
         <li>
           <h3>
-            Shopping Cart
+            Shopping Bag
           </h3>
+          {error && <MessageBox variant="danger">{error}</MessageBox>}
           <div>
             Price
           </div>
@@ -70,7 +74,8 @@ function CartScreen(props) {
                         </option>
                       ))}
                     </select>
-                    <button type="button" className="button" onClick={() => removeFromCartHandler(item.product)} >
+                    
+                    <button type="button" className="button delete-button" onClick={() => removeFromCartHandler(item.product)} >
                       Delete
                     </button>
                   </div>

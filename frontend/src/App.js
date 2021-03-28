@@ -36,7 +36,7 @@ function App() {
     <div className="grid-container">
     <header className="row header">
       <div className="brand">
-        <button className="sidebar-button" onClick = {openMenu}>
+        <button className="open-sidebar" onClick = {openMenu}>
         <i className="fa fa-bars"></i>
         </button>
       </div>
@@ -76,9 +76,14 @@ function App() {
 
     </header>
     <aside className = "sidebar">
-      <h3>Shopping Categories</h3>
-      <button className = "sidebar-close-button" onClick = {closeMenu}>x</button>
+    
       <ul className="categories">
+        <li>
+        <strong>Shopping Categories</strong>
+          <button className = "close-side-bar" onClick = {closeMenu}>
+            <i className="fa fa-close"></i>
+          </button>
+        </li>
         <li>
           <Link to = "/category/saree">saree</Link>
         </li>

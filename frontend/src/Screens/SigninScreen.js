@@ -3,6 +3,8 @@ import '../index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {signin} from '../actions/userActions';
+import MessageBox from '../components/MessageBox';
+import LoadingBox from '../components/LoadingBox';
 
 
 function SigninScreen(props){
@@ -39,8 +41,8 @@ function SigninScreen(props){
                 <li>
                     <h2> Sign-In</h2>
                     <li>
-                        {loading && <div>Loading...</div>}
-                        {error && <div>{error}</div>}
+                    {loading && <LoadingBox></LoadingBox>}
+                    {error && <MessageBox variant="danger">{error}</MessageBox>}
                     </li>
                     <label htmlFor="email">
                         Email
@@ -62,7 +64,7 @@ function SigninScreen(props){
                 </li>
 
                 <li>
-                    <Link to={redirect === "/" ? "register" : "register?redirect=" + redirect} className="button secondary text-center">Create your AtranZ account</Link>
+                    <Link to={redirect === "/" ? "register" : "register?redirect=" + redirect} className="primary">Create your AtranZ account</Link>
                 </li>
             </ul>
 

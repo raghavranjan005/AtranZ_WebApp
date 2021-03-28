@@ -6,6 +6,7 @@ import CheckoutSteps from '../components/CheckoutSteps';
 
 function ShippingScreen(props) {
 
+  const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState('');
@@ -15,7 +16,7 @@ function ShippingScreen(props) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(saveShipping({ address, city, postalCode, country }));
+    dispatch(saveShipping({ name, address, city, postalCode, country }));
     props.history.push('payment');
   }
   return <div>
@@ -25,6 +26,14 @@ function ShippingScreen(props) {
         <ul className="form-container">
           <li>
             <h2>Shipping</h2>
+          </li>
+
+          <li>
+            <label htmlFor="name">
+              Name
+          </label>
+            <input type="text" name="name" id="name" onChange={(e) => setName(e.target.value)}>
+            </input>
           </li>
 
           <li>
