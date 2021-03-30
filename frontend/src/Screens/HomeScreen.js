@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { listProducts } from '../actions/productActions';
 import Rating from '../components/Rating';
 import '../index.css'
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
 
 function HomeScreen(props) {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -54,9 +56,9 @@ function HomeScreen(props) {
         </li>
       </ul>
       {loading ? (
-        <div>Loading...</div>
+        <LoadingBox></LoadingBox>
       ) : error ? (
-        <div>{error}</div>
+        <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <ul className="products">
           {products.map((product) => (

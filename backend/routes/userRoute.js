@@ -1,6 +1,19 @@
 import express from 'express';
 import User from '../models/userModel';
 import { getToken, isAuth } from '../util';
+import bcrypt, { compareSync } from 'bcryptjs';
+import nodemailer from 'nodemailer';
+import crypto from 'crypto';
+
+const bcryptsalt = process.env.BCRYPT_SALT;
+const Client_Url = process.env.CLIENT_URL;
+const authorization={
+  service: 'gmail',
+  auth: {
+     user: process.env.mailId,  //your email address
+     pass: process.env.password               // your password
+  }
+};
 
 const router = express.Router();
 
@@ -10,7 +23,12 @@ router.put('/:id', isAuth, async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
-    user.password = req.body.password || user.password;
+    if (req.body.password) {
+      user.password = bcrypt.hashSync(req.body.password, 8);
+    }else{
+      user.password = user.password;
+    }
+    
     const updatedUser = await user.save();
     res.send({
       _id: updatedUser.id,
@@ -25,22 +43,23 @@ router.put('/:id', isAuth, async (req, res) => {
 });
 
 router.post('/signin', async (req, res) => {
-  const signinUser = await User.findOne({
-    email: req.body.email,
-    password: req.body.password,
-  });
+  const signinUser = await User.findOne({ email: req.body.email });
   if (signinUser) {
-    res.send({
+    if (bcrypt.compareSync(req.body.password, signinUser.password)) {
+    
+      res.send({
       _id: signinUser.id,
       name: signinUser.name,
       email: signinUser.email,
       isAdmin: signinUser.isAdmin,
       token: getToken(signinUser),
-    });
-  } else {
-    res.status(401).send({ message: 'Invalid Email or Password.' });
+      });
+      return;
+    }
   }
+    res.status(401).send({ message: 'Invalid Email or Password.' });
 });
+
 
 router.post('/register', async (req, res) => {
   const registerUser = await User.findOne({
@@ -50,7 +69,7 @@ router.post('/register', async (req, res) => {
     const user = new User({
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password,
+      password: bcrypt.hashSync(req.body.password, 8),
     });
     const newUser = await user.save();
     if (newUser) {
@@ -68,6 +87,87 @@ router.post('/register', async (req, res) => {
     res.status(401).send({ message: 'User Email-Id Already Exist' });
   }
 });
+
+
+router.post('/reset-password', async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (user) {
+    const transporter=nodemailer.createTransport(authorization);
+
+    let resetToken = crypto.randomBytes(32).toString("hex");
+    user.resetToken = resetToken;
+    await user.save();
+
+    const mailOptions={
+      from: 'atranzcart@gmail.com',
+      to: user.email,
+      subject:'Reset Password',
+      text: `Your password reset link is: ${Client_Url}resetpassword/${user.resetToken}`
+      }
+
+      transporter.sendMail(mailOptions, (error, info)=>{
+      if (error) {
+          console.log(error);
+      } else {
+      console.log('Email sent: ' + info.response);
+      }
+  });
+
+  res.status(200).send(user);
+
+  }
+    res.status(400).send({ message: 'User Not found' });
+});
+
+
+
+router.get('/resetpassword/:id',async (req,res)=>{
+  try{
+  const resetuser = await User.findOne({
+    resetToken: req.params.id
+  });
+  }catch(error){
+    res.status(400).send({ message: 'Invalid Link' });
+  }
+
+  });
+
+  router.post('/resetpassword/:id',async (req,res)=>{
+    try{
+    const resetuser = await User.findOne({
+      resetToken: req.params.id
+    });
+    console.log(resetuser.email)
+      if (resetuser) {
+        try{
+          resetuser.password = bcrypt.hashSync(req.body.password,8);
+          resetuser.resetToken = crypto.randomBytes(32).toString("hex");
+          const newUser = await resetuser.save();
+          res.send({
+            _id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+            isAdmin: newUser.isAdmin,
+            token: getToken(newUser),
+          });
+  
+        }catch(error){
+          return res.status(401).send({ message: 'Error' });
+        }
+      }else{
+        return res.status(401).send({ message: 'User not Found' });
+      }
+    }catch(error){
+      return res.status(401).send({ message: 'Invalid Link' });
+    }
+  
+    });
+  
+  
+  
+  
+
+
 
 router.get('/createadmin', async (req, res) => {
   try {

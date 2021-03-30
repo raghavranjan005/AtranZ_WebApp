@@ -79,6 +79,7 @@ const detailsProduct = (productId) => async (dispatch) => {
   }
 };
 
+
 const deleteProdcut = (productId) => async (dispatch, getState) => {
   try {
     const {

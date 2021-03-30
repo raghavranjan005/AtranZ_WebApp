@@ -218,14 +218,7 @@ function ProductScreen(props){
           </div>
         </>
       )}
-      <div>
-      {/* <Magnifier
-  imageSrc="p3.jpg"
-  imageAlt="Example"
-  largeImageSrc="p3.jpg" // Optional
-/> */}
 
-      </div>
     </div>
         
 

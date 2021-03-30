@@ -814,3 +814,8 @@ input {
   color: #20a020;
   background-color: #eeffe0;
 }
+
+.forgot{
+  font-size: 1.5rem;
+  text-align: right;
+}

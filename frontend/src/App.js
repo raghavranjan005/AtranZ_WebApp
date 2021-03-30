@@ -13,7 +13,10 @@ import OrderScreen from './Screens/OrderScreen';
 import ShippingScreen from './Screens/ShippingScreen';
 import PaymentScreen from './Screens/PaymentScreen';
 import PlaceOrderScreen from './Screens/PlaceOrderScreen';
+import ResetPasswordScreen from './Screens/ResetPasswordScreen';
 import './index.css'
+import ResetPasswordLinkScreen from './Screens/ResetPasswordLinkScreen';
+
 
 
 function App() {
@@ -104,6 +107,8 @@ function App() {
             <Route path="/placeorder" component={PlaceOrderScreen} />
             <Route path="/signin" component={SigninScreen} />
             <Route path="/register" component={RegisterScreen} />
+            <Route path="/reset-password" component={ResetPasswordScreen} />
+            <Route path="/resetpassword/:id" component={ResetPasswordLinkScreen} />
             <Route path="/product/:id" component={ProductScreen} />
             <Route path="/cart/:id?" component={CartScreen} />
             <Route path="/category/:id" component={HomeScreen} />

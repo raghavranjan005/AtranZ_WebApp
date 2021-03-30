@@ -13,6 +13,8 @@ import {
   userSigninReducer,
   userRegisterReducer,
   userUpdateReducer,
+  userResetPasswordReducer,
+  userResetPasswordLinkReducer,
 } from './reducers/userReducers';
 import {
   orderCreateReducer,
@@ -46,6 +48,8 @@ const reducer = combineReducers({
   myOrderList: myOrderListReducer,
   orderList: orderListReducer,
   orderDelete: orderDeleteReducer,
+  resetPassword: userResetPasswordReducer,
+  resetPasswordLink: userResetPasswordLinkReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
