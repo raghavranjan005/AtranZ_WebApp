@@ -8,5 +8,6 @@ export default{
     JWT_SECRET: process.env.JWT_SECRET || 'somethingsecret',
     accessKeyId: process.env.accessKeyId || 'accessKeyId',
     secretAccessKey: process.env.secretAccessKey || 'secretAccessKey',
+    RAZORPAY_KEY_ID:process.env.RAZORPAY_KEY_ID || 'sb',
 };
 

@@ -1,14 +1,31 @@
-import React, { useEffect } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createOrder, detailsOrder, payOrder } from '../actions/orderActions';
-import PaypalButton from '../components/PaypalButton';
+import LoadingBox from '../components/LoadingBox';
+import RazorpayButton from '../components/RazorpayButton';
+
+
 function OrderScreen(props) {
 
+
+  const [sdkReady, setSdkReady] = useState(false);
   const orderPay = useSelector(state => state.orderPay);
   const { loading: loadingPay, success: successPay, error: errorPay } = orderPay;
+  const userSignin = useSelector(state => state.userSignin);
+  const { userInfo } = userSignin;
+  const [clientID, setClientID] = useState("hh");
   const dispatch = useDispatch();
   useEffect(() => {
+  
+    const addRazorpaySdk = async () => {
+      const result = await axios.get("/api/config/razorpay");
+      const key = result.data;
+      setSdkReady(true);
+      setClientID(key);
+    }
+    addRazorpaySdk();
     if (successPay) {
       props.history.push("/profile");
     } else {
@@ -16,7 +33,7 @@ function OrderScreen(props) {
     }
     return () => {
     };
-  }, [successPay]);
+  }, [successPay, sdkReady, clientID]);
 
   const handleSuccessPayment = (paymentResult) => {
     dispatch(payOrder(order, paymentResult));
@@ -35,13 +52,11 @@ function OrderScreen(props) {
               Shipping
           </h3>
             <div>
-              
               {order.shipping.address}, {order.shipping.city},
-              {order.shipping.postalCode}, {order.shipping.country},
+          {order.shipping.postalCode}, {order.shipping.country},
           </div>
             <div>
-              <br></br>
-            Status: {order.isDelivered ? "Delivered at " + order.deliveredAt : "Not Delivered."}
+              {order.isDelivered ? "Delivered at " + order.deliveredAt : "Not Delivered."}
             </div>
           </div>
           <div>
@@ -50,7 +65,7 @@ function OrderScreen(props) {
               Payment Method: {order.payment.paymentMethod}
             </div>
             <div>
-            Status: {order.isPaid ? "Paid at " + order.paidAt : "Not Paid."}
+              {order.isPaid ? "Paid at " + order.paidAt : "Not Paid."}
             </div>
           </div>
           <div>
@@ -86,7 +101,7 @@ function OrderScreen(props) {
                         </div>
                       </div>
                       <div className="cart-price">
-                      &#8377;{item.price}
+                        ${item.price}
                       </div>
                     </li>
                   )
@@ -98,15 +113,6 @@ function OrderScreen(props) {
         </div>
         <div className="placeorder-action">
           <ul>
-            <li className="placeorder-actions-payment">
-              {loadingPay && <div>Finishing Payment...</div>}
-              {!order.isPaid &&
-                <button className="button primary full-width"
-                  amount={order.totalPrice}
-                  // onSuccess={handleSuccessPayment}
-                   > Proceed to payment</button>
-              }
-            </li>
             <li>
               <h3>Order Summary</h3>
             </li>
@@ -122,11 +128,26 @@ function OrderScreen(props) {
               <div>Tax</div>
               <div>+ &#8377;{order.taxPrice}</div>
             </li>
+
             <hr></hr>
             <li>
-              <div>Order Total</div>
-              <div>&#8377;{order.totalPrice}</div>
+              <div><strong>Order Total</strong></div>
+              <div><strong>&#8377;{order.totalPrice}</strong></div>
             </li>
+            <hr></hr>
+
+            <li className="placeorder-actions-payment">
+              {loadingPay && <div>Finishing Payment...</div>}
+              {!sdkReady && <LoadingBox></LoadingBox>}
+              {!order.isPaid && sdkReady &&
+                <RazorpayButton
+                  amount={order.totalPrice}
+                  user = {userInfo}
+                  clientID = {clientID}
+                  onSuccess={handleSuccessPayment} />
+              }
+            </li>
+
           </ul>
 
 
