@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { logout, update } from '../actions/userActions';
-import { listMyOrders } from '../actions/orderActions';
+import { listMyOrders , deleteOrder} from '../actions/orderActions';
 import { useDispatch, useSelector } from 'react-redux';
+import LoadingBox from '../components/LoadingBox';
 
 function ProfileScreen(props) {
   const [name, setName] = useState('');
@@ -12,6 +13,8 @@ function ProfileScreen(props) {
 
   const userSignin = useSelector(state => state.userSignin);
   const { userInfo } = userSignin;
+
+
   const handleLogout = () => {
     dispatch(logout());
     props.history.push("/signin");
@@ -23,8 +26,6 @@ function ProfileScreen(props) {
   const userUpdate = useSelector(state => state.userUpdate);
   const { loading, success, error } = userUpdate;
 
-  const myOrderList = useSelector(state => state.myOrderList);
-  const { loading: loadingOrders, orders, error: errorOrders } = myOrderList;
   useEffect(() => {
     if (userInfo) {
       console.log(userInfo.name)
@@ -32,11 +33,10 @@ function ProfileScreen(props) {
       setName(userInfo.name);
       setPassword(userInfo.password);
     }
-    dispatch(listMyOrders());
-    return () => {
-
-    };
   }, [userInfo])
+
+
+
 
   return <div className="profile">
     <div className="profile-info">
@@ -47,7 +47,7 @@ function ProfileScreen(props) {
               <h2>User Profile</h2>
             </li>
             <li>
-              {loading && <div>Loading...</div>}
+              {loading && <LoadingBox></LoadingBox>}
               {error && <div>{error}</div>}
               {success && <div>Profile Saved Successfully.</div>}
             </li>
@@ -81,48 +81,6 @@ function ProfileScreen(props) {
           </ul>
         </form>
       </div>
-    </div>
-    <div className="profile-orders content-margined">
-      {
-        loadingOrders ? <div>Loading...</div> :
-          errorOrders ? <div>{errorOrders} </div> :
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>DATE</th>
-                  <th>TOTAL</th>
-                  <th>PAID</th>
-                  <th>DELIVERED</th>
-                  <th>ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map(order => <tr key={order._id}>
-                  <td>{order._id}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
-                <td>&#8377;{order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
-                <td>
-                  {order.isDelivered
-                    ? order.deliveredAt.substring(0, 10)
-                    : 'No'}
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    className="small"
-                    onClick={() => {
-                      props.history.push(`/order/${order._id}`);
-                    }}
-                  >
-                    Details
-                  </button>
-                </td>
-                </tr>)}
-              </tbody>
-            </table>
-      }
     </div>
   </div>
 }

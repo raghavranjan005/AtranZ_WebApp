@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { listOrders, deleteOrder } from '../actions/orderActions';
+import LoadingBox from '../components/LoadingBox';
 
 function OrdersScreen(props) {
   const orderList = useSelector(state => state.orderList);
@@ -22,7 +23,7 @@ function OrdersScreen(props) {
   const deleteHandler = (order) => {
     dispatch(deleteOrder(order._id));
   }
-  return loading ? <div>Loading...</div> :
+  return loading ? <LoadingBox></LoadingBox> :
     <div className="content content-margined">
 
       <div className="order-header">
@@ -57,7 +58,10 @@ function OrdersScreen(props) {
               <td>
                 <Link to={"/order/" + order._id} className="button secondary" >Details</Link>
                 {' '}
-                <button type="button" onClick={() => deleteHandler(order)} className="button secondary">Delete</button>
+                <button type="button" className="small delete-button" onClick={() => deleteHandler(order)}>
+                    <i className='fa fa-trash  trash'></i>&thinsp;
+                        Delete
+                    </button>
               </td>
             </tr>))}
           </tbody>

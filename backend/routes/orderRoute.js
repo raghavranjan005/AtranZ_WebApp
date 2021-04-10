@@ -8,6 +8,7 @@ router.get("/", isAuth, async (req, res) => {
   const orders = await Order.find({}).populate('user');
   res.send(orders);
 });
+
 router.get("/mine", isAuth, async (req, res) => {
   const orders = await Order.find({ user: req.user._id });
   res.send(orders);
@@ -26,7 +27,7 @@ router.get("/:id", isAuth, async (req, res) => {
 
 
 
-router.delete("/:id", isAuth, isAdmin, async (req, res) => {
+router.delete("/:id", isAuth, async (req, res) => {
   const order = await Order.findOne({ _id: req.params.id });
   if (order) {
     const deletedOrder = await order.remove();
@@ -57,11 +58,9 @@ router.put("/:id/pay", isAuth, async (req, res) => {
     order.isPaid = true;
     order.paidAt = Date.now();
     order.payment = {
-      paymentMethod: 'paypal',
+      paymentMethod: 'Online Payment',
       paymentResult: {
-        payerID: req.body.payerID,
-        orderID: req.body.orderID,
-        paymentID: req.body.paymentID
+        paymentID: req.body.paymentResult
       }
     }
     const updatedOrder = await order.save();

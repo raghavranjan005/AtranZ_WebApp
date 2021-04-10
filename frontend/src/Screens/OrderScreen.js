@@ -17,8 +17,9 @@ function OrderScreen(props) {
   const { userInfo } = userSignin;
   const [clientID, setClientID] = useState("hh");
   const dispatch = useDispatch();
+
   useEffect(() => {
-  
+    
     const addRazorpaySdk = async () => {
       const result = await axios.get("/api/config/razorpay");
       const key = result.data;
@@ -27,7 +28,7 @@ function OrderScreen(props) {
     }
     addRazorpaySdk();
     if (successPay) {
-      props.history.push("/profile");
+      props.history.push("/orderhistory");
     } else {
       dispatch(detailsOrder(props.match.params.id));
     }
@@ -100,9 +101,9 @@ function OrderScreen(props) {
                           Qty: {item.qty}
                         </div>
                       </div>
-                      <div className="cart-price">
-                        ${item.price}
-                      </div>
+                      <div className="cart-price-small">
+                    {item.qty} x &#8377;{item.price} = <b>&#8377;{item.qty * item.price}</b>
+                    </div>
                     </li>
                   )
               }
@@ -139,13 +140,14 @@ function OrderScreen(props) {
             <li className="placeorder-actions-payment">
               {loadingPay && <div>Finishing Payment...</div>}
               {!sdkReady && <LoadingBox></LoadingBox>}
-              {!order.isPaid && sdkReady &&
+              {order.payment.paymentMethod ==="Online Payments" && !order.isPaid && sdkReady &&
                 <RazorpayButton
                   amount={order.totalPrice}
                   user = {userInfo}
                   clientID = {clientID}
                   onSuccess={handleSuccessPayment} />
               }
+              
             </li>
 
           </ul>
