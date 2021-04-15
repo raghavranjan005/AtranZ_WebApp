@@ -41,6 +41,9 @@ function OrderHistoryScreen(props) {
 
   return (
     <BrowserRouter>
+    <div className="row center large">
+            <h1 className="large"><i className="fa fa-shopping-bag"></i> My Orders </h1>
+        </div>
   <div className="profile">
     <div className="profile-orders content-margined">
       {
