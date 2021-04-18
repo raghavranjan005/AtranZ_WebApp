@@ -4,11 +4,17 @@ import { getToken, isAuth } from '../util';
 import bcrypt, { compareSync } from 'bcryptjs';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+// import handlebars from 'handlebars';
+// import fs from 'fs';
+// import path from 'path';
+import {resetPasswordEmail} from '../Templates/emailTemplates'
 
 const bcryptsalt = process.env.BCRYPT_SALT;
 const Client_Url = process.env.CLIENT_URL;
+
 const authorization={
   service: 'gmail',
+  secure: 'true',
   auth: {
      user: process.env.mailId,  //your email address
      pass: process.env.password               // your password
@@ -93,16 +99,19 @@ router.post('/reset-password', async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (user) {
     const transporter=nodemailer.createTransport(authorization);
-
+    
     let resetToken = crypto.randomBytes(32).toString("hex");
     user.resetToken = resetToken;
     await user.save();
+    var link = `${Client_Url}resetpassword/${user.resetToken}`;
+    const output = resetPasswordEmail(link);
 
     const mailOptions={
       from: 'atranzcart@gmail.com',
       to: user.email,
       subject:'Reset Password',
-      text: `Your password reset link is: ${Client_Url}resetpassword/${user.resetToken}`
+      text: `Reset-Link`,
+      html: output,
       }
 
       transporter.sendMail(mailOptions, (error, info)=>{
