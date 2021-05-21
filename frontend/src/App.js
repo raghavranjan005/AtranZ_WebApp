@@ -23,6 +23,12 @@ import AboutScreen from './Screens/AboutScreen';
 import CustomerServiceScreen from './Screens/CustomerCareScreen';
 import CustomerCareScreen from './Screens/CustomerCareScreen';
 import FeedbackScreen from './Screens/FeedbackScreen';
+import SearchScreen from './Screens/SearchScreen';
+import LoadingBox from './components/LoadingBox';
+import MessageBox from './components/MessageBox';
+import { useEffect } from 'react';
+import { listProductCategories } from './actions/productActions';
+
 
 
 
@@ -33,6 +39,18 @@ function App() {
   const dispatch = useDispatch();
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
+
+
+
+  const productCategoryList = useSelector((state) => state.productCategoryList);
+  const {
+    loading: loadingCategories,
+    error: errorCategories,
+    categories,
+  } = productCategoryList;
+  useEffect(() => {
+    dispatch(listProductCategories());
+  }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -55,7 +73,7 @@ function App() {
         </button>
       </div>
       <div className="logo">
-        <Link to="/"><img src=" AtranZ-final.png" alt="Logo" height="150px" max-width="150rem"/></Link>
+        <Link to="/"><img src="AtranZ-final.png" alt="Logo" height="150px" max-width="150rem"/></Link>
         </div>
 
         <div className="header-links">
@@ -118,8 +136,24 @@ function App() {
         <li>
         <strong>Shopping categories</strong>
         </li>
-          <Link to = "/category/saree">saree</Link>
-          <Link to = "/category/suit">suit</Link>
+          {/* <Link to = "/category/saree">saree</Link>
+          <Link to = "/category/suit">suit</Link> */}
+
+            {loadingCategories ? (
+              <LoadingBox></LoadingBox>
+            ) : errorCategories ? (
+              <MessageBox variant="danger">{errorCategories}</MessageBox>
+            ) : (
+              categories.map((c) => (
+                  <Link
+                    to={`/search/category/${c}`}
+                  >
+                    {c}
+                  </Link>
+              ))
+            )}
+
+
         <hr></hr>
 
       </ul>
@@ -171,6 +205,27 @@ function App() {
             <Route path="/category/:id" component={HomeScreen} />
             <Route path="/" exact={true} component={HomeScreen} />
             <Route path="/orderhistory" exact={true} component={OrderHistoryScreen} />
+            
+            <Route
+            path="/search/name/:name?"
+            component={SearchScreen}
+            exact
+          ></Route>
+          <Route
+            path="/search/category/:category"
+            component={SearchScreen}
+            exact
+          ></Route>
+          <Route
+            path="/search/category/:category/name/:name"
+            component={SearchScreen}
+            exact
+          ></Route>
+          <Route
+            path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order/pageNumber/:pageNumber"
+            component={SearchScreen}
+            exact
+          ></Route>
       </div>
     </main>
         <footer className="footer">

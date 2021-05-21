@@ -15,6 +15,9 @@ import {
   PRODUCT_REVIEW_SAVE_REQUEST,
   PRODUCT_REVIEW_SAVE_FAIL,
   PRODUCT_REVIEW_SAVE_RESET,
+  PRODUCT_CATEGORY_LIST_REQUEST,
+  PRODUCT_CATEGORY_LIST_SUCCESS,
+  PRODUCT_CATEGORY_LIST_FAIL,
 } from '../constants/productConstants';
 
 function productListReducer(state = { products: [] }, action) {
@@ -29,6 +32,21 @@ function productListReducer(state = { products: [] }, action) {
       return state;
   }
 }
+
+
+
+function productCategoryListReducer(state = { loading: true, products: [] },action) {
+  switch (action.type) {
+    case PRODUCT_CATEGORY_LIST_REQUEST:
+      return { loading: true };
+    case PRODUCT_CATEGORY_LIST_SUCCESS:
+      return { loading: false, categories: action.payload };
+    case PRODUCT_CATEGORY_LIST_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
 function productDetailsReducer(state = { product: { reviews: [] } }, action) {
   switch (action.type) {
@@ -89,4 +107,5 @@ export {
   productSaveReducer,
   productDeleteReducer,
   productReviewSaveReducer,
+  productCategoryListReducer,
 };

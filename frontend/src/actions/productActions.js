@@ -14,28 +14,66 @@ import {
   PRODUCT_REVIEW_SAVE_REQUEST,
   PRODUCT_REVIEW_SAVE_FAIL,
   PRODUCT_REVIEW_SAVE_SUCCESS,
+  PRODUCT_CATEGORY_LIST_REQUEST,
+  PRODUCT_CATEGORY_LIST_SUCCESS,
+  PRODUCT_CATEGORY_LIST_FAIL,
 } from '../constants/productConstants';
 import axios from 'axios';
 import Axios from 'axios';
 
-const listProducts = (
+// const listProducts = (
+//   category = '',
+//   searchKeyword = '',
+//   sortOrder = ''
+// ) => async (dispatch) => {
+//   try {
+//     dispatch({ type: PRODUCT_LIST_REQUEST });
+//     const { data } = await axios.get(
+//       '/api/products?category=' +
+//         category +
+//         '&searchKeyword=' +
+//         searchKeyword +
+//         '&sortOrder=' +
+//         sortOrder
+//     );
+//     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+//   } catch (error) {
+//     dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
+//   }
+// };
+
+
+const listProducts = ({
+  pageNumber = '',
+  name = '',
   category = '',
-  searchKeyword = '',
-  sortOrder = ''
-) => async (dispatch) => {
+  order = '',
+  min = 0,
+  max = 0,
+  rating = 0,
+}) => async (dispatch) => {
+  dispatch({
+    type: PRODUCT_LIST_REQUEST,
+  });
   try {
-    dispatch({ type: PRODUCT_LIST_REQUEST });
-    const { data } = await axios.get(
-      '/api/products?category=' +
-        category +
-        '&searchKeyword=' +
-        searchKeyword +
-        '&sortOrder=' +
-        sortOrder
+    const { data } = await Axios.get(
+      `/api/products?pageNumber=${pageNumber}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`
     );
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
+  }
+};
+
+const listProductCategories = () => async (dispatch) => {
+  dispatch({
+    type: PRODUCT_CATEGORY_LIST_REQUEST,
+  });
+  try {
+    const { data } = await Axios.get(`/api/products/categories`);
+    dispatch({ type: PRODUCT_CATEGORY_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: PRODUCT_CATEGORY_LIST_FAIL, payload: error.message });
   }
 };
 
@@ -127,4 +165,5 @@ export {
   saveProduct,
   deleteProdcut,
   saveProductReview,
+  listProductCategories,
 };

@@ -10,7 +10,7 @@ function CartScreen(props) {
   const cart = useSelector(state => state.cart);
   const { cartItems, error } = cart;
   
-  console.log(cartItems)
+  // console.log(cartItems)
 
   const productId = props.match.params.id;
   const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
