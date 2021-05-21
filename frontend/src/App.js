@@ -55,7 +55,7 @@ function App() {
         </button>
       </div>
       <div className="logo">
-        <Link to="/"><img src="/AtranZ-final.png" alt="Logo" height="150px" max-width="150rem"/></Link>
+        <Link to="/"><img src=" AtranZ-final.png" alt="Logo" height="150px" max-width="150rem"/></Link>
         </div>
 
         <div className="header-links">
