@@ -17,6 +17,11 @@ body {
 .fa-heart{
   color: red;
 }
+
+.fa-filter{
+  color: #533696;
+  font-size: medium
+}
 /* Common */
 h1 {
   font-size: 1.8rem;
@@ -357,6 +362,14 @@ button.close-sidebar {
   /* overflow: hidden; */
   object-fit: fill;
 }
+
+.card-product-image {
+  width: 30rem;
+  height: 30rem;
+  /* overflow: hidden; */
+  object-fit: fill;
+}
+
 .product-image:hover{
   box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.2);
   transform: scale(1.03);
@@ -954,13 +967,19 @@ input {
 /* Search */
 .search button {
   border-radius: 0 0.5rem 0.5rem 0;
-  border-right: none;
   margin-right: 0.5rem;
 }
+
+.search button:hover{
+  border-radius: 0 0.5rem 0.5rem 0;
+  border-color: #533696;
+}
+
 .search input {
   border-radius: 0.5rem 0 0 0.5rem;
-  border-right: none;
   margin-left: 0.5rem;
+  width:30rem;
+  border-right: none;
 }
 .active {
   font-weight: bold;

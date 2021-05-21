@@ -47,7 +47,11 @@ function HomeScreen(props) {
                 <SearchBox history={history}></SearchBox>
               )}
             ></Route>
-
+          </li>
+          <li>
+            <Link to={'/search/name'}>
+                  <button className="button">Apply Filters  <i className="fa fa-filter" ></i></button>
+            </Link>
         </li>
       </ul>
       {loading ? (
