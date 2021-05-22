@@ -36,7 +36,13 @@ function PlaceOrderScreen(props) {
   }
   useEffect(() => {
     if (success) {
-      props.history.push("/order/" + order._id);
+      if(payment.paymentMethod === "Online Payments"){
+        props.history.push("/order/" + order._id);
+      }else{
+        alert("order placed succesfully");
+        props.history.push("/orderhistory");
+      }
+
     }
 
   }, [success]);

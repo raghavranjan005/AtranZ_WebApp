@@ -71,7 +71,7 @@ function orderPayReducer(state = {
   order: {
     orderItems: [],
     shipping: {},
-    payment: {}
+    payment: {},
   }
 }, action) {
   switch (action.type) {

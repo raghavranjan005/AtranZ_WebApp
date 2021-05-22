@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { listProducts } from '../actions/productActions';
@@ -7,6 +7,7 @@ import Rating from '../components/Rating';
 import '../index.css'
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import SearchBox from '../components/SearchBox';
 
 function HomeScreen(props) {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -23,10 +24,6 @@ function HomeScreen(props) {
     };
   }, [category]);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(listProducts(category, searchKeyword, sortOrder));
-  };
   const sortHandler = (e) => {
     setSortOrder(e.target.value);
     dispatch(listProducts(category, searchKeyword, sortOrder));
@@ -38,21 +35,23 @@ function HomeScreen(props) {
 
       <ul className="filter">
         <li>
-          <form onSubmit={submitHandler}>
+          {/* <form onSubmit={submitHandler}>
             <input 
               name="searchKeyword"
               onChange={(e) => setSearchKeyword(e.target.value)}
             />
             <button type="submit">Search</button>
-          </form>
-        </li>
-        <li>
-          Sort By{' '}
-          <select name="sortOrder" onChange={sortHandler}>
-            <option value="">Newest</option>
-            <option value="lowest">Lowest</option>
-            <option value="highest">Highest</option>
-          </select>
+          </form> */}
+          <Route
+              render={({ history }) => (
+                <SearchBox history={history}></SearchBox>
+              )}
+            ></Route>
+          </li>
+          <li>
+            <Link to={'/search/name'}>
+                  <button className="button">Apply Filters  <i className="fa fa-filter" ></i></button>
+            </Link>
         </li>
       </ul>
       {loading ? (
