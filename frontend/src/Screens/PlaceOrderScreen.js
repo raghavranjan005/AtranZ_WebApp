@@ -8,11 +8,11 @@ import LoadingBox from '../components/LoadingBox';
 
 function PlaceOrderScreen(props) {
 
-  const cart = useSelector(state => state.cart);
+  const cartList = useSelector(state => state.cartList);
   const orderCreate = useSelector(state => state.orderCreate);
   const { loading, success, error, order } = orderCreate;
 
-  const { cartItems, shipping, payment } = cart;
+  const { cartItems, shipping, payment } = cartList;
 
   if (!shipping.address) {
     props.history.push("/shipping");
@@ -50,15 +50,15 @@ function PlaceOrderScreen(props) {
             Shipping
           </h4>
           <div>
-            <b>Name: </b>{cart.shipping.name},<br></br>
-            <b>Deivery Address: </b>{cart.shipping.address}, {cart.shipping.city},
-          {cart.shipping.postalCode}, {cart.shipping.country}
+            <b>Name: </b>{cartList.shipping.name},<br></br>
+            <b>Deivery Address: </b>{cartList.shipping.address}, {cartList.shipping.city},
+          {cartList.shipping.postalCode}, {cartList.shipping.country}
           </div>
         </div>
         <div>
           <h4>Payment</h4>
           <div>
-            Payment Method: {cart.payment.paymentMethod}
+            Payment Method: {cartList.payment.paymentMethod}
           </div>
         </div>
         <div>
@@ -83,7 +83,7 @@ function PlaceOrderScreen(props) {
                     </div>
                     <div className="cart-name">
                       <div>
-                        <Link to={"/product/" + item.product}>
+                        <Link to={"/product/" + item.productId}>
                           {item.name}
                         </Link>
 

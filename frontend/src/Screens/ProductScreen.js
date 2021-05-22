@@ -5,6 +5,7 @@ import AliceCarousel from 'react-alice-carousel';
 import "react-alice-carousel/lib/alice-carousel.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { detailsProduct, saveProductReview } from '../actions/productActions';
+import { addToCart } from '../actions/userActions';
 import Rating from '../components/Rating';
 import { PRODUCT_REVIEW_SAVE_RESET } from '../constants/productConstants';
 import { Magnifier, GlassMagnifier, SideBySideMagnifier} from "react-image-magnifiers";
@@ -36,6 +37,7 @@ function ProductScreen(props){
           //
         };
       }, [productSaveSuccess]);
+
       const submitHandler = (e) => {
         e.preventDefault();
         // dispatch actions
@@ -47,10 +49,22 @@ function ProductScreen(props){
           })
         );
       };
-      const handleAddToCart = () => {
-        props.history.push('/cart/' + props.match.params.id + '?qty=' + qty);
-      };
 
+      const handleAddToCart = () => {
+        // props.history.push('/cart/' + props.match.params.id + '?qty=' + qty);
+        props.history.push("/signin?redirect=cart/"+props.match.params.id+"?"+qty);
+        // console.log(props.match.params.id,qty,userInfo._id);
+        // dispatch(addToCart(props.match.params.id,qty,userInfo._id));
+      
+
+      //   props.history.push({
+      //     pathname:'/signin',
+      //     search:'?redirect=cart/'+props.match.params.id,
+      //     state:{Qty:qty},
+      //   })
+      // };
+      }
+      console.log(qty);
       
     return(
         <div>

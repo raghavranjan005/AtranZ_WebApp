@@ -1,28 +1,35 @@
-import React, { useEffect } from 'react';
-import { addToCart, removeFromCart } from '../actions/cartActions';
+import React, { useEffect,useState } from 'react';
+// import { addToCart, removeFromCart } from '../actions/cartActions';
+import { addToCart, deleteFromCart,cartItemsList}  from '../actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import MessageBox from '../components/MessageBox';
+import LoadingBox from '../components/LoadingBox';
 
 
 function CartScreen(props) {
 
-  const cart = useSelector(state => state.cart);
-
-  const { cartItems, error } = cart;
-
+  const cartList = useSelector(state => state.cartList);
+  console.log(cartList);
+  const {cartItems,loading , error } = cartList;
+  console.log(cartItems);
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   const productId = props.match.params.id;
-  const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
+  const qty = props.location.search ? Number(props.location.search.split("?")[1]) : 1;
+  // console.log(qty);
   const dispatch = useDispatch();
-
   const removeFromCartHandler = (productId) => {
-    dispatch(removeFromCart(productId));
+    dispatch(deleteFromCart(productId));
   }
   useEffect(() => {
     if (productId) {
-      dispatch(addToCart(productId, qty));
+      dispatch(addToCart(productId, qty,userInfo._id));
     }
-  }, []);
+    if(cartList)
+    dispatch(cartItemsList());
+
+  }, [productId]);
 
   const checkoutHandler = () => {
     props.history.push("/signin?redirect=shipping");
@@ -41,6 +48,8 @@ function CartScreen(props) {
           </div>
         </li>
         {
+          loading===true?(
+            <LoadingBox></LoadingBox>):
           cartItems.length === 0 ?
             <div>
               Cart is empty
@@ -53,29 +62,14 @@ function CartScreen(props) {
                 </div>
                 <div className="cart-name">
                   <div>
-                    <Link to={"/product/" + item.product}>
+                    <Link to={"/product/" + item.productId}>
                       {item.name}
                     </Link>
 
                   </div>
                   <div>
-                    Qty:
-                   <select
-                      value={item.qty}
-                      onChange={(e) =>
-                        dispatch(
-                          addToCart(item.product, Number(e.target.value))
-                        )
-                      }
-                    >
-                      {[...Array(item.countInStock).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
-                    </select>
-                    
-                    <button type="button" className="button delete-button" onClick={() => removeFromCartHandler(item.product)} >
+                    Qty: {item.qty}   
+                    <button type="button" className="button delete-button" onClick={() => removeFromCartHandler(item.productId)} >
                       Delete
                     </button>
                   </div>
@@ -89,17 +83,20 @@ function CartScreen(props) {
       </ul>
 
     </div>
-    <div className="cart-action">
-      <h3>
-        Subtotal ( {cartItems.reduce((a, c) => a + c.qty, 0)} items)
-        :
-        &#8377;&nbsp; {cartItems.reduce((a, c) => a + c.price * c.qty, 0)}
-      </h3>
-      <button onClick={checkoutHandler} className="button primary full-width" disabled={cartItems.length === 0}>
-        Proceed to Checkout
-      </button>
+   
+     { loading===true?(<LoadingBox></LoadingBox>):<div className="cart-action">
+        <h3>
+          Subtotal ( {cartItems.reduce((a, c) => a + c.qty, 0)} items)
+          :
+          &#8377;&nbsp; {cartItems.reduce((a, c) => a + c.price * c.qty, 0)}
+        </h3>
+        <button onClick={checkoutHandler} className="button primary full-width" disabled={cartItems.length === 0}>
+          Proceed to Checkout
+        </button>
 
-    </div>
+      </div>
+  } 
+
 
   </div>
 }

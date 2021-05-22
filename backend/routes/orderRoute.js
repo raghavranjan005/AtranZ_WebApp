@@ -33,6 +33,7 @@ router.delete("/:id", isAuth, isAdmin, async (req, res) => {
 });
 
 router.post("/", isAuth, async (req, res) => {
+  console.log("order route");
   const newOrder = new Order({
     orderItems: req.body.orderItems,
     user: req.user._id,

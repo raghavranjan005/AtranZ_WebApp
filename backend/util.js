@@ -17,14 +17,17 @@ const getToken = (user) => {
 
 const isAuth = (req, res, next) => {
   const token = req.headers.authorization;
-
+  // console.log(token);
   if (token) {
     const onlyToken = token.slice(7, token.length);
+    // console.log(onlyToken);
     jwt.verify(onlyToken, config.JWT_SECRET, (err, decode) => {
       if (err) {
+        // console.log(decode);
         return res.status(401).send({ message: 'Invalid Token' });
       }
       req.user = decode;
+      // console.log(req.user);
       next();
       return;
     });

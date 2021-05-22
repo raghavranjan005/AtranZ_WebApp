@@ -24,7 +24,6 @@ mongoose.connect(mongodbUrl, {
 }).catch((error)=> console.log(error.reason));
 
 
-
 app.use('/api/uploads', uploadRoute);
 app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
@@ -33,8 +32,8 @@ app.get('/api/config/paypal', (req, res) => {
   res.send(config.PAYPAL_CLIENT_ID);
 });
 app.use('/uploads', express.static(path.join(__dirname, '/../uploads')));
-app.use(express.static(path.join(__dirname, '/../frontend/build')));
+app.use(express.static(path.join(__dirname, '/../frontend/public')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/../frontend/build/index.html`));
+  res.sendFile(path.join(`${__dirname}/../frontend/public/index.html`));
 });
 app.listen(5000, () => {console.log("server started at http://localhost:5000")})

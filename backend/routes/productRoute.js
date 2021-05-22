@@ -22,6 +22,7 @@ router.get('/', async (req, res) => {
   const products = await Product.find({ ...category, ...searchKeyword }).sort(
     sortOrder
   );
+  console.log("product route");
   res.send(products);
 });
 

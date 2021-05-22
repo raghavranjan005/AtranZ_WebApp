@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../models/userModel';
+import Product from '../models/productModel';
 import { getToken, isAuth } from '../util';
 import bcrypt, { compareSync } from 'bcryptjs';
 import nodemailer from 'nodemailer';
@@ -183,5 +184,168 @@ router.get('/createadmin', async (req, res) => {
     res.send({ message: error.message });
   }
 });
+
+router.get('/cart',isAuth,async(req,res)=>{
+  try{
+  const user = await User.findById(req.user._id);
+  res.send(user.cartItems);
+  }
+  catch
+  {
+    res.status(401).send({message:"soemthing went wrong"});
+  }
+})
+
+router.post('/cart',async (req,res)=>{
+  const user = await User.findById(req.body.id);
+  const product = await Product.findById(req.body.productId); 
+  if(user&&product)
+  {
+      const cartItem = user.cartItems;
+      if(cartItem.length===0)
+      {
+              cartItem.push (
+                {
+                  name:product.name,
+                  qty:req.body.qty,
+                  image1: product.image1,
+                  price: product.price,
+                  productId: req.body.productId,
+                }
+              )
+             await user.save();
+      }
+      else
+      {
+          var f = 0;
+          for (var i=0; i < cartItem.length; i++) {
+            if (cartItem[i].productId === req.body.productId) {
+                f = 1;
+                cartItem[i] = {
+                  name:product.name,
+                  qty:req.body.qty,
+                  image1: product.image1,
+                  price: product.price,
+                  productId: req.body.productId,
+                  }
+                 await user.save();
+                 break;
+            }
+          }
+          if(f == 0)
+          {
+              cartItem.push (
+                {
+                  name:product.name,
+                  qty:req.body.qty,
+                  image1: product.image1,
+                  price: product.price,
+                  productId: req.body.productId,
+                }
+              )
+             await user.save();
+          }
+      }
+
+  }
+  else
+  {
+
+    console.log("something went wrong");
+  }
+  
+})
+
+router.put('/updateCart',async (req,res)=>{
+  const user = await User.findById(req.body.id);
+  const product = await Product.findById(req.body.productId); 
+  const lengthOfCartItems = user.cartItems.length;
+  if(lengthOfCartItems === 0)
+  {
+      const cartItem = new cartItems (
+        {
+          name:product.name,
+          qty:req.body.qty,
+          image1: product.image1,
+          price: product.price,
+          product: req.body.productId,
+        }
+      )
+      const newCartItem = await user.cartItems.save(); 
+  }
+  else
+  {
+      try {
+        const cartItem  = user.cartItems.findOne({product:req.body.productId});
+        if(cartItem)
+        {
+           cartItem.qty = req.body.qty; 
+        }
+        else
+        {   
+          const cartItem = new cartItems (
+            {
+              name:product.name,
+              qty:req.body.qty,
+              image1: product.image1,
+              price: product.price,
+              product: req.body.productId,
+            }
+            )
+        }
+        await user.cartItems.save(); 
+      } catch (error) {
+        return res.status(401).send({ message: 'Something went wrong' });
+      }
+  }
+  
+})
+
+// router.delete('/:id',isAuth,async (req,res)=>{
+//   try {
+//     console.log("delete route");
+//     const user = await User.findById(req.user._id);
+//     console.log(req.params.id);
+//     // console.log(user);
+//     const cartItem = user.cartItems;
+//     // const deletedCartItem = await cartItem.remove();
+//     var f ;
+//     for (var i=0; i < cartItem.length; i++) {
+//       if (cartItem[i].productId === req.params.id) {
+//             f = i;
+//            break;
+//       }
+//     }
+//     user.cartItems.splice(f,1);
+//     await user.save();
+//   } catch (error) {
+//     return res.status(401).send({ message: 'Something went wrong' });
+//   }
+  
+// })
+
+router.delete('/deleteCart',isAuth,async (req,res)=>{
+  console.log("hello");
+  try {
+    console.log("delete route");
+    const user = await User.findById(req.user._id);
+    console.log(req.body.productId);
+    // console.log(user);
+    const cartItem = user.cartItems;
+    // const deletedCartItem = await cartItem.remove();
+    var f ;
+    for (var i=0; i < cartItem.length; i++) {
+      if (cartItem[i].productId === req.body.productId) {
+            f = i;
+           break;
+      }
+    }
+    user.cartItems.splice(f,1);
+    await user.save();
+  } catch (error) {
+    return res.status(401).send({ message: 'Something went wrong' });
+  }
+  
+})
 
 export default router;

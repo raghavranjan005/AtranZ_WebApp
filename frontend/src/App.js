@@ -19,7 +19,7 @@ import ResetPasswordLinkScreen from './Screens/ResetPasswordLinkScreen';
 
 
 
-function App() {
+function App(props) {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -33,6 +33,9 @@ function App() {
   const closeMenu = () => {
     document.querySelector('.sidebar').classList.remove('open');
   };
+  // const takeToCart = () => {
+  //   props.history.push("/signin?redirect=cart");
+  // }
   return (
 
     <BrowserRouter>
@@ -48,7 +51,7 @@ function App() {
         </div>
 
         <div className="header-links">
-            <a href="/cart/">
+            {/* <a href="/cart">
             <span>
               <i className='fa fa-shopping-bag'></i>
             </span>
@@ -58,7 +61,25 @@ function App() {
                 <span className="badge">{cartItems.length}</span>
               )}
             
-            </a>
+            </a> */}
+             {userInfo ? (
+              <Link to="/cart"> 
+              <span>
+              <i className='fa fa-shopping-bag'></i>
+              </span>
+              &nbsp;My Bag              
+              {cartItems.length > 0 && (
+                <span className="badge">{cartItems.length}</span>
+              )}
+              </Link>
+            ) : (
+              <Link to="/signin">
+              <span>
+              <i className='fa fa-shopping-bag'></i>
+            </span>
+             &nbsp;My Bag</Link>
+            )}
+            
             {userInfo ? (
               <Link to="/profile">{userInfo.name}</Link>
             ) : (
