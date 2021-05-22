@@ -55,6 +55,11 @@ export default function SearchScreen(props) {
     return `/search/category/${filterCategory}/name/${filterName}/min/${filterMin}/max/${filterMax}/rating/${filterRating}/order/${sortOrder}/pageNumber/${filterPage}`;
   };
 
+//   const removefilter = (filter) => {
+//       if(filter=="category")
+//             props.history.push(getFilterUrl({ category: category }));
+//   };
+
   const getFilters = (filter) => {
     
     const filterPage = filter.page || pageNumber;
@@ -66,9 +71,24 @@ export default function SearchScreen(props) {
     const filterMax = filter.max ? filter.max : filter.max === 0 ? 0 : max;
     return (
         <ul>
-            <li>{filterCategory}</li>
-            <li>{filterRating}</li>
+            <li className="filters-applied">
+            
+            {(filterCategory!= "all")?
+            <button className="right-margin-1">{filterCategory}<Link to={getFilterUrl({ category: 'all' })} className="fa fa-times"></Link></button>:<p></p>
+            }
+
+            {(filterMin!= "0" || filterMax!= "0")?
+            <button className="right-margin-1">&#8377;{filterMin} to {filterMax}<Link to={getFilterUrl({ min:0, max:0 })} className="fa fa-times"></Link></button>:<p></p>
+            }
+
+            {(filterRating!=-1 && filterRating!=0)?
+            <button className="right-margin-1">{filterRating} star &amp; Up<Link to={getFilterUrl({ rating:-1 })} className="fa fa-times"></Link></button>:<p></p>
+            }
+
+            </li>
+
         </ul>
+        
     )
   };
 
@@ -81,7 +101,10 @@ export default function SearchScreen(props) {
         ) : error ? (
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
-          <div>{products.length} Results {getFilters(order)} </div>
+          <div className="left-1">{products.length} Results {getFilters(order)} 
+          <Link to={"/search/name"} ><button className="delete-button">Remove all Filters</button></Link> 
+          </div>
+          
         )}
         <div>
           Sort by{' '}
@@ -98,9 +121,9 @@ export default function SearchScreen(props) {
           </select>
         </div>
       </div>
-      <div className="row top">
+      <div className="row top left-margin">
         <div className="col-1">
-          <h3>Department</h3>
+          <h3>Categories</h3>
           <div>
             {loadingCategories ? (
               <LoadingBox></LoadingBox>
@@ -155,7 +178,10 @@ export default function SearchScreen(props) {
                     to={getFilterUrl({ rating: r.rating })}
                     className={`${r.rating}` === `${rating}` ? 'active' : ''}
                   >
-                    <Rating caption={' & up'} rating={r.rating}></Rating>
+                      <Rating
+                         value={r.rating}
+                         text={"& Up"}
+                        />
                   </Link>
                 </li>
               ))}

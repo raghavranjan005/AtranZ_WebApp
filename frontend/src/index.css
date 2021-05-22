@@ -984,3 +984,20 @@ input {
 .active {
   font-weight: bold;
 }
+
+.left-margin{
+  margin-left: 1.5rem;
+}
+
+.left-1{
+  margin-left: 1rem;
+}
+
+.filters-applied{
+  display: inline-block;
+}
+
+.right-margin-1{
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
