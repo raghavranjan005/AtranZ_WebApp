@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, Route } from 'react-router-dom';
-import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { listProducts } from '../actions/productActions';
 import Rating from '../components/Rating';
@@ -10,8 +9,8 @@ import MessageBox from '../components/MessageBox';
 import SearchBox from '../components/SearchBox';
 
 function HomeScreen(props) {
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [sortOrder, setSortOrder] = useState('');
+  // const [searchKeyword, setSearchKeyword] = useState('');
+  // const [sortOrder, setSortOrder] = useState('');
   const category = props.match.params.id ? props.match.params.id : '';
   const productList = useSelector((state) => state.productList);
   const { products, loading, error } = productList;
@@ -22,12 +21,12 @@ function HomeScreen(props) {
     return () => {
       //
     };
-  }, [category]);
+  }, [category,dispatch]);
 
-  const sortHandler = (e) => {
-    setSortOrder(e.target.value);
-    dispatch(listProducts(category, searchKeyword, sortOrder));
-  };
+  // const sortHandler = (e) => {
+  //   setSortOrder(e.target.value);
+  //   dispatch(listProducts(category, searchKeyword, sortOrder));
+  // };
 
   return (
     <>

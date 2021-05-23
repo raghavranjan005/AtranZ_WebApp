@@ -119,5 +119,5 @@ function userCartItemsListReducer (state={ cartItems:[], shipping: {}, payment: 
   }
 }
 export {
-  userSigninReducer, userRegisterReducer, userUpdateReducer, userResetPasswordReducer, userResetPasswordLinkReducer,userAddToCartReducer,userUpdateCartReducer,userDeleteFromCartReducer,userCartItemsListReducer,
+  userSigninReducer, userRegisterReducer, userUpdateReducer, userResetPasswordReducer, userResetPasswordLinkReducer,userDeleteFromCartReducer,userAddToCartReducer,userUpdateCartReducer,userCartItemsListReducer,
 }

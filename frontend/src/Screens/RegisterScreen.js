@@ -25,6 +25,7 @@ function RegisterScreen(props){
 
     useEffect(() => {
         if (userInfo) {
+            console.log("raghav randwa");
           props.history.push(redirect);
         }
       }, [props.history, redirect, userInfo]);
