@@ -37,6 +37,7 @@
     "nodemailer": "^6.5.0",
     "path": "^0.12.7",
     "razorpay": "^2.0.6",
+    "react-dual-rangeslider": "^1.2.16",
     "react-icons": "^4.2.0",
     "react-image-magnifiers": "^1.4.0",
     "react-paypal-button-v2": "^2.6.3"

@@ -8,8 +8,7 @@ import crypto from 'crypto';
 // import handlebars from 'handlebars';
 // import fs from 'fs';
 // import path from 'path';
-import {resetPasswordEmail} from '../Templates/emailTemplates'
-
+import {resetPasswordEmail, verificationMail} from '../Templates/emailTemplates'
 const bcryptsalt = process.env.BCRYPT_SALT;
 const Client_Url = process.env.CLIENT_URL;
 
@@ -58,6 +57,7 @@ router.post('/signin', async (req, res) => {
       _id: signinUser.id,
       name: signinUser.name,
       email: signinUser.email,
+      mobile:signinUser.mobile,
       isAdmin: signinUser.isAdmin,
       token: getToken(signinUser),
       });
@@ -77,24 +77,74 @@ router.post('/register', async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8),
+      mobile:req.body.mobile,
     });
-    const newUser = await user.save();
+
+
+        const transporter=nodemailer.createTransport(authorization);
+        let verificationToken = crypto.randomBytes(32).toString("hex");
+        user.verificationToken = verificationToken;
+        var link = `${Client_Url}verifyemail/${user.verificationToken}`;
+        const output = verificationMail(link);
+
+        const newUser = await user.save();
+
+        const mailOptions={
+          from: 'atranzcart@gmail.com',
+          to: user.email,
+          subject:'Reset Password',
+          text: `Reset-Link`,
+          html: output,
+          }
+    
+          transporter.sendMail(mailOptions, (error, info)=>{
+          if (error) {
+              console.log(error);
+          } else {
+          console.log('Email sent: ' + info.response);
+          }
+        });
     if (newUser) {
-      res.send({
-        _id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        isAdmin: newUser.isAdmin,
-        token: getToken(newUser),
+      return res.send({
+        // _id: newUser.id,
+        // name: newUser.name,
+        // email: newUser.email,
+        // isAdmin: newUser.isAdmin,
+        // token: getToken(newUser),
+        flag:true,
       });
     } else {
       res.status(401).send({ message: 'Invalid User Data.' });
     }
-  } else {
+  }
+   else {
     res.status(401).send({ message: 'User Email-Id Already Exist' });
   }
 });
 
+
+router.get('/verifyemail/:id',async (req,res)=>{
+  try{
+    console.log("hehe")
+  const verifyuser = await User.findOne({
+    verificationToken: req.params.id
+  });
+
+  verifyuser.isVerified = true;
+  // let verificationToken = crypto.randomBytes(32).toString("hex");
+  // verifyuser.verificationToken = verificationToken;
+
+  await verifyuser.save();
+  console.log("hehe2")
+  return res.send({
+    verifyflag:true
+  });
+  
+  }catch(error){
+    res.status(400).send({ message: 'Invalid Link' });
+  }
+
+  });
 
 router.post('/reset-password', async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
@@ -123,10 +173,10 @@ router.post('/reset-password', async (req, res) => {
       }
   });
 
-  res.status(200).send(user);
+  return res.status(200).send(user);
 
   }
-    res.status(400).send({ message: 'User Not found' });
+   return res.status(400).send({ message: 'User Not found' });
 });
 
 
@@ -172,10 +222,12 @@ router.get('/resetpassword/:id',async (req,res)=>{
     }
   
     });
-  
-  
-  
-  
+
+
+
+    
+    
+      
 
 
 
@@ -308,7 +360,7 @@ router.put('/updateCart',async (req,res)=>{
       }
   }
   
-})
+});
 
 // router.delete('/:id',isAuth,async (req,res)=>{
 //   try {
@@ -355,6 +407,6 @@ router.delete('/deleteCart',isAuth,async (req,res)=>{
     return res.status(401).send({ message: 'Something went wrong' });
   }
   
-})
+});
 
 export default router;
