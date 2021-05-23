@@ -18,6 +18,7 @@ function OrderHistoryScreen(props) {
   }
   const myOrderList = useSelector(state => state.myOrderList);
   const { loading: loadingOrders, orders, error: errorOrders } = myOrderList;
+  
   useEffect(() => {
     dispatch(listMyOrders());
     return () => {

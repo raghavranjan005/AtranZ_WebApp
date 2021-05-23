@@ -6,7 +6,7 @@ import {
   USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS,
   USER_SIGNIN_FAIL, USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, USER_LOGOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, USER_RESET_REQUEST, USER_RESET_SUCCESS, USER_RESET_FAIL, USER_RESET_LINK_REQUEST, USER_RESET_LINK_SUCCESS, USER_RESET_LINK_FAIL, USER_ADD_TO_CART_REQUEST,
-  USER_ADD_TO_CART_SUCCESS,USER_ADD_TO_CART_FAIL,USER_DELETE_FROM_CART_REQUEST,USER_DELETE_FROM_CART_SUCCESS,USER_DELETE_FROM_CART_FAIL,USER_UPDATE_CART_REQUEST,USER_UPDATE_CART_SUCCESS,USER_UPDATE_CART_FAIL, USER_CARTITEMS_REQUEST, USER_CARTITEMS_SUCCESS, USER_CARTITEMS_FAIL
+  USER_ADD_TO_CART_SUCCESS,USER_ADD_TO_CART_FAIL,USER_DELETE_FROM_CART_REQUEST,USER_DELETE_FROM_CART_SUCCESS,USER_DELETE_FROM_CART_FAIL,USER_UPDATE_CART_REQUEST,USER_UPDATE_CART_SUCCESS,USER_UPDATE_CART_FAIL, USER_CARTITEMS_REQUEST, USER_CARTITEMS_SUCCESS, USER_CARTITEMS_FAIL, USER_FLAG_CHANGE, USER_VERIFICATION_REQUEST, USER_VERIFICATION_SUCCESS, USER_VERIFICATION_FAIL, USER_VERIFY_FLAG_CHANGE
 } from "../constants/userConstants";
 
 const update = ({ userId, name, email, password }) => async (dispatch, getState) => {
@@ -29,7 +29,7 @@ const update = ({ userId, name, email, password }) => async (dispatch, getState)
 const signin = (email, password) => async (dispatch) => {
   dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } });
   try {
-    const { data } = await Axios.post("/api/users/signin", { email, password });
+    const { data } = await Axios.post("/api/users/signin", { email, password});
     dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
     console.log(data);
     Cookie.set('userInfo', JSON.stringify(data));
@@ -47,17 +47,18 @@ const signin = (email, password) => async (dispatch) => {
 // };
 
 
-  const register = (name, email, password) => async (dispatch) => {
+  const register = (name, email, password, mobile) => async (dispatch) => {
   dispatch({ type: USER_REGISTER_REQUEST, payload: { email, password } });
   try {
     const { data } = await Axios.post('/api/users/register', {
       name,
       email,
       password,
+      mobile,
     });
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
     dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-    Cookie.set('userInfo', JSON.stringify(data));
+    // Cookie.set('userInfo', JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
@@ -70,6 +71,26 @@ const signin = (email, password) => async (dispatch) => {
 };
 
 
+const flagchange = () => async(dispatch) => {
+  dispatch({ type: USER_FLAG_CHANGE, payload:false});
+}
+
+const verifyflagchange = () => async(dispatch) => {
+  dispatch({ type: USER_VERIFY_FLAG_CHANGE, payload:false});
+}
+
+const verifyMail = (id) => async (dispatch, getState) => {
+  dispatch({ type: USER_VERIFICATION_REQUEST});
+  try {
+      const {data} = await axios.get("/api/users/verifyemail/"+id);
+    dispatch({ type: USER_VERIFICATION_SUCCESS , payload:data });
+  } catch (error) {
+    dispatch({ type: USER_VERIFICATION_FAIL, payload:
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message, });
+  }
+}
 const resetpassword = (email) => async (dispatch) => {
   dispatch({ type: USER_RESET_REQUEST, payload: { email} });
   try {
@@ -90,7 +111,6 @@ const resetpasswordlink = (email, password, id) => async (dispatch, getState) =>
   try {
     const { data } = await axios.post("/api/users/resetpassword/"+id, { email, password, id});
     dispatch({ type: USER_RESET_LINK_SUCCESS, payload: data });
-    console.log(data)
     Cookie.set('user', JSON.stringify(data));
     
   } catch (error) {
@@ -230,6 +250,7 @@ const userSavePayment = (data) => (dispatch) => {
 
 const logout = () => (dispatch) => {
   Cookie.remove("userInfo");
+  console.log("cookies deleted");
   dispatch({ type: USER_LOGOUT })
 }
-export { signin, register, logout, update, resetpassword, resetpasswordlink,addToCart,deleteFromCart,updateCart,cartItemsList,userSaveShipping,userSavePayment};
+export { signin, register, logout,verifyflagchange, update,verifyMail, resetpassword, resetpasswordlink,addToCart,deleteFromCart,updateCart,cartItemsList,userSaveShipping,userSavePayment, flagchange};

@@ -29,7 +29,7 @@ import MessageBox from './components/MessageBox';
 import { useEffect } from 'react';
 import { listProductCategories } from './actions/productActions';
 
-
+import VerificationScreen from './Screens/VerificationScreen';
 
 
 function App(props) {
@@ -76,7 +76,7 @@ function App(props) {
         </button>
       </div>
       <div className="logo">
-        <Link to="/"><img src="AtranZ-final.png" alt="Logo" height="150px" max-width="150rem"/></Link>
+        <Link to="/"><img src="AtranZ-final.png" alt="AtranZ" font-color="white" height="150px" max-width="150rem"/></Link>
         </div>
 
         <div className="header-links">
@@ -227,6 +227,7 @@ function App(props) {
             <Route path="/category/:id" component={HomeScreen} />
             <Route path="/" exact={true} component={HomeScreen} />
             <Route path="/orderhistory" exact={true} component={OrderHistoryScreen} />
+            <Route path="/verifyemail/:id"  component={VerificationScreen} />
             
             
             <Route

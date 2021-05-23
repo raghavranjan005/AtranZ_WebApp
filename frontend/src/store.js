@@ -20,6 +20,7 @@ import {
   userUpdateCartReducer,
   userAddToCartReducer,
   userDeleteFromCartReducer,
+  userEmailVerifyReducer,
 } from './reducers/userReducers';
 import {
   orderCreateReducer,
@@ -59,6 +60,7 @@ const reducer = combineReducers({
   deleteFromCart: userDeleteFromCartReducer,
   updateCart: userUpdateCartReducer,
   productCategoryList: productCategoryListReducer,
+  userEmailVerify: userEmailVerifyReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

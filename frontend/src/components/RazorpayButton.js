@@ -13,7 +13,7 @@ console.log(amount);
     "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     "currency": "INR",
     "name": "AtranZ Shopping",
-    "description": "hehe",
+    "description": "Online Payment",
     // "order_id": orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     "handler": function (response){
         alert("Payment Succesful");
@@ -24,7 +24,7 @@ console.log(amount);
     "prefill": {
         "name": String(props.user.name),
         "email": String(props.user.email),
-        "contact":"+919199818372"
+        "contact":String(props.user.mobile),
     },
     "theme": {
         "color": "#3399cc"

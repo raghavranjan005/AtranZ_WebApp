@@ -169,6 +169,7 @@ export default function SearchScreen(props) {
               ))}
             </ul>
           </div>
+
           <div>
             <h3>Avg. Customer Review</h3>
             <ul>

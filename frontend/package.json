@@ -16,6 +16,7 @@
     "react": "^17.0.1",
     "react-alice-carousel": "^2.4.0",
     "react-dom": "^17.0.1",
+    "react-dual-rangeslider": "^1.2.16",
     "react-icons": "^4.2.0",
     "react-image-magnifiers": "^1.4.0",
     "react-image-magnify": "^2.7.4",
