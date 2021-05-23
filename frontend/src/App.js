@@ -10,6 +10,7 @@ import ProductsScreen from './Screens/ProductsScreen';
 import OrdersScreen from './Screens/OrdersScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import OrderScreen from './Screens/OrderScreen';
+import TestScreen from './Screens/TestScreen';
 import ShippingScreen from './Screens/ShippingScreen';
 import PaymentScreen from './Screens/PaymentScreen';
 import PlaceOrderScreen from './Screens/PlaceOrderScreen';
@@ -206,6 +207,7 @@ function App(props) {
       <div className="content">
 
       <Route path="/orders" component={OrdersScreen} />
+            <Route path="/test" exact={true} component={TestScreen} />
             <Route path="/profile" component={ProfileScreen} />
             <Route path="/order/:id" component={OrderScreen} />
             <Route path="/products" component={ProductsScreen} />
@@ -226,6 +228,7 @@ function App(props) {
             <Route path="/" exact={true} component={HomeScreen} />
             <Route path="/orderhistory" exact={true} component={OrderHistoryScreen} />
             <Route path="/verifyemail/:id"  component={VerificationScreen} />
+            
             
             <Route
             path="/search/name/:name?"

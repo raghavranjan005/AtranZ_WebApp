@@ -127,15 +127,16 @@ const addToCart = (productId,qty,id) =>async (dispatch,getState) => {
   dispatch ({type : USER_ADD_TO_CART_REQUEST });
   try 
   {
-    console.log("add To cart Action 1");
+    console.log("add To cart Action ");
     const {cartItems} = await axios.post("/api/users/cart",{productId,qty,id},{
       headers: {
         Authorization: 'Bearer ' + userInfo.token
       }
     });
     console.log(cartItems);
-    console.log("add To cart Action 2");
+    console.log("add To cart Action 1 ");
     dispatch({type:USER_ADD_TO_CART_SUCCESS, payload:cartItems});
+    dispatch({type:USER_CARTITEMS_SUCCESS,payload:cartItems.data});
   }
   catch(error)
   {
@@ -191,6 +192,7 @@ const deleteFromCart = (productId) => async (dispatch,getState)=>{
     });
     console.log("delete action 1");
     dispatch({type:USER_DELETE_FROM_CART_SUCCESS,payload:cartItems});
+    dispatch({type:USER_CARTITEMS_SUCCESS,payload:cartItems.data});
   } catch (error) {
     dispatch({type:USER_DELETE_FROM_CART_FAIL,payload:error.response && error.response.data.message
       ? error.response.data.message

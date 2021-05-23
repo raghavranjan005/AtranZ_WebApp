@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useState} from 'react';
 // import { addToCart, removeFromCart } from '../actions/cartActions';
 import { addToCart, deleteFromCart,cartItemsList}  from '../actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,19 +17,34 @@ function CartScreen(props) {
   const { userInfo } = userSignin;
   const productId = props.match.params.id;
   const qty = props.location.search ? Number(props.location.search.split("?")[1]) : 1;
+  const [flag, setflag] = useState(0);
+  const [del, setdel] = useState(0);
   // console.log(qty);
   const dispatch = useDispatch();
   const removeFromCartHandler = (productId) => {
     dispatch(deleteFromCart(productId));
+    setdel(del-1);
+    console.log(del);
+    console.log("delete");
   }
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty,userInfo._id));
+      props.history.push("/cart");
+      setflag(flag+1);
+      console.log(flag);
+      console.log("add");
     }
-    if(cartList)
+    console.log("useEffect");
+  },[]);
+  useEffect(() => {
     dispatch(cartItemsList());
-
-  }, [productId]);
+    console.log("add wala useEffect");
+  },[flag]);
+  // useEffect(() => {
+  //   dispatch(cartItemsList());
+  //   console.log("del wala useEffect");
+  // },[del]);
 
   const checkoutHandler = () => {
     props.history.push("/signin?redirect=shipping");

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createOrder, detailsOrder, payOrder } from '../actions/orderActions';
+import { detailsOrder, payOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import RazorpayButton from '../components/RazorpayButton';
 
@@ -34,7 +34,8 @@ function OrderScreen(props) {
     }
     return () => {
     };
-  }, [successPay, sdkReady, clientID]);
+  }, [successPay, sdkReady, clientID,dispatch
+  ,props.history,props]);
 
   const handleSuccessPayment = (paymentResult) => {
     dispatch(payOrder(order, paymentResult));

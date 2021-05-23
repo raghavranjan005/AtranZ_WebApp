@@ -307,7 +307,7 @@ router.post('/cart',async (req,res)=>{
              await user.save();
           }
       }
-
+      res.send(user.cartItems);
   }
   else
   {
@@ -403,6 +403,7 @@ router.delete('/deleteCart',isAuth,async (req,res)=>{
     }
     user.cartItems.splice(f,1);
     await user.save();
+    res.send(user.cartItems);
   } catch (error) {
     return res.status(401).send({ message: 'Something went wrong' });
   }
