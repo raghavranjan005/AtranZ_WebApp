@@ -20,7 +20,6 @@ import OrderHistoryScreen from './Screens/OrderHistoryScreen';
 import { logout } from './actions/userActions';
 import DevloperInfoScreen from './Screens/DevloperInfoScreen';
 import AboutScreen from './Screens/AboutScreen';
-import CustomerServiceScreen from './Screens/CustomerCareScreen';
 import CustomerCareScreen from './Screens/CustomerCareScreen';
 import FeedbackScreen from './Screens/FeedbackScreen';
 import SearchScreen from './Screens/SearchScreen';
@@ -29,7 +28,7 @@ import MessageBox from './components/MessageBox';
 import { useEffect } from 'react';
 import { listProductCategories } from './actions/productActions';
 
-
+import VerificationScreen from './Screens/VerificationScreen';
 
 
 function App(props) {
@@ -76,7 +75,7 @@ function App(props) {
         </button>
       </div>
       <div className="logo">
-        <Link to="/"><img src="AtranZ-final.png" alt="Logo" height="150px" max-width="150rem"/></Link>
+        <Link to="/"><img src="AtranZ-final.png" alt="AtranZ" font-color="white" height="150px" max-width="150rem"/></Link>
         </div>
 
         <div className="header-links">
@@ -226,6 +225,7 @@ function App(props) {
             <Route path="/category/:id" component={HomeScreen} />
             <Route path="/" exact={true} component={HomeScreen} />
             <Route path="/orderhistory" exact={true} component={OrderHistoryScreen} />
+            <Route path="/verifyemail/:id"  component={VerificationScreen} />
             
             <Route
             path="/search/name/:name?"

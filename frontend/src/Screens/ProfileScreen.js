@@ -9,11 +9,11 @@ function ProfileScreen(props) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
   const dispatch = useDispatch();
 
   const userSignin = useSelector(state => state.userSignin);
   const { userInfo } = userSignin;
-
 
   const handleLogout = () => {
     dispatch(logout());
@@ -21,17 +21,17 @@ function ProfileScreen(props) {
   }
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(update({ userId: userInfo._id, email, name, password }))
+    dispatch(update({ userId: userInfo._id, email, name, password, mobile }))
   }
   const userUpdate = useSelector(state => state.userUpdate);
   const { loading, success, error } = userUpdate;
 
   useEffect(() => {
     if (userInfo) {
-      console.log(userInfo.name)
       setEmail(userInfo.email);
       setName(userInfo.name);
       setPassword(userInfo.password);
+      setMobile(userInfo.mobile);
     }
   }, [userInfo])
 
@@ -65,6 +65,16 @@ function ProfileScreen(props) {
               <input value={email} type="email" name="email" id="email" onChange={(e) => setEmail(e.target.value)}>
               </input>
             </li>
+
+            <li>
+                <label htmlFor="mobile">
+                       Contact Number
+                </label>
+                <input value={mobile} type="tel" minLength='10' maxLength='10' name="mobile" id="mobile" required onChange={(e) => setMobile(e.target.value)}></input>
+            </li>
+
+
+
             <li>
               <label htmlFor="password">Password</label>
               <input value={password} type="password" id="password" name="password" onChange={(e) => setPassword(e.target.value)}>

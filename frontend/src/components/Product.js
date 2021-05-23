@@ -18,7 +18,7 @@ export default function Product(props) {
         text={product.numReviews + ' reviews'}
         />
         <div className="row">
-          <div className="price">${product.price}</div>
+          <div className="price">₹{product.price}</div>
         </div>
       </div>
     </div>
