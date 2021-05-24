@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { detailsOrder, payOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import RazorpayButton from '../components/RazorpayButton';
+import MessageBox from '../components/MessageBox';
 
 
 function OrderScreen(props) {
@@ -44,21 +45,34 @@ function OrderScreen(props) {
   const orderDetails = useSelector(state => state.orderDetails);
   const { loading, order, error } = orderDetails;
 
-  return loading ? <div>Loading ...</div> : error ? <div>{error}</div> :
+  function getIST(dateStr) {
+    var theDate = new Date(Date.parse(
+      dateStr));
+
+      var IST = theDate.toLocaleString();
+      return IST;
+    
+  }
+
+
+  return loading ? <LoadingBox></LoadingBox> : error ? <MessageBox variant="danger">{error}</MessageBox> :
 
     <div>
       <div className="placeorder">
         <div className="placeorder-info">
           <div>
             <h3>
-              Shipping
+              Shipping and Delivery
           </h3>
             <div>
+              ADDRESS: <br></br>
               {order.shipping.address}, {order.shipping.city},
           {order.shipping.postalCode}, {order.shipping.country},
           </div>
+          <br></br>
             <div>
-              {order.isDelivered ? "Delivered at " + order.deliveredAt : "Not Delivered."}
+              Status : &nbsp;
+              {order.isDelivered ? "Delivered at " + getIST(order.deliveredAt) : order.deliveryStatus}
             </div>
           </div>
           <div>
@@ -67,7 +81,7 @@ function OrderScreen(props) {
               Payment Method: {order.payment.paymentMethod}
             </div>
             <div>
-              {order.isPaid ? "Paid at " + order.paidAt : "Not Paid."}
+              Payment Status: {order.isPaid ? <MessageBox variant="success">"Paid at " + {getIST(order.paidAt)}</MessageBox> : <MessageBox  variant="danger">Not Paid</MessageBox>}
             </div>
           </div>
           <div>

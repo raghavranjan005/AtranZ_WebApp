@@ -50,7 +50,20 @@ function CartScreen(props) {
     props.history.push("/signin?redirect=shipping");
   }
 
-  return <div className="row top cart">
+  return (
+
+    <div>
+    <div className="back-to-result">
+      
+      <Link to="/"><span>
+      <i
+        className='fa fa-arrow-circle-left'
+      ></i>
+    </span>
+    Back to Home</Link>
+    </div>
+  
+  <div className="row top cart">
     <div className="cart-list">
       <ul className="cart-list-container">
         <li>
@@ -67,7 +80,7 @@ function CartScreen(props) {
             <LoadingBox></LoadingBox>):
           cartItems.length === 0 ?
             <div>
-              Cart is empty
+              Cart is empty. What are you waiting for? <Link to="/">Shop Now !</Link>
           </div>
             :
             cartItems.map(item =>
@@ -114,6 +127,7 @@ function CartScreen(props) {
 
 
   </div>
+  </div>)
 }
 
 export default CartScreen;

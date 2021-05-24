@@ -6,12 +6,12 @@ const router = express.Router();
 
 router.get("/", isAuth, async (req, res) => {
   const orders = await Order.find({}).populate('user');
-  res.send(orders);
+  return res.send(orders);
 });
 
 router.get("/mine", isAuth, async (req, res) => {
   const orders = await Order.find({ user: req.user._id });
-  res.send(orders);
+  return res.send(orders);
 });
 
 
@@ -19,9 +19,9 @@ router.get("/mine", isAuth, async (req, res) => {
 router.get("/:id", isAuth, async (req, res) => {
   const order = await Order.findOne({ _id: req.params.id });
   if (order) {
-    res.send(order);
+    return res.send(order);
   } else {
-    res.status(404).send({message:"Order Not Found."})
+    return res.status(404).send({message:"Order Not Found."})
   }
 });
 
@@ -31,9 +31,9 @@ router.delete("/:id", isAuth, async (req, res) => {
   const order = await Order.findOne({ _id: req.params.id });
   if (order) {
     const deletedOrder = await order.remove();
-    res.send(deletedOrder);
+    return res.send(deletedOrder);
   } else {
-    res.status(404).send("Order Not Found.")
+    return res.status(404).send("Order Not Found.")
   }
 });
 
@@ -50,7 +50,7 @@ router.post("/", isAuth, async (req, res) => {
     totalPrice: req.body.totalPrice,
   });
   const newOrderCreated = await newOrder.save();
-  res.status(201).send({ message: "New Order Created", data: newOrderCreated });
+  return res.status(201).send({ message: "New Order Created", data: newOrderCreated });
 });
 
 router.put("/:id/pay", isAuth, async (req, res) => {
@@ -65,10 +65,34 @@ router.put("/:id/pay", isAuth, async (req, res) => {
       }
     }
     const updatedOrder = await order.save();
-    res.send({ message: 'Order Paid.', order: updatedOrder });
+    return res.send({ message: 'Order Paid.', order: updatedOrder });
   } else {
-    res.status(404).send({ message: 'Order not found.' })
+    return res.status(404).send({ message: 'Order not found.' })
   }
 });
+
+
+
+
+
+
+
+router.put("/", isAuth, async (req, res) => {
+  const order = await Order.findOne({ _id: req.body.orderId })
+  if (order) {
+      order.isDelivered = req.body.isDelivered;
+      if(req.body.isDelivered)
+      {order.deliveredAt = Date.now();}
+      else{
+        order.deliveredAt='';
+      }
+      order.deliveryStatus=req.body.DeliveryStatus
+      const updatedOrder = await order.save();
+      return res.send({ message: 'Staus Changed.', order: updatedOrder });
+  } else {
+    return res.status(404).send({ message: 'Order not found.' })
+  }
+});
+
 
 export default router;

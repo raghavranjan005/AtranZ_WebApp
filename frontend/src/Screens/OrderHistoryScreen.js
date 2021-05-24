@@ -26,16 +26,13 @@ function OrderHistoryScreen(props) {
     };
   },[successDelete])
 
-  function reformatDate(dateStr)
-  {
-    var dArr = dateStr.split("-");  // ex input "2010-01-18"
-    return dArr[2]+ "-" +dArr[1]+ "-" +dArr[0].substring(2); //ex out: "18/01/10"
-  }
+  function getIST(dateStr) {
+    var theDate = new Date(Date.parse(
+      dateStr));
 
-  function reformatTime(dateStr)
-  {
-    var dArr = dateStr.split(":");  // ex input "2010-01-18"
-    return dArr[2]+ ":" +dArr[1]+ ":" +dArr[0]; //ex out: "18/01/10"
+      var IST = theDate.toLocaleString();
+      return IST;
+    
   }
 
 
@@ -57,7 +54,7 @@ function OrderHistoryScreen(props) {
                   <th>DATE</th>
                   <th>TOTAL</th>
                   <th>PAID</th>
-                  <th>DELIVERED</th>
+                  <th>DELIVERY (MM/DD/YYYY, HH:MM:SS)</th>
                   <th>ACTIONS</th>
                 </tr>
               </thead>
@@ -67,11 +64,11 @@ function OrderHistoryScreen(props) {
                   <td>{order._id}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>&#8377;{order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? (reformatDate(order.paidAt.substring(0, 10))+" " + reformatTime(order.paidAt.substring(11, 19)) + " IST") : 'No'}</td>
+                <td>{order.isPaid ? (getIST(order.paidAt) + " IST") : 'No'}</td>
                 <td>
                   {order.isDelivered
-                    ? (reformatDate(order.deliveredAt.substring(0, 10))+" " + reformatTime(order.deliveredAt.substring(11, 19)) + " IST")
-                    : 'No'}
+                    ? "Delivered at "+(getIST(order.deliveredAt) + " IST")
+                    : order.deliveryStatus}
                 </td>
                 <td>
                 <button
