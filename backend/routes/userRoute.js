@@ -51,6 +51,10 @@ router.put('/:id', isAuth, async (req, res) => {
 router.post('/signin', async (req, res) => {
   const signinUser = await User.findOne({ email: req.body.email });
   if (signinUser) {
+
+    if(!signinUser.isVerified){
+      return res.status(401).send({ message: 'Please verify your email then only you can signin' });
+    }
     if (bcrypt.compareSync(req.body.password, signinUser.password)) {
     
       res.send({
@@ -64,7 +68,7 @@ router.post('/signin', async (req, res) => {
       return;
     }
   }
-    res.status(401).send({ message: 'Invalid Email or Password.' });
+    return res.status(401).send({ message: 'Invalid Email or Password.' });
 });
 
 
