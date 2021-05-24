@@ -1,7 +1,7 @@
 import Axios from "axios";
 import axios from 'axios';
 import Cookie from 'js-cookie';
-import {
+import {USER_EMPTY_CART_FAIL,USER_EMPTY_CART_SUCCESS,USER_EMPTY_CART_REQUEST,USER_NORMAL_EMPTY_CART_FAIL,USER_NORMAL_EMPTY_CART_SUCCESS,USER_NORMAL_EMPTY_CART_REQUEST,
   USER_CART_SAVE_SHIPPING,USER_CART_SAVE_PAYMENT,
   USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS,
   USER_SIGNIN_FAIL, USER_REGISTER_REQUEST,
@@ -200,6 +200,42 @@ const deleteFromCart = (productId) => async (dispatch,getState)=>{
   }
 }
 
+const emptyCart = () => async (dispatch,getState)=>{
+  dispatch ({type:USER_EMPTY_CART_REQUEST});
+  try {
+    console.log("Empty action");
+    const { userSignin: { userInfo } } = getState();
+    const cartItems = await axios.delete("/api/users/emptyCart",{
+      headers:
+        { Authorization: 'Bearer ' + userInfo.token },
+    });
+    console.log("Empty action 1");
+    dispatch({type:USER_EMPTY_CART_SUCCESS,payload:cartItems});
+  } catch (error) {
+    dispatch({type:USER_EMPTY_CART_FAIL,payload:error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message,})
+  }
+}
+
+const normalEmptyCart = () => async (dispatch,getState)=>{
+  dispatch ({type:USER_NORMAL_EMPTY_CART_REQUEST});
+  try {
+    console.log("normal Empty action");
+    const { userSignin: { userInfo } } = getState();
+    const cartItems = await axios.delete("/api/users/normalEmptyCart",{
+      headers:
+        { Authorization: 'Bearer ' + userInfo.token },
+    });
+    console.log("normal Empty action 1");
+    dispatch({type:USER_NORMAL_EMPTY_CART_SUCCESS,payload:cartItems});
+  } catch (error) {
+    dispatch({type:USER_NORMAL_EMPTY_CART_FAIL,payload:error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message,})
+  }
+}
+
 const cartItemsList = () => async (dispatch,getState) =>{
   dispatch({type:USER_CARTITEMS_REQUEST});
   try {
@@ -253,4 +289,4 @@ const logout = () => (dispatch) => {
   console.log("cookies deleted");
   dispatch({ type: USER_LOGOUT })
 }
-export { signin, register, logout,verifyflagchange, update,verifyMail, resetpassword, resetpasswordlink,addToCart,deleteFromCart,updateCart,cartItemsList,userSaveShipping,userSavePayment, flagchange};
+export { emptyCart,signin,normalEmptyCart, register, logout,verifyflagchange, update,verifyMail, resetpassword, resetpasswordlink,addToCart,deleteFromCart,updateCart,cartItemsList,userSaveShipping,userSavePayment, flagchange};

@@ -1,4 +1,7 @@
 import {
+  NORMAL_PRODUCT_LIST_REQUEST,
+  NORMAL_PRODUCT_LIST_SUCCESS,
+  NORMAL_PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
@@ -42,6 +45,15 @@ import Axios from 'axios';
 //   }
 // };
 
+const normalListProducts =()=>async(dispatch,getState)=>{
+    dispatch({type:NORMAL_PRODUCT_LIST_REQUEST});
+    try {
+      const {data} = await axios.get('/api/products/normal');
+      dispatch({type:NORMAL_PRODUCT_LIST_SUCCESS,payload:data});
+    } catch (error) {
+      dispatch({ type: NORMAL_PRODUCT_LIST_FAIL, payload: error.message });
+    }
+};
 
 const listProducts = ({
   pageNumber = '',
@@ -167,4 +179,5 @@ export {
   deleteProdcut,
   saveProductReview,
   listProductCategories,
+  normalListProducts,
 };

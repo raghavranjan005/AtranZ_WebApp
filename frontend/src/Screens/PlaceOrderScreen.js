@@ -2,18 +2,22 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
-import { createOrder } from '../actions/orderActions';
-import { listProducts } from '../actions/productActions';
+import { createOrder,changeSucess } from '../actions/orderActions';
+import { emptyCart,normalEmptyCart } from '../actions/userActions';
+import { normalListProducts } from '../actions/productActions';
 import MessageBox from '../components/MessageBox';
 import LoadingBox from '../components/LoadingBox';
 
 function PlaceOrderScreen(props) {
 
   const cartList = useSelector(state => state.cartList);
+  const { cartItems, shipping, payment } = cartList;
+  const normalProductList = useSelector(state => state.normalProductList);
+  const { products } = normalProductList;
   const orderCreate = useSelector(state => state.orderCreate);
   const { loading, success, error, order } = orderCreate;
 
-  const { cartItems, shipping, payment } = cartList;
+
 
   if (!shipping.address) {
     props.history.push("/shipping");
@@ -30,13 +34,45 @@ function PlaceOrderScreen(props) {
 
   const placeOrderHandler = () => {
     // create an order
-    dispatch(createOrder({
+    console.log("place order");
+    console.log(products);
+    console.log(cartItems);
+    var f = 1;
+    for (var i=0; i < cartItems.length; i++) {
+        for(var j=0;j<products.length;j++)
+        {
+           if(cartItems[i].productId === products[j]._id)
+           {
+              if(cartItems[i].qty>products[j].countInStock)
+              {
+                f=0;
+                break;
+              }
+           }
+        }
+        if(f===0)
+        break;
+    }
+    if(f===1)
+    {
+      console.log(f);
+      dispatch(createOrder({
       orderItems: cartItems, shipping, payment, itemsPrice, shippingPrice,
       taxPrice, totalPrice
     }));
+    }
+    else
+    {
+      console.log(f);
+      alert("sorry some items just got out of stock please rechoose the items");
+      dispatch(normalEmptyCart());
+      props.history.push("/");
+    }
   }
   useEffect(() => {
     if (success) {
+      dispatch(emptyCart());
+      dispatch(changeSucess());
       if(payment.paymentMethod === "Online Payments"){
         props.history.push("/order/" + order._id);
       }else{
@@ -47,6 +83,11 @@ function PlaceOrderScreen(props) {
     }
 
   }, [success]);
+
+  useEffect(() => {
+    dispatch(normalListProducts());
+  },[])
+  
 
   return <div>
     <CheckoutSteps step1 step2 step3 step4 ></CheckoutSteps>

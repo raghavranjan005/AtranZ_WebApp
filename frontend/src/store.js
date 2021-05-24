@@ -8,6 +8,7 @@ import {
   productDeleteReducer,
   productReviewSaveReducer,
   productCategoryListReducer,
+  normalProductListReducer,
 } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
 import {
@@ -21,6 +22,8 @@ import {
   userAddToCartReducer,
   userDeleteFromCartReducer,
   userEmailVerifyReducer,
+  userEmptyCartReducer,
+  userNormalEmptyCartReducer,
 } from './reducers/userReducers';
 import {
   orderCreateReducer,
@@ -38,6 +41,7 @@ const initialState = {
   userSignin: { userInfo },
 };
 const reducer = combineReducers({
+  normalProductList :normalProductListReducer,
   productList: productListReducer,
   productDetails: productDetailsReducer,
   cart: cartReducer,
@@ -61,6 +65,8 @@ const reducer = combineReducers({
   updateCart: userUpdateCartReducer,
   productCategoryList: productCategoryListReducer,
   userEmailVerify: userEmailVerifyReducer,
+  userEmptyCart:userEmptyCartReducer,
+  userNormalEmptyCart:userNormalEmptyCartReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

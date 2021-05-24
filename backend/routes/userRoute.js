@@ -329,7 +329,7 @@ router.put('/updateCart',async (req,res)=>{
           qty:req.body.qty,
           image1: product.image1,
           price: product.price,
-          product: req.body.productId,
+          productId: req.body.productId,
         }
       )
       const newCartItem = await user.cartItems.save(); 
@@ -402,6 +402,45 @@ router.delete('/deleteCart',isAuth,async (req,res)=>{
       }
     }
     user.cartItems.splice(f,1);
+    await user.save();
+    res.send(user.cartItems);
+  } catch (error) {
+    return res.status(401).send({ message: 'Something went wrong' });
+  }
+  
+});
+
+router.delete('/emptyCart',isAuth,async (req,res)=>{
+  console.log("hello");
+  try {
+    console.log("empty Cart route");
+    const user = await User.findById(req.user._id);
+    console.log("user");
+    for (var i=0; i < user.cartItems.length; i++) {
+      const product = await Product.findById(user.cartItems[i].productId); 
+      product.countInStock = product.countInStock - user.cartItems[i].qty;
+      await product.save();
+    }
+    user.cartItems.splice(0,user.cartItems.length);
+    console.log("empty cart route 1");
+    // console.log(user.cartItems);
+    await user.save();
+    res.send(user.cartItems);
+  } catch (error) {
+    return res.status(401).send({ message: 'Something went wrong' });
+  }
+  
+});
+
+router.delete('/normalEmptyCart',isAuth,async (req,res)=>{
+  console.log("hello");
+  try {
+    console.log("normal empty Cart route");
+    const user = await User.findById(req.user._id);
+    console.log("user");
+    user.cartItems.splice(0,user.cartItems.length);
+    console.log("normal empty cart route 1");
+    // console.log(user.cartItems);
     await user.save();
     res.send(user.cartItems);
   } catch (error) {
