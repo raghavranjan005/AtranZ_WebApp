@@ -88,10 +88,86 @@ function ProductScreen(props){
                     <div className = "slider">
                     {/* <AliceCarousel autoPlay autoPlayInterval="3000"> */}
                     <AliceCarousel>
-                        <img src={product.image1} className="sliderimg large" alt = "product"/>          
+                        {/* <img src={product.image1} className="sliderimg large" alt = "product"/>          
                         <img src={product.image2} className="sliderimg large" alt = "product"/>
                         <img src={product.image2} className="sliderimg large" alt = "product"/>          
-                        <img src={product.image2} className="sliderimg large" alt = "product"/>
+                        <img src={product.image2} className="sliderimg large" alt = "product"/> */}
+                            <SideBySideMagnifier
+                              className="sliderimg"
+                              style={{ order: false ? "1" : "0" }}
+                              imageSrc={product.image1}
+                              largeImageSrc={product.image1}
+                              alwaysInPlace={false}
+                              overlayOpacity={0.6}
+                              switchSides={false}
+                              zoomPosition="left"
+                              inPlaceMinBreakpoint={400}
+                              fillAvailableSpace={false}
+                              fillAlignTop={false}
+                              fillGapTop={10}
+                              fillGapRight={10}
+                              fillGapBottom={10}
+                              fillGapLeft={0}
+                              zoomContainerBorder="1px solid #ccc"
+                              zoomContainerBoxShadow="0 4px 8px rgba(0,0,0,.5)"
+                            />
+                                <SideBySideMagnifier
+                              className="sliderimg"
+                              style={{ order: false ? "1" : "0" }}
+                              imageSrc={product.image2}
+                              largeImageSrc={product.image2}
+                              alwaysInPlace={false}
+                              overlayOpacity={0.6}
+                              switchSides={false}
+                              zoomPosition="left"
+                              inPlaceMinBreakpoint={400}
+                              fillAvailableSpace={false}
+                              fillAlignTop={false}
+                              fillGapTop={10}
+                              fillGapRight={10}
+                              fillGapBottom={10}
+                              fillGapLeft={0}
+                              zoomContainerBorder="1px solid #ccc"
+                              zoomContainerBoxShadow="0 4px 8px rgba(0,0,0,.5)"
+                            />
+                                <SideBySideMagnifier
+                              className="sliderimg"
+                              style={{ order: false ? "1" : "0" }}
+                              imageSrc={product.image3}
+                              largeImageSrc={product.image3}
+                              alwaysInPlace={false}
+                              overlayOpacity={0.6}
+                              switchSides={false}
+                              zoomPosition="left"
+                              inPlaceMinBreakpoint={400}
+                              fillAvailableSpace={false}
+                              fillAlignTop={false}
+                              fillGapTop={10}
+                              fillGapRight={10}
+                              fillGapBottom={10}
+                              fillGapLeft={0}
+                              zoomContainerBorder="1px solid #ccc"
+                              zoomContainerBoxShadow="0 4px 8px rgba(0,0,0,.5)"
+                            />
+                                <SideBySideMagnifier
+                              className="sliderimg"
+                              style={{ order: false ? "1" : "0" }}
+                              imageSrc={product.image4}
+                              largeImageSrc={product.image4}
+                              alwaysInPlace={false}
+                              overlayOpacity={0.6}
+                              switchSides={false}
+                              zoomPosition="left"
+                              inPlaceMinBreakpoint={400}
+                              fillAvailableSpace={false}
+                              fillAlignTop={false}
+                              fillGapTop={10}
+                              fillGapRight={10}
+                              fillGapBottom={10}
+                              fillGapLeft={0}
+                              zoomContainerBorder="1px solid #ccc"
+                              zoomContainerBoxShadow="0 4px 8px rgba(0,0,0,.5)"
+                            />
                     </AliceCarousel>   
                     </div>  
                 </div>
