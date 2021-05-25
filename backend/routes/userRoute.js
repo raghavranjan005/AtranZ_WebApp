@@ -235,20 +235,20 @@ router.get('/resetpassword/:id',async (req,res)=>{
 
 
 
-router.get('/createadmin', async (req, res) => {
-  try {
-    const user = new User({
-      name: 'Raghav',
-      email: 'atranzcart@gmail.com',
-      password: '1234',
-      isAdmin: true,
-    });
-    const newUser = await user.save();
-    res.send(newUser);
-  } catch (error) {
-    res.send({ message: error.message });
-  }
-});
+// router.get('/createadmin', async (req, res) => {
+//   try {
+//     const user = new User({
+//       name: 'Raghav',
+//       email: 'atranzcart@gmail.com',
+//       password: '1234',
+//       isAdmin: true,
+//     });
+//     const newUser = await user.save();
+//     res.send(newUser);
+//   } catch (error) {
+//     res.send({ message: error.message });
+//   }
+// });
 
 router.get('/cart',isAuth,async(req,res)=>{
   try{
