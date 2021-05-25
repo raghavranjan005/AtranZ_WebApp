@@ -234,7 +234,7 @@ function ProductsScreen(props) {
                 <input
                   type="text"
                   name="image"
-                  value={image2}
+                  value={image3}
                   id="image"
                   onChange={(e) => setImage3(e.target.value)}
                 ></input>

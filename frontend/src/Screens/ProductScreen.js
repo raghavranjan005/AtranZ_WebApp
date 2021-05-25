@@ -94,7 +94,7 @@ function ProductScreen(props){
                         <img src={product.image2} className="sliderimg large" alt = "product"/> */}
                             <SideBySideMagnifier
                               className="sliderimg"
-                              style={{ order: false ? "1" : "0" }}
+                              // style={{ order: false ? "1" : "0" }}
                               imageSrc={product.image1}
                               largeImageSrc={product.image1}
                               alwaysInPlace={false}
@@ -113,14 +113,14 @@ function ProductScreen(props){
                             />
                                 <SideBySideMagnifier
                               className="sliderimg"
-                              style={{ order: false ? "1" : "0" }}
+                              // style={{ order: false ? "1" : "0" }}
                               imageSrc={product.image2}
                               largeImageSrc={product.image2}
                               alwaysInPlace={false}
                               overlayOpacity={0.6}
                               switchSides={false}
                               zoomPosition="left"
-                              inPlaceMinBreakpoint={400}
+                              inPlaceMinBreakpoint={100}
                               fillAvailableSpace={false}
                               fillAlignTop={false}
                               fillGapTop={10}
@@ -132,7 +132,7 @@ function ProductScreen(props){
                             />
                                 <SideBySideMagnifier
                               className="sliderimg"
-                              style={{ order: false ? "1" : "0" }}
+                              // style={{ order: false ? "1" : "0" }}
                               imageSrc={product.image3}
                               largeImageSrc={product.image3}
                               alwaysInPlace={false}
@@ -151,7 +151,7 @@ function ProductScreen(props){
                             />
                                 <SideBySideMagnifier
                               className="sliderimg"
-                              style={{ order: false ? "1" : "0" }}
+                              // style={{ order: false ? "1" : "0" }}
                               imageSrc={product.image4}
                               largeImageSrc={product.image4}
                               alwaysInPlace={false}
