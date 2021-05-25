@@ -123,6 +123,8 @@ router.put('/:id', isAuth, isAdmin, async (req, res) => {
     product.price = req.body.price;
     product.image1 = req.body.image1;
     product.image2 = req.body.image2;
+    product.image3 = req.body.image3;
+    product.image4 = req.body.image4;
     product.brand = req.body.brand;
     product.category = req.body.category;
     product.countInStock = req.body.countInStock;
@@ -153,6 +155,8 @@ router.post('/', isAuth, isAdmin, async (req, res) => {
     price: req.body.price,
     image1: req.body.image1,
     image2: req.body.image2,
+    image3: req.body.image3,
+    image4: req.body.image4,
     brand: req.body.brand,
     category: req.body.category,
     countInStock: req.body.countInStock,

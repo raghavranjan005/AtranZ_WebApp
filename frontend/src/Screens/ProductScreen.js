@@ -86,8 +86,11 @@ function ProductScreen(props){
           <div className="row top">
           <div className = "details-image col-2">
                     <div className = "slider">
-                    <AliceCarousel autoPlay autoPlayInterval="3000">
+                    {/* <AliceCarousel autoPlay autoPlayInterval="3000"> */}
+                    <AliceCarousel>
                         <img src={product.image1} className="sliderimg large" alt = "product"/>          
+                        <img src={product.image2} className="sliderimg large" alt = "product"/>
+                        <img src={product.image2} className="sliderimg large" alt = "product"/>          
                         <img src={product.image2} className="sliderimg large" alt = "product"/>
                     </AliceCarousel>   
                     </div>  

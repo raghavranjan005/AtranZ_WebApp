@@ -5,6 +5,7 @@ import {
   saveProduct,
   listProducts,
   deleteProdcut,
+  normalListProducts,
 } from '../actions/productActions';
 
 function ProductsScreen(props) {
@@ -14,13 +15,15 @@ function ProductsScreen(props) {
   const [price, setPrice] = useState('');
   const [image1, setImage1] = useState('');
   const [image2, setImage2] = useState('');
+  const [image3, setImage3] = useState('');
+  const [image4, setImage4] = useState('');
   const [brand, setBrand] = useState('');
   const [category, setCategory] = useState('');
   const [countInStock, setCountInStock] = useState('');
   const [description, setDescription] = useState('');
   const [uploading, setUploading] = useState(false);
-  const productList = useSelector((state) => state.productList);
-  const { loading, products, error } = productList;
+  const normalProductList = useSelector((state) => state.normalProductList);
+  const { loading, products, error } = normalProductList;
 
   const productSave = useSelector((state) => state.productSave);
   const {
@@ -41,7 +44,7 @@ function ProductsScreen(props) {
     if (successSave) {
       setModalVisible(false);
     }
-    dispatch(listProducts());
+    dispatch(normalListProducts());
     return () => {
       //
     };
@@ -55,6 +58,8 @@ function ProductsScreen(props) {
     setDescription(product.description);
     setImage1(product.image1);
     setImage2(product.image2);
+    setImage3(product.image3);
+    setImage4(product.image4);
     setBrand(product.brand);
     setCategory(product.category);
     setCountInStock(product.countInStock);
@@ -68,6 +73,8 @@ function ProductsScreen(props) {
         price,
         image1,
         image2,
+        image3,
+        image4,
         brand,
         category,
         countInStock,
@@ -111,6 +118,46 @@ function ProductsScreen(props) {
       })
       .then((response) => {
         setImage2(response.data);
+        setUploading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setUploading(false);
+      });
+  };
+  const uploadFileHandler3 = (e) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('image', file);
+    setUploading(true);
+    axios
+      .post('/api/uploads', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        setImage3(response.data);
+        setUploading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setUploading(false);
+      });
+  };
+  const uploadFileHandler4 = (e) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('image', file);
+    setUploading(true);
+    axios
+      .post('/api/uploads', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        setImage4(response.data);
         setUploading(false);
       })
       .catch((err) => {
@@ -180,6 +227,30 @@ function ProductsScreen(props) {
                   onChange={(e) => setImage2(e.target.value)}
                 ></input>
                 <input type="file" onChange={uploadFileHandler2}></input>
+                {uploading && <div>Uploading...</div>}
+              </li>
+              <li>
+                <label htmlFor="image">Image3</label>
+                <input
+                  type="text"
+                  name="image"
+                  value={image2}
+                  id="image"
+                  onChange={(e) => setImage3(e.target.value)}
+                ></input>
+                <input type="file" onChange={uploadFileHandler3}></input>
+                {uploading && <div>Uploading...</div>}
+              </li>
+              <li>
+                <label htmlFor="image">Image4</label>
+                <input
+                  type="text"
+                  name="image"
+                  value={image4}
+                  id="image"
+                  onChange={(e) => setImage4(e.target.value)}
+                ></input>
+                <input type="file" onChange={uploadFileHandler4}></input>
                 {uploading && <div>Uploading...</div>}
               </li>
               <li>
