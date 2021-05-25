@@ -1021,14 +1021,28 @@ input[type="checkbox"] {
 
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
-  background-color: #533696;
+  background-color: #796d6d;
   color: white;
   padding: 16px 25px;
   width: 18%;
   border: none;
   cursor: pointer;
   opacity: 0.8;
-  margin-left: 82%;
+   float:left;
+  /* margin-left: 82%; */
+}
+
+.open-button-2 {
+  background-color: #963696;
+  color: white;
+  padding: 16px 25px;
+  width: 18%;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  float:right;
+
+  /* margin-left: 10%; */
 }
 
 /* The popup form - hidden by default */
@@ -1037,8 +1051,16 @@ input[type="checkbox"] {
   position: fixed;
   border: 3px solid #f1f1f1;
   z-index: 9;
+}
+
+.form-popup-2 {
+  display: none;
+  position: fixed;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
   margin-left: 75%;
 }
+
 
 /* Add styles to the form container */
 .form-container-pop {
@@ -1084,3 +1106,4 @@ input[type="checkbox"] {
 .open-button:hover {
   opacity: 1;
 }
+

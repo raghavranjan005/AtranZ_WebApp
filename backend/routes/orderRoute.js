@@ -1,6 +1,7 @@
 import express from 'express';
 import Order from '../models/orderModel';
 import { isAuth, isAdmin } from '../util';
+import Coupon from '../models/couponModel';
 
 const router = express.Router();
 
@@ -91,6 +92,32 @@ router.put("/", isAuth, async (req, res) => {
       return res.send({ message: 'Staus Changed.', order: updatedOrder });
   } else {
     return res.status(404).send({ message: 'Order not found.' })
+  }
+});
+
+
+router.post("/addcoupon", isAuth, async (req, res) => {
+
+  try {
+      console.log("entered bacjend")
+      const coupon = await Coupon.findOne({ couponCode: req.body.couponCode }) 
+      if(coupon)
+      {
+        return res.status(404).send({ message: 'Coupon Already Exist' })
+      }else{
+
+          const newCoupon = new Coupon({
+            couponCode: req.body.couponCode,
+            discount: req.body.discount,
+            couponUsers: req.body.couponUsers,
+          });
+
+        await newCoupon.save();
+        return res.status(201).send({ message: 'Coupon Added'});
+      }
+    
+  } catch (error) {
+    return res.status(401).send({ message: 'Something went wrong'});
   }
 });
 
