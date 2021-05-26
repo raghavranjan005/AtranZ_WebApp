@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { emptyCart } from '../actions/userActions';
+import {removeDiscount} from '../actions/userActions';
 import { detailsOrder, payOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import RazorpayButton from '../components/RazorpayButton';
@@ -18,9 +18,15 @@ function OrderScreen(props) {
   const userSignin = useSelector(state => state.userSignin);
   const { userInfo } = userSignin;
   const [clientID, setClientID] = useState("hh");
+
+  const ApplyCoupon = useSelector(state => state.applyCoupon);
+  const { loading: loadingCoupon, discount:discount, error:errorCoupon } = ApplyCoupon;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
+    
+
     
     const addRazorpaySdk = async () => {
       const result = await axios.get("/api/config/razorpay");
@@ -39,9 +45,9 @@ function OrderScreen(props) {
   }, [successPay, sdkReady, clientID,dispatch
   ,props.history,props]);
 
-  // useEffect(() => {
-  //    dispatch(emptyCart());
-  // }, [])
+  useEffect(() => {
+      dispatch(removeDiscount());
+  }, [])
 
   const handleSuccessPayment = (paymentResult) => {
     dispatch(payOrder(order, paymentResult));
