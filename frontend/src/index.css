@@ -1028,7 +1028,7 @@ input[type="checkbox"] {
   border: none;
   cursor: pointer;
   opacity: 0.8;
-   float:left;
+  float: left;
   /* margin-left: 82%; */
 }
 
@@ -1040,7 +1040,7 @@ input[type="checkbox"] {
   border: none;
   cursor: pointer;
   opacity: 0.8;
-  float:right;
+  float: right;
 
   /* margin-left: 10%; */
 }
@@ -1060,7 +1060,14 @@ input[type="checkbox"] {
   z-index: 9;
   margin-left: 75%;
 }
-
+.form-popup-3 {
+  display: none;
+  position: fixed;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  margin-left: 75%;
+  top: 38%;
+}
 
 /* Add styles to the form container */
 .form-container-pop {
@@ -1107,8 +1114,8 @@ input[type="checkbox"] {
   opacity: 1;
 }
 
-#apply{
+#apply {
   margin-left: 20rem;
   font-size: small;
-  width:10rem;
+  width: 10rem;
 }

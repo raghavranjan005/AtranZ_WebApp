@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {removeDiscount} from '../actions/userActions';
+import {saveProductReview} from '../actions/productActions'
+import { emptyCart } from '../actions/userActions';
 import { detailsOrder, payOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import RazorpayButton from '../components/RazorpayButton';
@@ -11,7 +13,10 @@ import MessageBox from '../components/MessageBox';
 
 function OrderScreen(props) {
 
-
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const productReviewSave = useSelector((state) => state.productReviewSave);
+  const { loading:loadingReviewSave,success: productSaveSuccess,errorReviewSave } = productReviewSave;
   const [sdkReady, setSdkReady] = useState(false);
   const orderPay = useSelector(state => state.orderPay);
   const { loading: loadingPay, success: successPay, error: errorPay } = orderPay;
@@ -23,6 +28,7 @@ function OrderScreen(props) {
   const { loading: loadingCoupon, discount:discount, error:errorCoupon } = ApplyCoupon;
 
   const dispatch = useDispatch();
+  const [productid, setproductid] = useState('');
 
   useEffect(() => {
     
@@ -42,13 +48,22 @@ function OrderScreen(props) {
     }
     return () => {
     };
-  }, [successPay, sdkReady, clientID,dispatch
-  ,props.history,props]);
+  }, [successPay, sdkReady, clientID]);
 
   useEffect(() => {
       dispatch(removeDiscount());
   }, [])
 
+  const openForm2 = (pID) => {
+    setproductid(pID);
+    console.log(pID);
+    document.getElementById("myForm2").style.display = "block";
+  }
+
+  const closeForm2 = () => {
+  
+    document.getElementById("myForm2").style.display = "none";
+  }
   const handleSuccessPayment = (paymentResult) => {
     dispatch(payOrder(order, paymentResult));
   }
@@ -64,6 +79,22 @@ function OrderScreen(props) {
       return IST;
     
   }
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    // dispatch actions
+    console.log("hello");
+    console.log(productid,userInfo.name,rating,comment,userInfo._id);
+    console.log("comment");
+    dispatch(
+      saveProductReview(productid, {
+        name: userInfo.name,
+        rating: rating,
+        comment: comment,
+        userId:userInfo._id,
+      })
+    );
+  };
 
 
   return loading ? <LoadingBox></LoadingBox> : error ? <MessageBox variant="danger">{error}</MessageBox> :
@@ -100,25 +131,27 @@ function OrderScreen(props) {
               <li>
                 <h3>
                   Shopping Cart
-          </h3>
+                </h3>
                 <div>
                   Price
-          </div>
-              </li>
+                 </div>
+               </li>
               {
                 order.orderItems.length === 0 ?
                   <div>
                     Cart is empty
-          </div>
+                  </div>
                   :
                   order.orderItems.map(item =>
                     <li key={item._id}>
+                     
+                   
                       <div className="cart-image">
                         <img src={item.image1} alt="product" />
                       </div>
                       <div className="cart-name">
                         <div>
-                          <Link to={"/product/" + item.product}>
+                          <Link to={"/product/" + item.productId}>
                             {item.name}
                           </Link>
 
@@ -128,9 +161,46 @@ function OrderScreen(props) {
                         </div>
                       </div>
                       <div className="cart-price-small">
-                    {item.qty} x &#8377;{item.price} = <b>&#8377;{item.qty * item.price}</b>
+                      {item.qty} x &#8377;{item.price} = <b>&#8377;{item.qty * item.price}</b>
                     </div>
-                    </li>
+                    <button class="open-button-2" onClick={() => openForm2(item.productId)}>Set Delivery Status</button>
+                    <div class="form-popup-3" id="myForm2">
+                <ul>
+              <li>
+                    {loadingReviewSave && <LoadingBox ></LoadingBox>}
+                    {errorReviewSave && <MessageBox variant="danger">{errorReviewSave}</MessageBox>}
+              </li>
+              </ul>
+              <form  class="form-container-pop" onSubmit={submitHandler} >
+              <h1>Product Review</h1>
+
+              <label for="psw"><b>Rating</b></label>&nbsp;
+          
+              <select
+                          name="rating"
+                          id="rating"
+                          value={rating}
+                          onChange={(e) => setRating(e.target.value)}
+                        >
+                          <option value="1">1- Poor</option>
+                          <option value="2">2- Fair</option>
+                          <option value="3">3- Good</option>
+                          <option value="4">4- Very Good</option>
+                          <option value="5">5- Excelent</option>
+              </select>
+              
+              <br></br><br></br>
+              <label for="psw"><b>Other</b></label>
+             
+              <textarea placeholder="comments" rows="4" cols="27" id="DeliveryStatus"  onChange={(e) => {setComment(e.target.value)}} />
+             
+              <button type="submit" class="btn">Submit</button>
+              <button type="button" class="btn cancel" onClick={() => closeForm2()}>Close Form</button>
+              
+              </form>
+      </div>
+                </li>
+                    
                   )
               }
             </ul>
