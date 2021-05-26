@@ -1,5 +1,6 @@
 import Axios from "axios";
 import {
+  ORDER_CANCELLATION_REQUEST, ORDER_CANCELLATION_SUCCESS, ORDER_CANCELLATION_FAIL,
   ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_CREATE_FAIL,ORDER_CHANGE_SUCCESS,
   ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_DETAILS_FAIL, ORDER_PAY_REQUEST, ORDER_PAY_SUCCESS, ORDER_PAY_FAIL, MY_ORDER_LIST_REQUEST, MY_ORDER_LIST_SUCCESS, MY_ORDER_LIST_FAIL, ORDER_DELETE_REQUEST, ORDER_DELETE_SUCCESS, ORDER_DELETE_FAIL, ORDER_LIST_REQUEST, ORDER_LIST_SUCCESS, ORDER_LIST_FAIL, DELIVERY_STATUS_CHANGE_REQUEST, DELIVERY_STATUS_CHANGE_SUCCESS, DELIVERY_STATUS_CHANGE_FAIL, ADD_COUPON_REQUEST, ADD_COUPON_SUCCESS, ADD_COUPON_FAIL
 } from "../constants/orderConstants";
@@ -114,6 +115,24 @@ const deliveryStatus = (isDelivered,DeliveryStatus,orderId) => async (dispatch, 
   }
 }
 
+const orderCancellation = (cancellationRequest,cancellationReason,orderId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_CANCELLATION_REQUEST });
+    const { userSignin: { userInfo } } = getState();
+    console.log("order cancellation action")
+    console.log(userInfo)
+    const { data } = await Axios.post("/api/orders/ordercancel", {cancellationRequest,cancellationReason,orderId},{
+      headers:
+        { Authorization: 'Bearer ' + userInfo.token }
+    });
+    console.log("order cancellation success")
+    dispatch({ type: ORDER_CANCELLATION_SUCCESS, payload: true })
+  } catch (error) {
+    dispatch({ type: ORDER_CANCELLATION_FAIL, payload: error.message });
+  }
+}
+
+
 
 const addCoupon = (couponCode,discount,couponUsers) => async (dispatch, getState) => {
   try {
@@ -133,4 +152,4 @@ const addCoupon = (couponCode,discount,couponUsers) => async (dispatch, getState
 }
 
 
-export { createOrder, detailsOrder, payOrder, listMyOrders, listOrders, deleteOrder, deliveryStatus,changeSucess, addCoupon};
+export { createOrder, detailsOrder, payOrder, listMyOrders, listOrders, deleteOrder, deliveryStatus,changeSucess, addCoupon,orderCancellation};

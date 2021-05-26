@@ -7,33 +7,44 @@ import { emptyCart,normalEmptyCart } from '../actions/userActions';
 import { normalListProducts } from '../actions/productActions';
 import MessageBox from '../components/MessageBox';
 import LoadingBox from '../components/LoadingBox';
+import Cookie from 'js-cookie';
 
 function PlaceOrderScreen(props) {
 
-  const cartList = useSelector(state => state.cartList);
-  const { cartItems, shipping, payment } = cartList;
+  // const cartList = useSelector(state => state.cartList);
+  // const { cartItems, shipping, payment } = cartList;
+  const cartItems = Cookie.getJSON('cartItems');
+  const shipping = Cookie.getJSON('shipping');
+  const payment = Cookie.getJSON('payment');
   const normalProductList = useSelector(state => state.normalProductList);
   const { products } = normalProductList;
   const orderCreate = useSelector(state => state.orderCreate);
   const { loading, success, error, order } = orderCreate;
 
 
-
-  if (!shipping.address) {
+ if(!cartItems)
+ {
+  props.history.replace("/cart");
+ }else if (!shipping) {
     props.history.push("/shipping");
-  } else if (!payment.paymentMethod) {
+  } else if (!payment) {
     props.history.push("/payment");
   }
 
-  const itemsPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
-  const shippingPrice = itemsPrice > 100 ? 0 : 10;
-  const taxPrice = 0.15 * itemsPrice;
-  const totalPrice = itemsPrice + shippingPrice + taxPrice;
+  
+ if(cartItems && shipping && payment)
+ {
+  var itemsPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
+  var shippingPrice = itemsPrice > 100 ? 0 : 10;
+  var taxPrice = 0.15 * itemsPrice;
+  var totalPrice = itemsPrice + shippingPrice + taxPrice;
+ }
 
   const dispatch = useDispatch();
 
   const placeOrderHandler = () => {
     // create an order
+    if(cartItems && shipping && payment){
     console.log("place order");
     console.log(products);
     console.log(cartItems);
@@ -61,6 +72,7 @@ function PlaceOrderScreen(props) {
       taxPrice, totalPrice
     }));
     }
+  }
     else
     {
       console.log(f);
@@ -74,6 +86,9 @@ function PlaceOrderScreen(props) {
       dispatch(emptyCart());
       dispatch(changeSucess());
       if(payment.paymentMethod === "Online Payments"){
+        Cookie.remove("cartItems");
+        Cookie.remove("shipping");
+        Cookie.remove("payment");
         props.history.push("/order/" + order._id);
       }else{
         alert("order placed succesfully");
@@ -89,7 +104,7 @@ function PlaceOrderScreen(props) {
   },[])
   
 
-  return <div>
+  return (cartItems && shipping && payment)? <div>
     <CheckoutSteps step1 step2 step3 step4 ></CheckoutSteps>
     <div className="placeorder">
       <div className="placeorder-info">
@@ -98,15 +113,15 @@ function PlaceOrderScreen(props) {
             Shipping
           </h4>
           <div>
-            <b>Name: </b>{cartList.shipping.name},<br></br>
-            <b>Deivery Address: </b>{cartList.shipping.address}, {cartList.shipping.city},
-          {cartList.shipping.postalCode}, {cartList.shipping.country}
+            <b>Name: </b>{shipping.name},<br></br>
+            <b>Deivery Address: </b>{shipping.address}, {shipping.city},
+          {shipping.postalCode}, {shipping.country}
           </div>
         </div>
         <div>
           <h4>Payment</h4>
           <div>
-            Payment Method: {cartList.payment.paymentMethod}
+            Payment Method: {payment.paymentMethod}
           </div>
         </div>
         <div>
@@ -203,7 +218,7 @@ function PlaceOrderScreen(props) {
         </div>
 
     </div>
-  </div>
+  </div>:<div>hello</div>
 
 }
 

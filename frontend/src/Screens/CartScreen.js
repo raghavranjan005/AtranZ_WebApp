@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import MessageBox from '../components/MessageBox';
 import LoadingBox from '../components/LoadingBox';
+import Cookie from 'js-cookie';
 
 
 function CartScreen(props) {
@@ -47,6 +48,7 @@ function CartScreen(props) {
   // },[del]);
 
   const checkoutHandler = () => {
+    Cookie.set('cartItems', JSON.stringify(cartItems));
     props.history.push("/signin?redirect=shipping");
   }
 

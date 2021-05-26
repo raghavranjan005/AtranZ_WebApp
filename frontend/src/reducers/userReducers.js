@@ -1,4 +1,5 @@
 import { USER_NORMAL_EMPTY_CART_REQUEST,USER_NORMAL_EMPTY_CART_SUCCESS,USER_NORMAL_EMPTY_CART_FAIL,USER_EMPTY_CART_REQUEST,USER_EMPTY_CART_SUCCESS,USER_EMPTY_CART_FAIL,USER_CART_SAVE_PAYMENT,USER_CART_SAVE_SHIPPING,USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNIN_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, USER_LOGOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, USER_RESET_REQUEST, USER_RESET_SUCCESS, USER_RESET_FAIL, USER_RESET_LINK_REQUEST, USER_RESET_LINK_SUCCESS, USER_RESET_LINK_FAIL,USER_ADD_TO_CART_FAIL,USER_ADD_TO_CART_SUCCESS,USER_ADD_TO_CART_REQUEST,USER_UPDATE_CART_REQUEST,USER_UPDATE_CART_SUCCESS,USER_UPDATE_CART_FAIL,USER_DELETE_FROM_CART_SUCCESS,USER_DELETE_FROM_CART_REQUEST,USER_DELETE_FROM_CART_FAIL,USER_CARTITEMS_REQUEST,USER_CARTITEMS_SUCCESS,USER_CARTITEMS_FAIL, USER_FLAG_CHANGE, USER_VERIFICATION_REQUEST, USER_VERIFICATION_SUCCESS, USER_VERIFICATION_FAIL, USER_VERIFY_FLAG_CHANGE } from "../constants/userConstants";
+import Cookie from 'js-cookie';
 
 function userSigninReducer(state = {}, action) {
   switch (action.type) {
@@ -158,9 +159,15 @@ function userCartItemsListReducer (state={ cartItems:[], shipping: {}, payment: 
     case USER_CARTITEMS_FAIL:
       return {loading:false,error:action.payload};
     case USER_CART_SAVE_SHIPPING:
-      return { ...state, shipping: action.payload };
+      {
+        Cookie.set('shipping', JSON.stringify(action.payload));
+        return { ...state, shipping: action.payload };
+      }
     case USER_CART_SAVE_PAYMENT:
-      return { ...state, payment: action.payload };
+      {
+        Cookie.set('payment', JSON.stringify(action.payload));
+        return { ...state, payment: action.payload };
+      }
     default: return state;
   }
 }

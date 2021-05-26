@@ -33,7 +33,8 @@ import {
   orderListReducer,
   orderDeleteReducer,
   deliveryStatusReducer,
-  addCouponReducer
+  addCouponReducer,
+  orderCancellationReducer
 } from './reducers/orderReducers';
 
 const userInfo = Cookie.getJSON('userInfo') || null;
@@ -70,7 +71,8 @@ const reducer = combineReducers({
   userEmptyCart:userEmptyCartReducer,
   userNormalEmptyCart:userNormalEmptyCartReducer,
   deliveryStatus:deliveryStatusReducer,
-  addCoupon:addCouponReducer
+  addCoupon:addCouponReducer,
+  orderCancel:orderCancellationReducer
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

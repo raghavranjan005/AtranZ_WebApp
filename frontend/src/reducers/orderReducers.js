@@ -1,5 +1,6 @@
 import {
   ORDER_CHANGE_SUCCESS,
+  ORDER_CANCELLATION_REQUEST, ORDER_CANCELLATION_SUCCESS, ORDER_CANCELLATION_FAIL,
   ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_CREATE_FAIL,
   ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_DETAILS_FAIL,
   ORDER_PAY_REQUEST, ORDER_PAY_SUCCESS, ORDER_PAY_FAIL,
@@ -133,10 +134,21 @@ function addCouponReducer(state = {}, action) {
   }
 }
 
+function orderCancellationReducer(state = {}, action) {
+  switch (action.type) {
+    case ORDER_CANCELLATION_REQUEST:
+      return { loading: true };
+    case ORDER_CANCELLATION_SUCCESS:
+      return { loading: false, success: action.payload };
+    case ORDER_CANCELLATION_FAIL:
+      return { loading: false, error: action.payload };
+    default: return state;
+  }
+}
 
 
 
 export {
-  orderCreateReducer, orderDetailsReducer,
+  orderCreateReducer, orderDetailsReducer,orderCancellationReducer,
   orderPayReducer, myOrderListReducer, orderListReducer, orderDeleteReducer,deliveryStatusReducer,addCouponReducer
 }

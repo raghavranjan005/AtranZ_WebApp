@@ -121,5 +121,25 @@ router.post("/addcoupon", isAuth, async (req, res) => {
   }
 });
 
+router.post("/ordercancel", isAuth, async (req, res) => {
+
+  try {
+      console.log("entered bacjend")
+      const order = await Order.findById(req.body.orderId); 
+      if(order.cancellationRequest)
+      {
+        return res.status(201).send({ message: 'Order Already Cancelled' })
+      }else{
+        order.cancellationRequest = req.body.cancellationRequest;
+        order.cancellationReason = req.body.cancellationReason
+        await order.save();
+        return res.status(201).send({ message: 'order cancelled'});
+      }
+    
+  } catch (error) {
+    return res.status(401).send({ message: 'Something went wrong'});
+  }
+});
+
 
 export default router;
