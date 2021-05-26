@@ -25,7 +25,7 @@ function OrdersScreen(props) {
   const [DeliveryStatus, setDeliveryStatus] = useState('');
   const [orderId, setorderId] = useState('');
 
-  const [couponCode, setCouponCode] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
   const [discount, setDiscount] = useState('');
   const [couponUsers, setCouponUsers] = useState([]);
 
@@ -33,8 +33,6 @@ function OrdersScreen(props) {
 
   useEffect(() => {
     dispatch(listOrders());
-    if(successAddCoupon)
-      alert("Coupon Added Succesfully")
     return () => {
       //
     };
@@ -103,6 +101,7 @@ function OrdersScreen(props) {
               <li>
                     {loading && <LoadingBox ></LoadingBox>}
                     {error && <MessageBox variant="danger">{error}</MessageBox>}
+                    {successAddCoupon ? <p>Coupon Added Suceesfully</p>:<p></p>}
               </li>
               </ul>
               <form  class="form-container-pop" onSubmit={submitHandler} >

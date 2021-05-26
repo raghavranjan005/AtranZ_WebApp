@@ -24,6 +24,7 @@ import {
   userEmailVerifyReducer,
   userEmptyCartReducer,
   userNormalEmptyCartReducer,
+  applyCouponReducer,
 } from './reducers/userReducers';
 import {
   orderCreateReducer,
@@ -70,7 +71,8 @@ const reducer = combineReducers({
   userEmptyCart:userEmptyCartReducer,
   userNormalEmptyCart:userNormalEmptyCartReducer,
   deliveryStatus:deliveryStatusReducer,
-  addCoupon:addCouponReducer
+  addCoupon:addCouponReducer,
+  applyCoupon:applyCouponReducer
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

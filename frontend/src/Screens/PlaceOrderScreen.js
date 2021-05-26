@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { createOrder,changeSucess } from '../actions/orderActions';
-import { emptyCart,normalEmptyCart } from '../actions/userActions';
+import { emptyCart,normalEmptyCart,applyCoupon } from '../actions/userActions';
 import { normalListProducts } from '../actions/productActions';
 import MessageBox from '../components/MessageBox';
 import LoadingBox from '../components/LoadingBox';
@@ -17,14 +17,19 @@ function PlaceOrderScreen(props) {
   const orderCreate = useSelector(state => state.orderCreate);
   const { loading, success, error, order } = orderCreate;
 
+  const ApplyCoupon = useSelector(state => state.orderList);
+  const { loading: loadingCoupon, discount:discount, error:errorCoupon } = ApplyCoupon;
+  const [couponCode, setCouponCode] = useState('');
 
 
-  if (!shipping.address) {
-    props.history.push("/shipping");
-  } else if (!payment.paymentMethod) {
-    props.history.push("/payment");
-  }
 
+  // if (!shipping.address) {
+  //   props.history.push("/shipping");
+  // } else if (!payment.paymentMethod) {
+  //   props.history.push("/payment");
+  // }
+
+  
   const itemsPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
   const shippingPrice = itemsPrice > 100 ? 0 : 10;
   const taxPrice = 0.15 * itemsPrice;
@@ -69,6 +74,14 @@ function PlaceOrderScreen(props) {
       props.history.push("/");
     }
   }
+
+  const CouponSubmit = (e) => {
+    e.preventDefault();
+    console.log("haha")
+    dispatch(applyCoupon(couponCode));
+  };
+
+
   useEffect(() => {
     if (success) {
       dispatch(emptyCart());
@@ -81,8 +94,12 @@ function PlaceOrderScreen(props) {
       }
 
     }
+    // if(discount)
+    // {
+    //   alert(toString(discount))
+    // }
 
-  }, [success]);
+  }, [success, discount]);
 
   useEffect(() => {
     dispatch(normalListProducts());
@@ -182,7 +199,7 @@ function PlaceOrderScreen(props) {
                     <strong> Order Total</strong>
                   </div>
                   <div>
-                    <strong>&#8377;{totalPrice}</strong>
+                    {discount?<strong>&#8377;{totalPrice-discount}</strong>:<strong>&#8377;{totalPrice}</strong>}
                   </div>
                 </div>
               </li>
@@ -200,6 +217,28 @@ function PlaceOrderScreen(props) {
               {error && <MessageBox variant="danger">{error}</MessageBox>}
             </ul>
           </div>
+
+          <div className="card card-body">
+            <ul>
+              <li>
+              {loadingCoupon && <LoadingBox></LoadingBox>}
+              {errorCoupon && <MessageBox variant="danger">{errorCoupon}</MessageBox>}
+              </li>
+              <li>
+                <h2>Apply Coupons <i class="fa fa-tag fa-stack-1x fa-inverse"></i></h2>
+              </li>
+              <li>
+                <div className="row">  
+                  <form onSubmit={CouponSubmit}>
+                  <label>Coupon Code</label>&nbsp;
+                  <input type="text" id="couponCode" onChange={(e) => setCouponCode(e.target.value)}></input><br></br>
+                <button type="submit" id="apply" className="button primary">Apply</button>
+                </form>
+                </div>
+              </li>
+            </ul>
+          </div>
+
         </div>
 
     </div>
