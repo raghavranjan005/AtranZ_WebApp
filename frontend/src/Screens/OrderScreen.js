@@ -211,12 +211,12 @@ function OrderScreen(props) {
               <div>&#8377;{order.itemsPrice}</div>
             </li>
             <li>
-              <div>Shipping</div>
+              <div>Delivery Charge</div>
               <div>+ &#8377;{order.shippingPrice}</div>
             </li>
             <li>
-              <div>Tax</div>
-              <div>+ &#8377;{order.taxPrice}</div>
+              <div>Discount</div>
+              <div>- &#8377;{order.discount}</div>
             </li>
 
             <hr></hr>

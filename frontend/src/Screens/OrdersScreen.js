@@ -16,11 +16,17 @@ function OrdersScreen(props) {
   const Deliverystatus = useSelector(state => state.deliveryStatus);
   const { loading: loadingdeliveryStatus, success: successdeliveryStatus, error: errordeliveryStatus } = Deliverystatus;
 
+  const AddCoupon = useSelector(state => state.addCoupon);
+  const { loading: loadingAddCoupon, success: successAddCoupon, error: errorAddCoupon } = AddCoupon;
 
 
   const [isDelivered, setIsDelivered] = useState(false);
   const [DeliveryStatus, setDeliveryStatus] = useState('');
   const [orderId, setorderId] = useState('');
+
+  const [couponCode, setCouponCode] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [couponUsers, setCouponUsers] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -65,6 +71,7 @@ function OrdersScreen(props) {
               <li>
                     {loading && <LoadingBox ></LoadingBox>}
                     {error && <MessageBox variant="danger">{error}</MessageBox>}
+                    {successAddCoupon ? <p>Coupon Added Suceesfully</p>:<p></p>}
               </li>
               </ul>
               <form  class="form-container-pop" onSubmit={submitHandler} >

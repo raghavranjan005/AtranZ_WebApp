@@ -40,16 +40,30 @@ router.delete("/:id", isAuth, async (req, res) => {
 
 router.post("/", isAuth, async (req, res) => {
   console.log("order route");
-  const newOrder = new Order({
+  if(req.body.discount){
+  var newOrder = new Order({
     orderItems: req.body.orderItems,
     user: req.user._id,
     shipping: req.body.shipping,
     payment: req.body.payment,
     itemsPrice: req.body.itemsPrice,
     taxPrice: req.body.taxPrice,
+    discount:req.body.discount.discount,
     shippingPrice: req.body.shippingPrice,
     totalPrice: req.body.totalPrice,
-  });
+  })}else{
+    var newOrder = new Order({
+      orderItems: req.body.orderItems,
+      user: req.user._id,
+      shipping: req.body.shipping,
+      payment: req.body.payment,
+      itemsPrice: req.body.itemsPrice,
+      taxPrice: req.body.taxPrice,
+      shippingPrice: req.body.shippingPrice,
+      totalPrice: req.body.totalPrice,
+  })}
+
+  
   const newOrderCreated = await newOrder.save();
   return res.status(201).send({ message: "New Order Created", data: newOrderCreated });
 });

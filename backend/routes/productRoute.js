@@ -27,7 +27,7 @@ const router = express.Router();
 
 router.get('/normal',async(req,res)=>{
   const products = await Product.find();
-  console.log(products);
+  // console.log(products);
   res.send(products);
 })
 

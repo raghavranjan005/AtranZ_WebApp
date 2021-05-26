@@ -1113,3 +1113,9 @@ input[type="checkbox"] {
 .open-button:hover {
   opacity: 1;
 }
+
+#apply {
+  margin-left: 20rem;
+  font-size: small;
+  width: 10rem;
+}

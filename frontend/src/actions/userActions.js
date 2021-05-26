@@ -6,7 +6,7 @@ import {USER_EMPTY_CART_FAIL,USER_EMPTY_CART_SUCCESS,USER_EMPTY_CART_REQUEST,USE
   USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS,
   USER_SIGNIN_FAIL, USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, USER_LOGOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, USER_RESET_REQUEST, USER_RESET_SUCCESS, USER_RESET_FAIL, USER_RESET_LINK_REQUEST, USER_RESET_LINK_SUCCESS, USER_RESET_LINK_FAIL, USER_ADD_TO_CART_REQUEST,
-  USER_ADD_TO_CART_SUCCESS,USER_ADD_TO_CART_FAIL,USER_DELETE_FROM_CART_REQUEST,USER_DELETE_FROM_CART_SUCCESS,USER_DELETE_FROM_CART_FAIL,USER_UPDATE_CART_REQUEST,USER_UPDATE_CART_SUCCESS,USER_UPDATE_CART_FAIL, USER_CARTITEMS_REQUEST, USER_CARTITEMS_SUCCESS, USER_CARTITEMS_FAIL, USER_FLAG_CHANGE, USER_VERIFICATION_REQUEST, USER_VERIFICATION_SUCCESS, USER_VERIFICATION_FAIL, USER_VERIFY_FLAG_CHANGE
+  USER_ADD_TO_CART_SUCCESS,USER_ADD_TO_CART_FAIL,USER_DELETE_FROM_CART_REQUEST,USER_DELETE_FROM_CART_SUCCESS,USER_DELETE_FROM_CART_FAIL,USER_UPDATE_CART_REQUEST,USER_UPDATE_CART_SUCCESS,USER_UPDATE_CART_FAIL, USER_CARTITEMS_REQUEST, USER_CARTITEMS_SUCCESS, USER_CARTITEMS_FAIL, USER_FLAG_CHANGE, USER_VERIFICATION_REQUEST, USER_VERIFICATION_SUCCESS, USER_VERIFICATION_FAIL, USER_VERIFY_FLAG_CHANGE, APPLY_COUPON_REQUEST, APPLY_COUPON_SUCCESS, APPLY_COUPON_FAIL
 } from "../constants/userConstants";
 
 const update = ({ userId, name, email, password }) => async (dispatch, getState) => {
@@ -284,9 +284,33 @@ const userSavePayment = (data) => (dispatch) => {
 
 
 
+const applyCoupon = (couponCode) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: APPLY_COUPON_REQUEST });
+    const { userSignin: { userInfo } } = getState();
+    console.log(userInfo)
+    console.log(couponCode)
+    console.log("status action")
+    // console.log(userInfo)
+    const { data } = await Axios.post("/api/users/applycoupon", {couponCode},{
+      headers:
+        { Authorization: 'Bearer ' + userInfo.token }
+    });
+    console.log("status success")
+    dispatch({ type: APPLY_COUPON_SUCCESS, payload: data })
+  } catch (error) {
+    dispatch({ type: APPLY_COUPON_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
+  }
+}
+
+
 const logout = () => (dispatch) => {
   Cookie.remove("userInfo");
   console.log("cookies deleted");
   dispatch({ type: USER_LOGOUT })
 }
-export { emptyCart,signin,normalEmptyCart, register, logout,verifyflagchange, update,verifyMail, resetpassword, resetpasswordlink,addToCart,deleteFromCart,updateCart,cartItemsList,userSaveShipping,userSavePayment, flagchange};
+export { emptyCart,signin,normalEmptyCart, register, logout,verifyflagchange, update,verifyMail,
+   resetpassword, resetpasswordlink,addToCart,deleteFromCart,updateCart,cartItemsList,userSaveShipping,
+   userSavePayment, flagchange, applyCoupon};

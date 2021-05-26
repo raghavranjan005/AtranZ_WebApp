@@ -5,6 +5,7 @@ import { getToken, isAuth } from '../util';
 import bcrypt, { compareSync } from 'bcryptjs';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+import Coupon from '../models/couponModel'
 // import handlebars from 'handlebars';
 // import fs from 'fs';
 // import path from 'path';
@@ -122,7 +123,7 @@ router.post('/register', async (req, res) => {
     }
   }
    else {
-    res.status(401).send({ message: 'User Email-Id Already Exist' });
+    return res.status(401).send({ message: 'User Email-Id Already Exist' });
   }
 });
 
@@ -449,6 +450,54 @@ router.delete('/normalEmptyCart',isAuth,async (req,res)=>{
     res.send(user.cartItems);
   } catch (error) {
     return res.status(401).send({ message: 'Something went wrong' });
+  }
+  
+});
+
+router.post('/applycoupon',isAuth,async (req,res)=>{
+  
+  try {
+    const coupon  = await Coupon.findOne({couponCode:req.body.couponCode});
+    if(coupon)
+    {
+      try {
+        
+        function findElement(element) {
+          return coupon.couponUsers.indexOf(element);
+        }
+        var index = await findElement(req.user.email)
+        if(req.body.couponCode[0] == 1){
+          if(index != -1)
+          {
+            return res.status(401).send({ message: 'Coupon Already used once by user' });
+          }else{
+            console.log(index)
+            coupon.couponUsers.push(req.user.email);
+            await coupon.save();
+            return res.send({discount:coupon.discount});
+          }
+        }else{
+          // special coupons email shud be in coupon users
+          if(index != -1)
+          {
+            coupon.couponUsers.splice(index, 1);
+            await coupon.save();
+            return res.send({discount:coupon.discount});
+
+          }else{
+            return res.status(401).send({ message: 'Invalid Coupon Code' });
+          }
+
+        }
+
+      } catch (error) {
+        return res.status(401).send({ message: error.message });
+      }
+    }else{
+      return res.status(401).send({ message: 'Invalid Coupon Code' });
+    }
+  } catch (error) {
+    return res.status(401).send({ message: error.message });
   }
   
 });
