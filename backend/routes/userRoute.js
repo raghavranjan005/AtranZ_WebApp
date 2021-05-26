@@ -123,7 +123,7 @@ router.post('/register', async (req, res) => {
     }
   }
    else {
-    res.status(401).send({ message: 'User Email-Id Already Exist' });
+    return res.status(401).send({ message: 'User Email-Id Already Exist' });
   }
 });
 
@@ -455,16 +455,11 @@ router.delete('/normalEmptyCart',isAuth,async (req,res)=>{
 });
 
 router.post('/applycoupon',isAuth,async (req,res)=>{
-  console.log("hello");
   
   try {
-      console.log("user check "+req.user.email)
     const coupon  = await Coupon.findOne({couponCode:req.body.couponCode});
-    console.log(req.body.couponCode)
     if(coupon)
     {
-      console.log(coupon)
-
       try {
         
         function findElement(element) {
@@ -483,7 +478,7 @@ router.post('/applycoupon',isAuth,async (req,res)=>{
           }
         }else{
           // special coupons email shud be in coupon users
-          if(index)
+          if(index != -1)
           {
             coupon.couponUsers.splice(index, 1);
             await coupon.save();

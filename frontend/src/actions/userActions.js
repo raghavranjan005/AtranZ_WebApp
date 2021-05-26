@@ -299,7 +299,9 @@ const applyCoupon = (couponCode) => async (dispatch, getState) => {
     console.log("status success")
     dispatch({ type: APPLY_COUPON_SUCCESS, payload: data })
   } catch (error) {
-    dispatch({ type: APPLY_COUPON_FAIL, payload: error.message });
+    dispatch({ type: APPLY_COUPON_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 }
 

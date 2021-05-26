@@ -21,9 +21,12 @@ function PlaceOrderScreen(props) {
   const orderCreate = useSelector(state => state.orderCreate);
   const { loading, success, error, order } = orderCreate;
 
-  const ApplyCoupon = useSelector(state => state.orderList);
+  const ApplyCoupon = useSelector(state => state.applyCoupon);
   const { loading: loadingCoupon, discount:discount, error:errorCoupon } = ApplyCoupon;
   const [couponCode, setCouponCode] = useState('');
+
+  if(discount)
+  console.log(discount)
 
  if(!cartItems)
  {
@@ -39,8 +42,11 @@ function PlaceOrderScreen(props) {
  {
   var itemsPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
   var shippingPrice = itemsPrice > 100 ? 0 : 10;
-  var taxPrice = 0.15 * itemsPrice;
-  var totalPrice = itemsPrice + shippingPrice + taxPrice;
+  var taxPrice = 0;
+  var totalPrice = itemsPrice + shippingPrice;
+  if(discount)
+  totalPrice = totalPrice - discount.discount;
+
  }
 
   const dispatch = useDispatch();
@@ -70,10 +76,15 @@ function PlaceOrderScreen(props) {
     if(f===1)
     {
       console.log(f);
+      if(discount){
       dispatch(createOrder({
       orderItems: cartItems, shipping, payment, itemsPrice, shippingPrice,
-      taxPrice, totalPrice
-    }));
+      taxPrice, discount, totalPrice})
+      );
+    }else{
+      dispatch(createOrder({
+        orderItems: cartItems, shipping, payment, itemsPrice, shippingPrice,
+        taxPrice, totalPrice}));
     }
   }
     else
@@ -84,6 +95,7 @@ function PlaceOrderScreen(props) {
       props.history.push("/");
     }
   }
+}
 
   const CouponSubmit = (e) => {
     e.preventDefault();
@@ -195,15 +207,15 @@ function PlaceOrderScreen(props) {
               </li>
               <li>
                 <div className="row">
-                  <div>Shipping</div>
+                  <div>Delivery Charge</div>
                   <div>+ &#8377;{shippingPrice}</div>
                 </div>
               </li>
-              <li>
-                <div className="row">
-                  <div>Tax</div>
-                  <div>+ &#8377;{taxPrice}</div>
-                </div>
+                <li>
+                {discount&& <div className="row">
+                  <div>discount</div>
+                  <div>- &#8377;{discount.discount}</div>
+                </div>}
               </li>
               <li>
               <hr></hr>
@@ -212,7 +224,7 @@ function PlaceOrderScreen(props) {
                     <strong> Order Total</strong>
                   </div>
                   <div>
-                    {discount?<strong>&#8377;{totalPrice-discount}</strong>:<strong>&#8377;{totalPrice}</strong>}
+                      <strong>&#8377;{totalPrice}</strong>
                   </div>
                 </div>
               </li>
@@ -236,9 +248,10 @@ function PlaceOrderScreen(props) {
               <li>
               {loadingCoupon && <LoadingBox></LoadingBox>}
               {errorCoupon && <MessageBox variant="danger">{errorCoupon}</MessageBox>}
+              {discount && <MessageBox variant="success">Coupon Applied Successfully. Please don't refresh OR Re-Enter same coupon Code. You will loose this discount</MessageBox>}
               </li>
               <li>
-                <h2>Apply Coupons <i class="fa fa-tag fa-stack-1x fa-inverse"></i></h2>
+                <h2>Apply Coupons</h2>
               </li>
               <li>
                 <div className="row">  

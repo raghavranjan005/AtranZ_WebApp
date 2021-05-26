@@ -22,7 +22,8 @@ function userRegisterReducer(state = {flag:false}, action) {
     case USER_REGISTER_SUCCESS:
       return { loading: false, flag: action.payload };
     case USER_REGISTER_FAIL:
-      return { loading: false, error: action.payload };
+      {console.log(action.payload)
+      return { loading: false, error: action.payload };}
     case USER_FLAG_CHANGE:
       return {loading:false, flag:action.payload}
     default: return state;
@@ -181,7 +182,8 @@ function applyCouponReducer(state = {couponCode:''}, action) {
       {console.log(action.payload)
       return { loading: false, discount: action.payload };}
     case APPLY_COUPON_FAIL:
-      return { loading: false, error: action.payload };
+      {console.log(action.payload)
+      return { loading: false, error: action.payload };}
     default: return state;
   }
 }
