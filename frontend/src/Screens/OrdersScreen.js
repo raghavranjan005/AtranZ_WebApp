@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { listOrders, deleteOrder, addCoupon} from '../actions/orderActions';
+import { listOrders, deleteOrder} from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import {deliveryStatus} from '../actions/orderActions'
@@ -16,29 +16,20 @@ function OrdersScreen(props) {
   const Deliverystatus = useSelector(state => state.deliveryStatus);
   const { loading: loadingdeliveryStatus, success: successdeliveryStatus, error: errordeliveryStatus } = Deliverystatus;
 
-  const AddCoupon = useSelector(state => state.addCoupon);
-  const { loading: loadingAddCoupon, success: successAddCoupon, error: errorAddCoupon } = AddCoupon;
-
 
 
   const [isDelivered, setIsDelivered] = useState(false);
   const [DeliveryStatus, setDeliveryStatus] = useState('');
   const [orderId, setorderId] = useState('');
 
-  const [couponCode, setCouponCode] = useState(false);
-  const [discount, setDiscount] = useState('');
-  const [couponUsers, setCouponUsers] = useState([]);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(listOrders());
-    if(successAddCoupon)
-      alert("Coupon Added Succesfully")
     return () => {
       //
     };
-  }, [successDelete,successdeliveryStatus,successAddCoupon]);
+  }, [successDelete,successdeliveryStatus]);
 
   const deleteHandler = (order) => {
     dispatch(deleteOrder(order._id));
@@ -53,50 +44,21 @@ function OrdersScreen(props) {
   }
 
 
-  function addToArray(){
-    couponUsers.push(document.getElementById("couponUsers").value);
-    document.getElementById("couponUsers").value = "";
-  }
-
-
   const submitHandler = (e) => {
-    e.preventDefault();
-    console.log("hehe");
-    console.log(couponUsers);
-    dispatch(addCoupon(couponCode,discount,couponUsers));
-  };
-
-  //form 2
-
-  const openForm2 = () => {
-    document.getElementById("myForm2").style.display = "block";
-  }
-
-  const closeForm2 = () => {
-    document.getElementById("myForm2").style.display = "none";
-  }
-
-
-  const submitHandler2 = (e) => {
     e.preventDefault();
     console.log("submitted")
     dispatch(deliveryStatus(isDelivered,DeliveryStatus,orderId));
   };
 
 
-
   return (loading || loadingDelete)? <LoadingBox></LoadingBox> :
     <div className="content content-margined">
 
-      
       <div className="order-header">
         <h3>Orders</h3>
       </div>
-
-        <div className="Button-grp">
-      <button class="open-button" onClick={() => openForm()}>Set Coupons</button>
-      <button class="open-button-2" onClick={() => openForm2()}>Set Delivery Status</button>
-      </div>
+                      
+      <button class="open-button" onClick={() => openForm()}>Set Delivery Status</button>
               
               <div class="form-popup" id="myForm">
                 <ul>
@@ -106,38 +68,6 @@ function OrdersScreen(props) {
               </li>
               </ul>
               <form  class="form-container-pop" onSubmit={submitHandler} >
-              <h1>Add Coupons</h1>
-
-              <label for="couponCode"><b>Coupon Code</b></label> &nbsp;
-              <input type="text" id="couponCode" onChange={(e) =>setCouponCode(e.target.value) }/>
-
-              <br></br><br></br>
-              <label for="discount"><b>Discount amount</b></label> &nbsp;
-              <input type="number" id="discount" onChange={(e) => setDiscount(e.target.value)}/>
-              <br></br><br></br>
-              <label for="couponUsers"><b>Add Email Id of users</b></label>
-              <input  id="couponUsers"/> &nbsp;
-              <button type="button" onClick={() => addToArray()}>Add</button>
-              <br></br><br></br>
-      
-              <button type="submit" class="btn">Submit</button>
-              <button type="button" class="btn cancel" onClick={() => closeForm()}>Close Form</button>
-              
-              </form>
-      </div>
-
-
-                      
-      
-              
-              <div class="form-popup-2" id="myForm2">
-                <ul>
-              <li>
-                    {loading && <LoadingBox ></LoadingBox>}
-                    {error && <MessageBox variant="danger">{error}</MessageBox>}
-              </li>
-              </ul>
-              <form  class="form-container-pop" onSubmit={submitHandler2} >
               <h1>Delivery Status</h1>
 
               <label for="deliveryStatus"><b>isDelivered</b></label> &nbsp;
@@ -151,7 +81,7 @@ function OrdersScreen(props) {
               <textarea placeholder="Current Delivery status with address" rows="4" cols="27" id="DeliveryStatus" required onChange={(e) => {setDeliveryStatus(e.target.value)}} />
              
               <button type="submit" class="btn">Submit</button>
-              <button type="button" class="btn cancel" onClick={() => closeForm2()}>Close Form</button>
+              <button type="button" class="btn cancel" onClick={() => closeForm()}>Close Form</button>
               
               </form>
       </div>

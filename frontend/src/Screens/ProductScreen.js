@@ -120,7 +120,7 @@ function ProductScreen(props){
                               overlayOpacity={0.6}
                               switchSides={false}
                               zoomPosition="left"
-                              inPlaceMinBreakpoint={100}
+                              inPlaceMinBreakpoint={400}
                               fillAvailableSpace={false}
                               fillAlignTop={false}
                               fillGapTop={10}
