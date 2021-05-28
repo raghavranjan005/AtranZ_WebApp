@@ -155,6 +155,7 @@ const saveProductReview = (productId, review) => async (dispatch, getState) => {
         userInfo: { token },
       },
     } = getState();
+    console.log("hello");
     dispatch({ type: PRODUCT_REVIEW_SAVE_REQUEST, payload: review });
     const { data } = await axios.post(
       `/api/products/${productId}/reviews`,
@@ -165,6 +166,7 @@ const saveProductReview = (productId, review) => async (dispatch, getState) => {
         },
       }
     );
+    console.log("review saved");
     dispatch({ type: PRODUCT_REVIEW_SAVE_SUCCESS, payload: data });
   } catch (error) {
     // report error

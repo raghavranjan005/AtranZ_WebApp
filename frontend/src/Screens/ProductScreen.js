@@ -26,17 +26,17 @@ function ProductScreen(props){
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (productSaveSuccess) {
-          alert('Review submitted successfully.');
-          setRating(0);
-          setComment(' ');
-          dispatch({ type: PRODUCT_REVIEW_SAVE_RESET });
-        }
+        // if (productSaveSuccess) {
+        //   alert('Review submitted successfully.');
+        //   setRating(0);
+        //   setComment(' ');
+        //   dispatch({ type: PRODUCT_REVIEW_SAVE_RESET });
+        // }
         dispatch(detailsProduct(props.match.params.id));
         return () => {
           //
         };
-      }, [productSaveSuccess]);
+      }, []);
 
       const submitHandler = (e) => {
         e.preventDefault();
@@ -266,8 +266,8 @@ function ProductScreen(props){
                   <div>{review.comment}</div>
                 </li>
               ))}
-              <li>
-                <h3>Write a customer review</h3>
+              {/* <li> */}
+                {/* <h3>Write a customer review</h3>
                 {userInfo ? (
                   <form onSubmit={submitHandler}>
                     <ul className="form-container-rating">
@@ -305,8 +305,8 @@ function ProductScreen(props){
                   <div>
                     Please <Link to="/signin">Sign-in</Link> to write a review.
                   </div>
-                )}
-              </li>
+                )} */}
+              {/* </li> */}
             </ul>
           </div>
         </>

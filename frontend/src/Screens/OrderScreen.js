@@ -13,7 +13,7 @@ import MessageBox from '../components/MessageBox';
 
 function OrderScreen(props) {
 
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(1);
   const [comment, setComment] = useState('');
   const productReviewSave = useSelector((state) => state.productReviewSave);
   const { loading:loadingReviewSave,success: productSaveSuccess,errorReviewSave } = productReviewSave;
@@ -31,9 +31,7 @@ function OrderScreen(props) {
   const [productid, setproductid] = useState('');
 
   useEffect(() => {
-    
-
-    
+        
     const addRazorpaySdk = async () => {
       const result = await axios.get("/api/config/razorpay");
       const key = result.data;
@@ -48,7 +46,7 @@ function OrderScreen(props) {
     }
     return () => {
     };
-  }, [successPay, sdkReady, clientID]);
+  }, [successPay, sdkReady, clientID,productSaveSuccess]);
 
   useEffect(() => {
       dispatch(removeDiscount());
@@ -160,10 +158,16 @@ function OrderScreen(props) {
                           Qty: {item.qty}
                         </div>
                       </div>
+                      <ul>
+                        <li>
                       <div className="cart-price-small">
                       {item.qty} x &#8377;{item.price} = <b>&#8377;{item.qty * item.price}</b>
                     </div>
-                    <button class="open-button-2" onClick={() => openForm2(item.productId)}>Set Delivery Status</button>
+                    </li>
+                    <li>
+                    <button class="open-button-3" onClick={() => openForm2(item.productId)}>Review Product</button>
+                    </li>
+                    </ul>
                     <div class="form-popup-3" id="myForm2">
                 <ul>
               <li>
