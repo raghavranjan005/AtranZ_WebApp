@@ -1,5 +1,8 @@
-const newsLetterEmail = (clientName) => `<p>Hi ${clientName}, here you have today news.</p>`
 
+
+
+
+const newsLetterEmail = () => `<p>Hi ${details}, here you have today news.</p>`
 
 
 // const welcomeEmail = (link) => `<p>Welcome ${link}, your username is hehehe.</p>`

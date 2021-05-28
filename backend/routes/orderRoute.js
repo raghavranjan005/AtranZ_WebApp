@@ -2,6 +2,22 @@ import express from 'express';
 import Order from '../models/orderModel';
 import { isAuth, isAdmin } from '../util';
 import Coupon from '../models/couponModel';
+import nodemailer from 'nodemailer';
+import crypto from 'crypto';
+import {resetPasswordEmail, verificationMail} from '../Templates/emailTemplates'
+import orderSummaryMail from '../Templates/orderSummaryMail'
+
+const bcryptsalt = process.env.BCRYPT_SALT;
+const Client_Url = process.env.CLIENT_URL;
+
+const authorization={
+  service: 'gmail',
+  secure: 'true',
+  auth: {
+     user: process.env.mailId,  //your email address
+     pass: process.env.password               // your password
+  }
+};
 
 const router = express.Router();
 
@@ -63,8 +79,27 @@ router.post("/", isAuth, async (req, res) => {
       totalPrice: req.body.totalPrice,
   })}
 
-  
   const newOrderCreated = await newOrder.save();
+  console.log(newOrder.payment.paymentMethod)
+  if(newOrder.payment.paymentMethod == "takeaway" || newOrder.payment.paymentMethod =="Cash on Delivery"){
+  const output = orderSummaryMail(newOrderCreated);
+  const transporter=nodemailer.createTransport(authorization);
+    const mailOptions={
+      from: 'atranzcart@gmail.com',
+      to: req.user.email,
+      subject:'Order Summary',
+      text: `Order Summary`,
+      html: output,
+      }
+
+      transporter.sendMail(mailOptions, (error, info)=>{
+      if (error) {
+          console.log(error);
+      } else {
+      console.log('Email sent: ' + info.response);
+      }
+  });}
+
   return res.status(201).send({ message: "New Order Created", data: newOrderCreated });
 });
 
@@ -80,15 +115,29 @@ router.put("/:id/pay", isAuth, async (req, res) => {
       }
     }
     const updatedOrder = await order.save();
+
+    const output = orderSummaryMail(updatedOrder);
+    const transporter=nodemailer.createTransport(authorization);
+      const mailOptions={
+        from: 'atranzcart@gmail.com',
+        to: req.user.email,
+        subject:'Order Summary',
+        text: `Order Summary`,
+        html: output,
+        }
+  
+        transporter.sendMail(mailOptions, (error, info)=>{
+        if (error) {
+            console.log(error);
+        } else {
+        console.log('Email sent: ' + info.response);
+        }
+    })
     return res.send({ message: 'Order Paid.', order: updatedOrder });
   } else {
     return res.status(404).send({ message: 'Order not found.' })
   }
 });
-
-
-
-
 
 
 

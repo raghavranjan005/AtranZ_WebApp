@@ -104,6 +104,7 @@ function OrderScreen(props) {
               Shipping and Delivery
           </h3>
             <div>
+              NAME: {order.shipping.name}<br></br><br></br>
               ADDRESS: <br></br>
               {order.shipping.address}, {order.shipping.city},
           {order.shipping.postalCode}, {order.shipping.country},
