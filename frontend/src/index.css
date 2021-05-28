@@ -22,6 +22,33 @@ body {
   color: #533696;
   font-size: medium;
 }
+
+.fa-eye {
+  font-size: medium;
+  border: none;
+  cursor: pointer; /* Mouse pointer on hover */
+}
+.fa-eye:hover {
+  font-size: medium;
+  border: none;
+  cursor: pointer; /* Mouse pointer on hover */
+ box-shadow: #533696;
+}
+
+.fa-times{
+  text-align:center;
+  font-size: x-large;
+  color:red;
+}
+
+.fa-check{
+  font-size: x-large;
+  color:green;
+}
+
+.fa-trash{
+  cursor: pointer;
+}
 /* Common */
 h1 {
   font-size: 1.8rem;
@@ -1035,8 +1062,8 @@ input[type="checkbox"] {
 .open-button-2 {
   background-color: #963696;
   color: white;
-  padding: 16px 25px;
-  width: 18%;
+  padding: 2px 2px;
+  width: 50%;
   border: none;
   cursor: pointer;
   opacity: 0.8;

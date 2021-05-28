@@ -56,7 +56,6 @@ function OrderScreen(props) {
 
   const openForm2 = (pID) => {
     setproductid(pID);
-    console.log(pID);
     document.getElementById("myForm2").style.display = "block";
   }
 
