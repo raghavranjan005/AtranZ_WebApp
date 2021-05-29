@@ -91,7 +91,7 @@ function ProductsScreen(props) {
     bodyFormData.append('image', file);
     setUploading(true);
     axios
-      .post('/api/uploads', bodyFormData, {
+      .post('/api/uploads/s3', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -111,7 +111,7 @@ function ProductsScreen(props) {
     bodyFormData.append('image', file);
     setUploading(true);
     axios
-      .post('/api/uploads', bodyFormData, {
+      .post('/api/uploads/s3', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -131,7 +131,7 @@ function ProductsScreen(props) {
     bodyFormData.append('image', file);
     setUploading(true);
     axios
-      .post('/api/uploads', bodyFormData, {
+      .post('/api/uploads/s3', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -151,7 +151,7 @@ function ProductsScreen(props) {
     bodyFormData.append('image', file);
     setUploading(true);
     axios
-      .post('/api/uploads', bodyFormData, {
+      .post('/api/uploads/s3', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

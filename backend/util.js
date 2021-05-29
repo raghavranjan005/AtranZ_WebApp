@@ -27,7 +27,6 @@ const isAuth = (req, res, next) => {
         return res.status(401).send({ message: 'Invalid Token' });
       }
       req.user = decode;
-      console.log(req.user);
       next();
       return;
     });
@@ -37,7 +36,6 @@ const isAuth = (req, res, next) => {
 };
 
 const isAdmin = (req, res, next) => {
-  console.log(req.user);
   if (req.user && req.user.isAdmin) {
     return next();
   }
