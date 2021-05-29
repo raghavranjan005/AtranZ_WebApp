@@ -18,7 +18,7 @@ const upload = multer({ storage });
 const router = express.Router();
 
 router.post('/', upload.single('image'), (req, res) => {
-  res.send(`/${req.file.path}`);
+  return res.send(`/${req.file.path}`);
 });
 
 aws.config.update({
@@ -37,6 +37,6 @@ const storageS3 = multerS3({
 });
 const uploadS3 = multer({ storage: storageS3 });
 router.post('/s3', uploadS3.single('image'), (req, res) => {
-  res.send(req.file.location);
+  return res.send(req.file.location);
 });
 export default router;

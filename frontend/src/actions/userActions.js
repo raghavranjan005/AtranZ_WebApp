@@ -37,7 +37,6 @@ const signin = (email, password) => async (dispatch) => {
   try {
     const { data } = await Axios.post("/api/users/signin", { email, password});
     dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-    console.log(data);
     Cookie.set('userInfo', JSON.stringify(data));
   } catch (error) {
     dispatch({ type: USER_SIGNIN_FAIL, payload:
@@ -47,10 +46,6 @@ const signin = (email, password) => async (dispatch) => {
   }
 }
 
-
-// const addToCart = (productId,Qty)=>async (dispatch) =>{
-//   dispatch ({type: USER_ADD_TO_CART_REQUEST,)
-// };
 
 
   const register = (name, email, password, mobile) => async (dispatch) => {
@@ -129,18 +124,14 @@ const resetpasswordlink = (email, password, id) => async (dispatch, getState) =>
 
 const addToCart = (productId,qty,id) =>async (dispatch,getState) => {
   const { userSignin: { userInfo } } = getState();
-  // console.log(userInfo);
   dispatch ({type : USER_ADD_TO_CART_REQUEST });
   try 
   {
-    console.log("add To cart Action ");
     const {cartItems} = await axios.post("/api/users/cart",{productId,qty,id},{
       headers: {
         Authorization: 'Bearer ' + userInfo.token
       }
     });
-    console.log(cartItems);
-    console.log("add To cart Action 1 ");
     dispatch({type:USER_ADD_TO_CART_SUCCESS, payload:cartItems});
     dispatch({type:USER_CARTITEMS_SUCCESS,payload:cartItems.data});
   }
@@ -152,10 +143,15 @@ const addToCart = (productId,qty,id) =>async (dispatch,getState) => {
   }
 }
 
-const updateCart = (productId,qty,id) => async (dispatch)=>{
+const updateCart = (productId,qty,id) => async (dispatch,getState)=>{
+  const { userSignin: { userInfo } } = getState();
   dispatch ({type:USER_UPDATE_CART_REQUEST});
   try {
-    const cartItems = await axios.put("/api/users/updateCart",{productId,qty,id});
+    const cartItems = await axios.put("/api/users/updateCart",{productId,qty,id},{
+      headers: {
+        Authorization: 'Bearer ' + userInfo.token
+      }
+    });
     dispatch({type:USER_UPDATE_CART_SUCCESS,payload:cartItems});
   } catch (error) {
     dispatch({type:USER_UPDATE_CART_FAIL,payload:error.response && error.response.data.message
@@ -164,30 +160,10 @@ const updateCart = (productId,qty,id) => async (dispatch)=>{
   }
 } 
 
-// const deleteFromCart = (productId) => async (dispatch,getState)=>{
-//   dispatch ({type:USER_DELETE_FROM_CART_REQUEST});
-//   try {
-//     console.log("delete action");
-//     console.log(productId);
-//     const { userSignin: { userInfo } } = getState();
-//     const cartItems = await axios.delete("/api/users/"+productId, {
-//       headers:
-//         { Authorization: 'Bearer ' + userInfo.token }
-//     });
-//     console.log("delete action 1");
-//     dispatch({type:USER_DELETE_FROM_CART_SUCCESS,payload:cartItems});
-//   } catch (error) {
-//     dispatch({type:USER_DELETE_FROM_CART_FAIL,payload:error.response && error.response.data.message
-//       ? error.response.data.message
-//       : error.message,})
-//   }
-// }
 
 const deleteFromCart = (productId) => async (dispatch,getState)=>{
   dispatch ({type:USER_DELETE_FROM_CART_REQUEST});
   try {
-    console.log("delete action");
-    console.log(productId);
     const { userSignin: { userInfo } } = getState();
     const cartItems = await axios.delete("/api/users/deleteCart",{
       headers:
@@ -196,7 +172,6 @@ const deleteFromCart = (productId) => async (dispatch,getState)=>{
           productId: productId
         }
     });
-    console.log("delete action 1");
     dispatch({type:USER_DELETE_FROM_CART_SUCCESS,payload:cartItems});
     dispatch({type:USER_CARTITEMS_SUCCESS,payload:cartItems.data});
   } catch (error) {
@@ -209,13 +184,11 @@ const deleteFromCart = (productId) => async (dispatch,getState)=>{
 const emptyCart = () => async (dispatch,getState)=>{
   dispatch ({type:USER_EMPTY_CART_REQUEST});
   try {
-    console.log("Empty action");
     const { userSignin: { userInfo } } = getState();
     const cartItems = await axios.delete("/api/users/emptyCart",{
       headers:
         { Authorization: 'Bearer ' + userInfo.token },
     });
-    console.log("Empty action 1");
     dispatch({type:USER_EMPTY_CART_SUCCESS,payload:cartItems});
   } catch (error) {
     dispatch({type:USER_EMPTY_CART_FAIL,payload:error.response && error.response.data.message
@@ -227,13 +200,11 @@ const emptyCart = () => async (dispatch,getState)=>{
 const normalEmptyCart = () => async (dispatch,getState)=>{
   dispatch ({type:USER_NORMAL_EMPTY_CART_REQUEST});
   try {
-    console.log("normal Empty action");
     const { userSignin: { userInfo } } = getState();
     const cartItems = await axios.delete("/api/users/normalEmptyCart",{
       headers:
         { Authorization: 'Bearer ' + userInfo.token },
     });
-    console.log("normal Empty action 1");
     dispatch({type:USER_NORMAL_EMPTY_CART_SUCCESS,payload:cartItems});
   } catch (error) {
     dispatch({type:USER_NORMAL_EMPTY_CART_FAIL,payload:error.response && error.response.data.message
@@ -245,15 +216,12 @@ const normalEmptyCart = () => async (dispatch,getState)=>{
 const cartItemsList = () => async (dispatch,getState) =>{
   dispatch({type:USER_CARTITEMS_REQUEST});
   try {
-    console.log("item list action");
     const { userSignin: { userInfo } } = getState();
     const {data}  = await Axios.get("/api/users/cart",
     { 
       headers:
       { Authorization: 'Bearer ' + userInfo.token }
 });
-    console.log("item list action 1");
-    console.log(data);
     dispatch({type:USER_CARTITEMS_SUCCESS,payload:data});
     
   } catch (error) {
@@ -294,15 +262,10 @@ const applyCoupon = (couponCode) => async (dispatch, getState) => {
   try {
     dispatch({ type: APPLY_COUPON_REQUEST });
     const { userSignin: { userInfo } } = getState();
-    console.log(userInfo)
-    console.log(couponCode)
-    console.log("status action")
-    // console.log(userInfo)
     const { data } = await Axios.post("/api/users/applycoupon", {couponCode},{
       headers:
         { Authorization: 'Bearer ' + userInfo.token }
     });
-    console.log("status success")
     dispatch({ type: APPLY_COUPON_SUCCESS, payload: data })
   } catch (error) {
     dispatch({ type: APPLY_COUPON_FAIL, payload: error.response && error.response.data.message
@@ -317,7 +280,6 @@ const removeDiscount = () => (dispatch) => {
 
 const logout = () => (dispatch) => {
   Cookie.remove("userInfo");
-  console.log("cookies deleted");
   dispatch({ type: USER_LOGOUT });
   dispatch({type:REMOVE_DISCOUNT_SUCCESS});
 }

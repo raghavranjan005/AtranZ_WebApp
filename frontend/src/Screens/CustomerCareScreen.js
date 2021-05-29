@@ -16,6 +16,7 @@ function CustomerCareScreen() {
                 <div className="dev-details-container">
                 <h1 className="dev-details large-font">Abhishek Kumar</h1>
                 <h2 className="dev-details">Sophomore Year UnderGraduate,<br></br>HIT Kolkata</h2>
+                <h3 className="dev-details">(OWNER)</h3>
                 </div>
                 <br clear="left" /><br clear="top"/>
             <div class="avtar-container">
@@ -28,6 +29,7 @@ function CustomerCareScreen() {
         <div className="col-2 leftpad">
             <div class="card-image">
             <h2 className="medium-font">For any query or help</h2>
+            <h4 className="small-font">You can also find live chat option on the bottom-right corner of your screen.<br></br> You can also solve your queries there.</h4>
             <h2 className="small-font">
             <i className="fa fa-envelope"/>&nbsp;Email at: atranzcart@gmail.com
             </h2>

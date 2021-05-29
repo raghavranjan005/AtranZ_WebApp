@@ -53,7 +53,7 @@ function ProductScreen(props){
       const handleAddToCart = () => {
         // props.history.push('/cart/' + props.match.params.id + '?qty=' + qty);
         props.history.push("/signin?redirect=cart/"+props.match.params.id+"?"+qty);
-        // console.log(props.match.params.id,qty,userInfo._id);
+        // //console.log(props.match.params.id,qty,userInfo._id);
         // dispatch(addToCart(props.match.params.id,qty,userInfo._id));
       
 
@@ -64,7 +64,7 @@ function ProductScreen(props){
       //   })
       // };
       }
-      console.log(qty);
+      //console.log(qty);
       
     return(
         <div>

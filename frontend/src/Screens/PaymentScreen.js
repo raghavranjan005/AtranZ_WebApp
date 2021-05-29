@@ -8,7 +8,7 @@ function PaymentScreen(props) {
   const [paymentMethod, setPaymentMethod] = useState('');
 //  const cart = useSelector(state => state.cart);
   // const { cartItems, shipping, payment } = cart;
-  // console.log(shipping.address);
+  // //console.log(shipping.address);
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {

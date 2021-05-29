@@ -258,7 +258,12 @@ const verificationMail = (link) => `
                             <p style="margin: 0;"><a href="#" target="_blank" style="color: #533696;">${link}</a></p>
                         </td>
                     </tr>
-
+                    <tr>
+                    <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                        <p style="margin: 0;">Congratulations! We have added a coupon worth ₹100 <br></br> Coupon Code : 1FIRST100 </p>
+                    </td>
+                    <br></br>
+                </tr> <!-- COPY -->
                     <tr>
                         <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                             <p style="margin: 0;">If you have any questions, just reply to this email—we're always happy to help out.</p>
@@ -269,6 +274,8 @@ const verificationMail = (link) => `
                             <p style="margin: 0;">Cheers,<br>AtranZ Team</p>
                         </td>
                     </tr>
+
+
                 </table>
             </td>
         </tr>

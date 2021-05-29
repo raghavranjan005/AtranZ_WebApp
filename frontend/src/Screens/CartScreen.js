@@ -11,40 +11,40 @@ import Cookie from 'js-cookie';
 function CartScreen(props) {
 
   const cartList = useSelector(state => state.cartList);
-  console.log(cartList);
+  //console.log(cartList);
   const {cartItems,loading , error } = cartList;
-  console.log(cartItems);
+  //console.log(cartItems);
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
   const productId = props.match.params.id;
   const qty = props.location.search ? Number(props.location.search.split("?")[1]) : 1;
   const [flag, setflag] = useState(0);
   const [del, setdel] = useState(0);
-  // console.log(qty);
+  // //console.log(qty);
   const dispatch = useDispatch();
   const removeFromCartHandler = (productId) => {
     dispatch(deleteFromCart(productId));
     setdel(del-1);
-    console.log(del);
-    console.log("delete");
+    //console.log(del);
+    //console.log("delete");
   }
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty,userInfo._id));
       props.history.push("/cart");
       setflag(flag+1);
-      console.log(flag);
-      console.log("add");
+      //console.log(flag);
+      //console.log("add");
     }
-    console.log("useEffect");
+    //console.log("useEffect");
   },[]);
   useEffect(() => {
     dispatch(cartItemsList());
-    console.log("add wala useEffect");
+    //console.log("add wala useEffect");
   },[flag]);
   // useEffect(() => {
   //   dispatch(cartItemsList());
-  //   console.log("del wala useEffect");
+  //   //console.log("del wala useEffect");
   // },[del]);
 
   const checkoutHandler = () => {

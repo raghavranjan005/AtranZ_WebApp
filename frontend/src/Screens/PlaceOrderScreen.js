@@ -25,12 +25,10 @@ function PlaceOrderScreen(props) {
   const { loading: loadingCoupon, discount:discount, error:errorCoupon } = ApplyCoupon;
   const [couponCode, setCouponCode] = useState('');
 
-  if(discount)
-  console.log(discount)
 
  if(!cartItems)
  {
-  props.history.replace("/cart");
+  props.history.push("/cart");
  }else if (!shipping) {
     props.history.push("/shipping");
   } else if (!payment) {
@@ -57,9 +55,9 @@ function PlaceOrderScreen(props) {
   const placeOrderHandler = () => {
     // create an order
     if(cartItems && shipping && payment){
-    console.log("place order");
-    console.log(products);
-    console.log(cartItems);
+    //console.log("place order");
+    //console.log(products);
+    //console.log(cartItems);
     var f = 1;
     for (var i=0; i < cartItems.length; i++) {
         for(var j=0;j<products.length;j++)
@@ -78,7 +76,7 @@ function PlaceOrderScreen(props) {
     }
     if(f===1)
     {
-      console.log(f);
+      //console.log(f);
       if(discount){
       dispatch(createOrder({
       orderItems: cartItems, shipping, payment, itemsPrice, shippingPrice,
@@ -92,7 +90,7 @@ function PlaceOrderScreen(props) {
   }
     else
     {
-      console.log(f);
+      //console.log(f);
       alert("sorry some items just got out of stock please rechoose the items");
       dispatch(normalEmptyCart());
       props.history.push("/");
@@ -102,7 +100,7 @@ function PlaceOrderScreen(props) {
 
   const CouponSubmit = (e) => {
     e.preventDefault();
-    console.log("haha")
+    //console.log("haha")
     dispatch(applyCoupon(couponCode));
   };
 

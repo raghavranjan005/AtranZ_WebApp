@@ -101,7 +101,7 @@ function ProductsScreen(props) {
         setUploading(false);
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
         setUploading(false);
       });
   };
@@ -121,7 +121,7 @@ function ProductsScreen(props) {
         setUploading(false);
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
         setUploading(false);
       });
   };
@@ -141,7 +141,7 @@ function ProductsScreen(props) {
         setUploading(false);
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
         setUploading(false);
       });
   };
@@ -161,7 +161,7 @@ function ProductsScreen(props) {
         setUploading(false);
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
         setUploading(false);
       });
   };

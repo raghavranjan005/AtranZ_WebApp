@@ -6,10 +6,8 @@ import bcrypt, { compareSync } from 'bcryptjs';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import Coupon from '../models/couponModel'
-// import handlebars from 'handlebars';
-// import fs from 'fs';
-// import path from 'path';
 import {resetPasswordEmail, verificationMail, newsLetterEmail} from '../Templates/emailTemplates'
+
 const bcryptsalt = process.env.BCRYPT_SALT;
 const Client_Url = process.env.CLIENT_URL;
 
@@ -18,72 +16,86 @@ const authorization={
   secure: 'true',
   auth: {
      user: process.env.mailId,  //your email address
-     pass: process.env.password               // your password
+     pass: process.env.password  // your password
   }
 };
 
 const router = express.Router();
 
 router.put('/:id', isAuth, async (req, res) => {
-  const userId = req.params.id;
-  const user = await User.findById(userId);
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    if (req.body.password) {
-      user.password = bcrypt.hashSync(req.body.password, 8);
-    }else{
-      user.password = user.password;
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      if (req.body.password) {
+        user.password = bcrypt.hashSync(req.body.password, 8);
+      }else{
+        user.password = user.password;
+      }
+      
+      const updatedUser = await user.save();
+      return res.send({
+        _id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+        token: getToken(updatedUser),
+      });
+    } else {
+      return res.status(404).send({ message: 'User Not Found' });
     }
     
-    const updatedUser = await user.save();
-    res.send({
-      _id: updatedUser.id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      token: getToken(updatedUser),
-    });
-  } else {
-    res.status(404).send({ message: 'User Not Found' });
-  }
+  } catch (error) {
+    return res.send(error);
+  } 
 });
 
 router.post('/signin', async (req, res) => {
-  const signinUser = await User.findOne({ email: req.body.email });
-  if (signinUser) {
 
-    if(!signinUser.isVerified){
-      return res.status(401).send({ message: 'Please verify your email then only you can signin' });
+try {
+
+    const signinUser = await User.findOne({ email: req.body.email });
+    if (signinUser) {
+
+      if(!signinUser.isVerified){
+        return res.status(401).send({ message: 'Please verify your email then only you can signin' });
+      }
+      if (bcrypt.compareSync(req.body.password, signinUser.password)) {
+      
+        return res.send({
+        _id: signinUser.id,
+        name: signinUser.name,
+        email: signinUser.email,
+        mobile:signinUser.mobile,
+        isAdmin: signinUser.isAdmin,
+        token: getToken(signinUser),
+        });
+      }
     }
-    if (bcrypt.compareSync(req.body.password, signinUser.password)) {
-    
-      res.send({
-      _id: signinUser.id,
-      name: signinUser.name,
-      email: signinUser.email,
-      mobile:signinUser.mobile,
-      isAdmin: signinUser.isAdmin,
-      token: getToken(signinUser),
-      });
-      return;
-    }
-  }
-    return res.status(401).send({ message: 'Invalid Email or Password.' });
+      return res.status(401).send({ message: 'Invalid Email or Password.' });
+  
+} catch (error) {
+    return res.send(error);
+}
+  
 });
 
 
 router.post('/register', async (req, res) => {
-  const registerUser = await User.findOne({
-    email: req.body.email,
-  });
-  if(!registerUser){
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 8),
-      mobile:req.body.mobile,
-    });
+  try {
+
+        const registerUser = await User.findOne({
+          email: req.body.email,
+        });
+        if(!registerUser){
+          const user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, 8),
+            mobile:req.body.mobile,
+          });
 
 
         const transporter=nodemailer.createTransport(authorization);
@@ -97,11 +109,11 @@ router.post('/register', async (req, res) => {
         const mailOptions={
           from: 'atranzcart@gmail.com',
           to: user.email,
-          subject:'Reset Password',
-          text: `Reset-Link`,
+          subject:'VERIFY YOUR EMAIL',
+          text: `verification link`,
           html: output,
           }
-    
+
           transporter.sendMail(mailOptions, (error, info)=>{
           if (error) {
               console.log(error);
@@ -111,77 +123,77 @@ router.post('/register', async (req, res) => {
         });
     if (newUser) {
       return res.send({
-        // _id: newUser.id,
-        // name: newUser.name,
-        // email: newUser.email,
-        // isAdmin: newUser.isAdmin,
-        // token: getToken(newUser),
         flag:true,
       });
     } else {
-      res.status(401).send({ message: 'Invalid User Data.' });
+      return res.status(401).send({ message: 'Invalid User Data.' });
     }
-  }
-   else {
+    }
+    else {
     return res.status(401).send({ message: 'User Email-Id Already Exist' });
+    }
+    
+  } catch (error) {
+    return res.send(error);
   }
+        
 });
 
 
 router.get('/verifyemail/:id',async (req,res)=>{
   try{
-    console.log("hehe")
-  const verifyuser = await User.findOne({
-    verificationToken: req.params.id
-  });
-
-  verifyuser.isVerified = true;
-  // let verificationToken = crypto.randomBytes(32).toString("hex");
-  // verifyuser.verificationToken = verificationToken;
-
-  await verifyuser.save();
-  console.log("hehe2")
-  return res.send({
-    verifyflag:true
-  });
+    const verifyuser = await User.findOne({
+      verificationToken: req.params.id
+    });
+    verifyuser.isVerified = true;
+    await verifyuser.save();
+    console.log("hehe2")
+    return res.send({
+      verifyflag:true
+    });
   
   }catch(error){
-    res.status(400).send({ message: 'Invalid Link' });
+    return res.status(400).send({ message: 'Invalid Link' });
   }
 
-  });
+});
 
 router.post('/reset-password', async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (user) {
-    const transporter=nodemailer.createTransport(authorization);
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      const transporter=nodemailer.createTransport(authorization);
+      
+      let resetToken = crypto.randomBytes(32).toString("hex");
+      user.resetToken = resetToken;
+      await user.save();
+      var link = `${Client_Url}resetpassword/${user.resetToken}`;
+      const output = resetPasswordEmail(link);
+  
+      const mailOptions={
+        from: 'atranzcart@gmail.com',
+        to: user.email,
+        subject:'Reset Password',
+        text: `Reset-Link`,
+        html: output,
+        }
+  
+        transporter.sendMail(mailOptions, (error, info)=>{
+        if (error) {
+            console.log(error);
+        } else {
+        console.log('Email sent: ' + info.response);
+        }
+    });
+  
+    return res.status(200).send(user);
+  
+    }
+     return res.status(400).send({ message: 'User Not found' });
     
-    let resetToken = crypto.randomBytes(32).toString("hex");
-    user.resetToken = resetToken;
-    await user.save();
-    var link = `${Client_Url}resetpassword/${user.resetToken}`;
-    const output = resetPasswordEmail(link);
-
-    const mailOptions={
-      from: 'atranzcart@gmail.com',
-      to: user.email,
-      subject:'Reset Password',
-      text: `Reset-Link`,
-      html: output,
-      }
-
-      transporter.sendMail(mailOptions, (error, info)=>{
-      if (error) {
-          console.log(error);
-      } else {
-      console.log('Email sent: ' + info.response);
-      }
-  });
-
-  return res.status(200).send(user);
-
+  } catch (error) {
+    return res.send(error);
   }
-   return res.status(400).send({ message: 'User Not found' });
 });
 
 
@@ -192,7 +204,7 @@ router.get('/resetpassword/:id',async (req,res)=>{
     resetToken: req.params.id
   });
   }catch(error){
-    res.status(400).send({ message: 'Invalid Link' });
+    return res.status(400).send({ message: 'Invalid Link' });
   }
 
   });
@@ -208,7 +220,7 @@ router.get('/resetpassword/:id',async (req,res)=>{
           resetuser.password = bcrypt.hashSync(req.body.password,8);
           resetuser.resetToken = crypto.randomBytes(32).toString("hex");
           const newUser = await resetuser.save();
-          res.send({
+          return res.send({
             _id: newUser.id,
             name: newUser.name,
             email: newUser.email,
@@ -231,11 +243,6 @@ router.get('/resetpassword/:id',async (req,res)=>{
 
 
     
-    
-      
-
-
-
 // router.get('/createadmin', async (req, res) => {
 //   try {
 //     const user = new User({
@@ -254,151 +261,138 @@ router.get('/resetpassword/:id',async (req,res)=>{
 router.get('/cart',isAuth,async(req,res)=>{
   try{
   const user = await User.findById(req.user._id);
-  res.send(user.cartItems);
+  if(user)
+    return res.send(user.cartItems);
+  else
+    return res.status(404).send({message:"No Item Found"});
   }
   catch
   {
-    res.status(401).send({message:"soemthing went wrong"});
+    res.send(error);
   }
 })
 
-router.post('/cart',async (req,res)=>{
-  const user = await User.findById(req.body.id);
-  const product = await Product.findById(req.body.productId); 
-  if(user&&product)
-  {
-      const cartItem = user.cartItems;
-      if(cartItem.length===0)
-      {
-              cartItem.push (
-                {
-                  name:product.name,
-                  qty:req.body.qty,
-                  image1: product.image1,
-                  price: product.price,
-                  productId: req.body.productId,
-                }
-              )
-             await user.save();
-      }
-      else
-      {
-          var f = 0;
-          for (var i=0; i < cartItem.length; i++) {
-            if (cartItem[i].productId === req.body.productId) {
-                f = 1;
-                cartItem[i] = {
-                  name:product.name,
-                  qty:req.body.qty,
-                  image1: product.image1,
-                  price: product.price,
-                  productId: req.body.productId,
+router.post('/cart',isAuth, async (req,res)=>{
+  try {
+    const user = await User.findById(req.body.id);
+    const product = await Product.findById(req.body.productId); 
+    if(user&&product)
+    {
+        const cartItem = user.cartItems;
+        if(cartItem.length===0)
+        {
+                cartItem.push (
+                  {
+                    name:product.name,
+                    qty:req.body.qty,
+                    image1: product.image1,
+                    price: product.price,
+                    productId: req.body.productId,
                   }
-                 await user.save();
-                 break;
+                )
+              await user.save();
+        }
+        else
+        {
+            var f = 0;
+            for (var i=0; i < cartItem.length; i++) {
+              if (cartItem[i].productId === req.body.productId) {
+                  f = 1;
+                  cartItem[i] = {
+                    name:product.name,
+                    qty:req.body.qty,
+                    image1: product.image1,
+                    price: product.price,
+                    productId: req.body.productId,
+                    }
+                  await user.save();
+                  break;
+              }
             }
-          }
-          if(f == 0)
-          {
-              cartItem.push (
-                {
-                  name:product.name,
-                  qty:req.body.qty,
-                  image1: product.image1,
-                  price: product.price,
-                  productId: req.body.productId,
-                }
-              )
-             await user.save();
-          }
-      }
-      res.send(user.cartItems);
-  }
-  else
-  {
-
-    console.log("something went wrong");
-  }
+            if(f == 0)
+            {
+                cartItem.push (
+                  {
+                    name:product.name,
+                    qty:req.body.qty,
+                    image1: product.image1,
+                    price: product.price,
+                    productId: req.body.productId,
+                  }
+                )
+              await user.save();
+            }
+        }
+        return res.send(user.cartItems);
+    }
+    else
+    {
+        return res.status(401).send({message:"Something Went Wrong"});
+    }
+    } catch (error) {
+      return res.send(error);
+    }
   
 })
 
-router.put('/updateCart',async (req,res)=>{
-  const user = await User.findById(req.body.id);
-  const product = await Product.findById(req.body.productId); 
-  const lengthOfCartItems = user.cartItems.length;
-  if(lengthOfCartItems === 0)
-  {
-      const cartItem = new cartItems (
+router.put('/updateCart',isAuth, async (req,res)=>{
+
+  try {
+        const user = await User.findById(req.body.id);
+        const product = await Product.findById(req.body.productId); 
+        const lengthOfCartItems = user.cartItems.length;
+        if(lengthOfCartItems === 0)
         {
-          name:product.name,
-          qty:req.body.qty,
-          image1: product.image1,
-          price: product.price,
-          productId: req.body.productId,
-        }
-      )
-      const newCartItem = await user.cartItems.save(); 
-  }
-  else
-  {
-      try {
-        const cartItem  = user.cartItems.findOne({product:req.body.productId});
-        if(cartItem)
-        {
-           cartItem.qty = req.body.qty; 
+            const cartItem = new cartItems (
+              {
+                name:product.name,
+                qty:req.body.qty,
+                image1: product.image1,
+                price: product.price,
+                productId: req.body.productId,
+              }
+            )
+            const newCartItem = await user.cartItems.save(); 
         }
         else
-        {   
-          const cartItem = new cartItems (
-            {
-              name:product.name,
-              qty:req.body.qty,
-              image1: product.image1,
-              price: product.price,
-              product: req.body.productId,
+        {
+            try {
+              const cartItem  = user.cartItems.findOne({product:req.body.productId});
+              if(cartItem)
+              {
+                cartItem.qty = req.body.qty; 
+              }
+              else
+              {   
+                const cartItem = new cartItems (
+                  {
+                    name:product.name,
+                    qty:req.body.qty,
+                    image1: product.image1,
+                    price: product.price,
+                    product: req.body.productId,
+                  }
+                  )
+              }
+              await user.cartItems.save(); 
+            } catch (error) {
+              return res.status(401).send({ message: 'Something went wrong' });
             }
-            )
         }
-        await user.cartItems.save(); 
-      } catch (error) {
-        return res.status(401).send({ message: 'Something went wrong' });
-      }
+        
+  } catch (error) {
+    return res.send(error);
   }
+  
   
 });
 
-// router.delete('/:id',isAuth,async (req,res)=>{
-//   try {
-//     console.log("delete route");
-//     const user = await User.findById(req.user._id);
-//     console.log(req.params.id);
-//     // console.log(user);
-//     const cartItem = user.cartItems;
-//     // const deletedCartItem = await cartItem.remove();
-//     var f ;
-//     for (var i=0; i < cartItem.length; i++) {
-//       if (cartItem[i].productId === req.params.id) {
-//             f = i;
-//            break;
-//       }
-//     }
-//     user.cartItems.splice(f,1);
-//     await user.save();
-//   } catch (error) {
-//     return res.status(401).send({ message: 'Something went wrong' });
-//   }
-  
-// })
 
 router.delete('/deleteCart',isAuth,async (req,res)=>{
-  console.log("hello");
+
   try {
-    console.log("delete route");
     const user = await User.findById(req.user._id);
-    console.log(req.body.productId);
-    // console.log(user);
     const cartItem = user.cartItems;
-    // const deletedCartItem = await cartItem.remove();
     var f ;
     for (var i=0; i < cartItem.length; i++) {
       if (cartItem[i].productId === req.body.productId) {
@@ -408,7 +402,7 @@ router.delete('/deleteCart',isAuth,async (req,res)=>{
     }
     user.cartItems.splice(f,1);
     await user.save();
-    res.send(user.cartItems);
+    return res.send(user.cartItems);
   } catch (error) {
     return res.status(401).send({ message: 'Something went wrong' });
   }
@@ -416,21 +410,16 @@ router.delete('/deleteCart',isAuth,async (req,res)=>{
 });
 
 router.delete('/emptyCart',isAuth,async (req,res)=>{
-  console.log("hello");
   try {
-    console.log("empty Cart route");
     const user = await User.findById(req.user._id);
-    console.log("user");
     for (var i=0; i < user.cartItems.length; i++) {
       const product = await Product.findById(user.cartItems[i].productId); 
       product.countInStock = product.countInStock - user.cartItems[i].qty;
       await product.save();
     }
     user.cartItems.splice(0,user.cartItems.length);
-    console.log("empty cart route 1");
-    // console.log(user.cartItems);
     await user.save();
-    res.send(user.cartItems);
+    return res.send(user.cartItems);
   } catch (error) {
     return res.status(401).send({ message: 'Something went wrong' });
   }
@@ -438,14 +427,9 @@ router.delete('/emptyCart',isAuth,async (req,res)=>{
 });
 
 router.delete('/normalEmptyCart',isAuth,async (req,res)=>{
-  console.log("hello");
   try {
-    console.log("normal empty Cart route");
     const user = await User.findById(req.user._id);
-    console.log("user");
     user.cartItems.splice(0,user.cartItems.length);
-    console.log("normal empty cart route 1");
-    // console.log(user.cartItems);
     await user.save();
     res.send(user.cartItems);
   } catch (error) {
@@ -471,7 +455,6 @@ router.post('/applycoupon',isAuth,async (req,res)=>{
           {
             return res.status(401).send({ message: 'Coupon Already used once by user' });
           }else{
-            console.log(index)
             coupon.couponUsers.push(req.user.email);
             await coupon.save();
             return res.send({discount:coupon.discount});

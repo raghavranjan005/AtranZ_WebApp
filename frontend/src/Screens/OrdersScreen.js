@@ -61,8 +61,8 @@ function OrdersScreen(props) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("hehe");
-    console.log(couponUsers);
+    //console.log("hehe");
+    //console.log(couponUsers);
     dispatch(addCoupon(couponCode,discount,couponUsers));
   };
 
@@ -80,8 +80,8 @@ function OrdersScreen(props) {
 
   const submitHandler2 = (e) => {
     e.preventDefault();
-    console.log("submitted")
-    console.log(isDelivered,isCancelled,isReturned,isPaid,DeliveryStatus,orderId);
+    //console.log("submitted")
+    //console.log(isDelivered,isCancelled,isReturned,isPaid,DeliveryStatus,orderId);
     dispatch(deliveryStatus(isDelivered,isCancelled,isReturned,isPaid,DeliveryStatus,orderId));
   };
 

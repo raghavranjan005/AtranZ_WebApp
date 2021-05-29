@@ -35,8 +35,8 @@ function RegisterScreen(props){
         }
       }, [flag]);
 
-    // console.log(User);
-    // console.log("hello");
+    // //console.log(User);
+    // //console.log("hello");
     
     const showPassword = (x) => {
 

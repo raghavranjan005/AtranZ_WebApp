@@ -21,90 +21,119 @@ const authorization={
 
 const router = express.Router();
 
-router.get("/", isAuth, async (req, res) => {
-  const orders = await Order.find({}).populate('user');
-  return res.send(orders);
+router.get("/", isAuth,isAdmin, async (req, res) => {
+  try {
+    const orders = await Order.find({}).populate('user');
+    if(orders)
+      return res.send(orders); 
+    else
+      return res.status(404).send({message:"No Orders Found"});
+  } catch (error) {
+    return res.send(error)
+  }
 });
 
 router.get("/mine", isAuth, async (req, res) => {
-  const orders = await Order.find({ user: req.user._id });
-  return res.send(orders);
+  try {
+      const orders = await Order.find({ user: req.user._id });
+      if(orders)
+        return res.send(orders);
+      else
+        return res.status(404).send({message:"Order Not found"})
+  } catch (error) {
+    return res.send(error);
+  }
 });
 
 
-
 router.get("/:id", isAuth, async (req, res) => {
-  const order = await Order.findOne({ _id: req.params.id });
-  if (order) {
-    return res.send(order);
-  } else {
-    return res.status(404).send({message:"Order Not Found."})
+  try {
+    const order = await Order.findOne({ _id: req.params.id });
+    if (order) {
+      return res.send(order);
+    } else {
+      return res.status(404).send({message:"Order Not Found."})
+    }   
+  } catch (error) {
+    return res.send(error);
   }
+  
 });
 
 
 
 router.delete("/:id", isAuth, async (req, res) => {
-  const order = await Order.findOne({ _id: req.params.id });
-  if (order) {
-    const deletedOrder = await order.remove();
-    return res.send(deletedOrder);
-  } else {
-    return res.status(404).send("Order Not Found.")
+  try {
+    const order = await Order.findOne({ _id: req.params.id });
+    if (order) {
+      const deletedOrder = await order.remove();
+      return res.send(deletedOrder);
+    } else {
+      return res.status(404).send("Order Not Found.")
+    } 
+  } catch (error) {
+    return res.send(error)
   }
+
 });
 
 router.post("/", isAuth, async (req, res) => {
-  console.log("order route");
-  if(req.body.discount){
-  var newOrder = new Order({
-    orderItems: req.body.orderItems,
-    user: req.user._id,
-    shipping: req.body.shipping,
-    payment: req.body.payment,
-    itemsPrice: req.body.itemsPrice,
-    taxPrice: req.body.taxPrice,
-    discount:req.body.discount.discount,
-    shippingPrice: req.body.shippingPrice,
-    totalPrice: req.body.totalPrice,
-  })}else{
-    var newOrder = new Order({
-      orderItems: req.body.orderItems,
-      user: req.user._id,
-      shipping: req.body.shipping,
-      payment: req.body.payment,
-      itemsPrice: req.body.itemsPrice,
-      taxPrice: req.body.taxPrice,
-      shippingPrice: req.body.shippingPrice,
-      totalPrice: req.body.totalPrice,
-  })}
+  try {
 
-  const newOrderCreated = await newOrder.save();
-  console.log(newOrder.payment.paymentMethod)
-  if(newOrder.payment.paymentMethod == "takeaway" || newOrder.payment.paymentMethod =="Cash on Delivery"){
-  const output = orderSummaryMail(newOrderCreated);
-  const transporter=nodemailer.createTransport(authorization);
-    const mailOptions={
-      from: 'atranzcart@gmail.com',
-      to: req.user.email,
-      subject:'Order Summary',
-      text: `Order Summary`,
-      html: output,
-      }
+    if(req.body.discount){
+      var newOrder = new Order({
+        orderItems: req.body.orderItems,
+        user: req.user._id,
+        shipping: req.body.shipping,
+        payment: req.body.payment,
+        itemsPrice: req.body.itemsPrice,
+        taxPrice: req.body.taxPrice,
+        discount:req.body.discount.discount,
+        shippingPrice: req.body.shippingPrice,
+        totalPrice: req.body.totalPrice,
+      })}else{
+        var newOrder = new Order({
+          orderItems: req.body.orderItems,
+          user: req.user._id,
+          shipping: req.body.shipping,
+          payment: req.body.payment,
+          itemsPrice: req.body.itemsPrice,
+          taxPrice: req.body.taxPrice,
+          shippingPrice: req.body.shippingPrice,
+          totalPrice: req.body.totalPrice,
+      })}
+    
+      const newOrderCreated = await newOrder.save();
+      if(newOrder.payment.paymentMethod == "takeaway" || newOrder.payment.paymentMethod =="Cash on Delivery"){
+      const output = orderSummaryMail(newOrderCreated);
+      const transporter=nodemailer.createTransport(authorization);
+        const mailOptions={
+          from: 'atranzcart@gmail.com',
+          to: req.user.email,
+          subject:'Order Summary',
+          text: `Order Summary`,
+          html: output,
+          }
+    
+          transporter.sendMail(mailOptions, (error, info)=>{
+          if (error) {
+              console.log(error);
+          } else {
+          console.log('Email sent: ' + info.response);
+          }
+      });}
+    
+      return res.status(201).send({ message: "New Order Created", data: newOrderCreated });
+    
+  } catch (error) {
+    return res.send(error);
+  }
 
-      transporter.sendMail(mailOptions, (error, info)=>{
-      if (error) {
-          console.log(error);
-      } else {
-      console.log('Email sent: ' + info.response);
-      }
-  });}
-
-  return res.status(201).send({ message: "New Order Created", data: newOrderCreated });
 });
 
 router.put("/:id/pay", isAuth, async (req, res) => {
-  const order = await Order.findById(req.params.id);
+  try {
+    const order = await Order.findById(req.params.id);
   if (order) {
     order.isPaid = true;
     order.paidAt = Date.now();
@@ -137,42 +166,52 @@ router.put("/:id/pay", isAuth, async (req, res) => {
   } else {
     return res.status(404).send({ message: 'Order not found.' })
   }
-});
-
-
-
-router.put("/", isAuth, async (req, res) => {
-  const order = await Order.findOne({ _id: req.body.orderId })
-  if (order) {
-      order.isDelivered = req.body.isDelivered;
-      order.isCancelled = req.body.isCancelled;
-      order.isReturned = req.body.isReturned;
-      order.isPaid = req.body.isPaid;
-      if(req.body.isDelivered)
-      {order.deliveredAt = Date.now();}
-      else{
-        order.deliveredAt='';
-      }
-      if(req.body.isPaid)
-      {
-        order.paidAt = Date.now();
-      }
-      else{
-        order.paidAt = '';
-      }
-      order.deliveryStatus=req.body.DeliveryStatus
-      const updatedOrder = await order.save();
-      return res.send({ message: 'Order Updated.', order: updatedOrder });
-  } else {
-    return res.status(404).send({ message: 'Order not found.' })
+    
+  } catch (error) {
+    return res.send(error)
   }
+  
 });
 
 
-router.post("/addcoupon", isAuth, async (req, res) => {
+
+router.put("/", isAuth,isAdmin, async (req, res) => {
 
   try {
-      console.log("entered bacjend")
+    const order = await Order.findOne({ _id: req.body.orderId })
+    if (order) {
+        order.isDelivered = req.body.isDelivered;
+        order.isCancelled = req.body.isCancelled;
+        order.isReturned = req.body.isReturned;
+        order.isPaid = req.body.isPaid;
+        if(req.body.isDelivered)
+        {order.deliveredAt = Date.now();}
+        else{
+          order.deliveredAt='';
+        }
+        if(req.body.isPaid)
+        {
+          order.paidAt = Date.now();
+        }
+        else{
+          order.paidAt = '';
+        }
+        order.deliveryStatus=req.body.DeliveryStatus
+        const updatedOrder = await order.save();
+        return res.send({ message: 'Order Updated.', order: updatedOrder });
+    } else {
+      return res.status(404).send({ message: 'Order not found.' })
+    }
+  } catch (error) {
+      return res.send(error);
+  }
+
+});
+
+
+router.post("/addcoupon", isAuth, isAdmin, async (req, res) => {
+
+  try {
       const coupon = await Coupon.findOne({ couponCode: req.body.couponCode }) 
       if(coupon)
       {
@@ -190,14 +229,13 @@ router.post("/addcoupon", isAuth, async (req, res) => {
       }
     
   } catch (error) {
-    return res.status(401).send({ message: 'Something went wrong'});
+    return res.send(error);
   }
 });
 
 router.post("/ordercancel", isAuth, async (req, res) => {
 
   try {
-      console.log("entered bacjend")
       const order = await Order.findById(req.body.orderId); 
       if(order.cancellationRequest)
       {
@@ -210,7 +248,7 @@ router.post("/ordercancel", isAuth, async (req, res) => {
       }
     
   } catch (error) {
-    return res.status(401).send({ message: 'Something went wrong'});
+    return res.send(error);
   }
 });
 

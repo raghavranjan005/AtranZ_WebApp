@@ -80,9 +80,9 @@ function OrderScreen(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     // dispatch actions
-    console.log("hello");
-    console.log(productid,userInfo.name,rating,comment,userInfo._id);
-    console.log("comment");
+    //console.log("hello");
+    //console.log(productid,userInfo.name,rating,comment,userInfo._id);
+    //console.log("comment");
     dispatch(
       saveProductReview(productid, {
         name: userInfo.name,

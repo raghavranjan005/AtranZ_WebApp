@@ -58,8 +58,8 @@ function OrderHistoryScreen(props) {
 
   // const submitHandler = (e) => {
   //   e.preventDefault();
-  //   console.log("hehe");
-  //   console.log(couponUsers);
+  //   ////console.log("hehe");
+  //   ////console.log(couponUsers);
   //   dispatch(addCoupon(couponCode,discount,couponUsers));
   // };
 
@@ -68,7 +68,7 @@ function OrderHistoryScreen(props) {
   const openForm2 = (id) => {
     document.getElementById("myForm2").style.display = "block";
     setOrderId(id);
-    console.log(id);
+    ////console.log(id);
   }
 
   const closeForm2 = () => {
@@ -78,8 +78,8 @@ function OrderHistoryScreen(props) {
 
   const submitHandler2 = (e) => {
     e.preventDefault();
-    console.log("submitted")
-    console.log(cancellationRequest);
+    ////console.log("submitted")
+    ////console.log(cancellationRequest);
     if(cancellationRequest)
     {
       dispatch(orderCancellation(cancellationRequest,cancellationReason,orderId));

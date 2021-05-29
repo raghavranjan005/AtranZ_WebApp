@@ -7,8 +7,6 @@ import {
 
 const createOrder = (order) => async (dispatch, getState) => {
   try {
-    console.log("create order");
-    console.log(order);
     dispatch({ type: ORDER_CREATE_REQUEST, payload: order });
     const { userSignin: { userInfo } } = getState();
     const { data: { data: newOrder } } = await Axios.post("/api/orders", order, {
@@ -16,10 +14,11 @@ const createOrder = (order) => async (dispatch, getState) => {
         Authorization: ' Bearer ' + userInfo.token
       }
     });
-    console.log("order created");
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: newOrder });
   } catch (error) {
-    dispatch({ type: ORDER_CREATE_FAIL, payload: error.message });
+    dispatch({ type: ORDER_CREATE_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 }
 
@@ -37,7 +36,9 @@ const listMyOrders = () => async (dispatch, getState) => {
     });
     dispatch({ type: MY_ORDER_LIST_SUCCESS, payload: data })
   } catch (error) {
-    dispatch({ type: MY_ORDER_LIST_FAIL, payload: error.message });
+    dispatch({ type: MY_ORDER_LIST_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 }
 
@@ -52,7 +53,9 @@ const listOrders = () => async (dispatch, getState) => {
     });
     dispatch({ type: ORDER_LIST_SUCCESS, payload: data })
   } catch (error) {
-    dispatch({ type: ORDER_LIST_FAIL, payload: error.message });
+    dispatch({ type: ORDER_LIST_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 }
 
@@ -66,7 +69,9 @@ const detailsOrder = (orderId) => async (dispatch, getState) => {
     });
     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data })
   } catch (error) {
-    dispatch({ type: ORDER_DETAILS_FAIL, payload: error.message });
+    dispatch({ type: ORDER_DETAILS_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 }
 
@@ -80,7 +85,9 @@ const payOrder = (order, paymentResult) => async (dispatch, getState) => {
     });
     dispatch({ type: ORDER_PAY_SUCCESS, payload: data })
   } catch (error) {
-    dispatch({ type: ORDER_PAY_FAIL, payload: error.message });
+    dispatch({ type: ORDER_PAY_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 }
 
@@ -94,7 +101,9 @@ const deleteOrder = (orderId) => async (dispatch, getState) => {
     });
     dispatch({ type: ORDER_DELETE_SUCCESS, payload: data })
   } catch (error) {
-    dispatch({ type: ORDER_DELETE_FAIL, payload: error.message });
+    dispatch({ type: ORDER_DELETE_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 }
 
@@ -102,16 +111,15 @@ const deliveryStatus = (isDelivered,isCancelled,isReturned,isPaid,DeliveryStatus
   try {
     dispatch({ type: DELIVERY_STATUS_CHANGE_REQUEST });
     const { userSignin: { userInfo } } = getState();
-    console.log("status action")
-    console.log(userInfo)
     const { data } = await Axios.put("/api/orders", {isDelivered,isCancelled,isReturned,isPaid,DeliveryStatus,orderId},{
       headers:
         { Authorization: 'Bearer ' + userInfo.token }
     });
-    console.log("status success")
     dispatch({ type: DELIVERY_STATUS_CHANGE_SUCCESS, payload: data })
   } catch (error) {
-    dispatch({ type: DELIVERY_STATUS_CHANGE_FAIL, payload: error.message });
+    dispatch({ type: DELIVERY_STATUS_CHANGE_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 }
 
@@ -119,16 +127,15 @@ const orderCancellation = (cancellationRequest,cancellationReason,orderId) => as
   try {
     dispatch({ type: ORDER_CANCELLATION_REQUEST });
     const { userSignin: { userInfo } } = getState();
-    console.log("order cancellation action")
-    console.log(userInfo)
     const { data } = await Axios.post("/api/orders/ordercancel", {cancellationRequest,cancellationReason,orderId},{
       headers:
         { Authorization: 'Bearer ' + userInfo.token }
     });
-    console.log("order cancellation success")
     dispatch({ type: ORDER_CANCELLATION_SUCCESS, payload: true })
   } catch (error) {
-    dispatch({ type: ORDER_CANCELLATION_FAIL, payload: error.message });
+    dispatch({ type: ORDER_CANCELLATION_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 }
 
@@ -138,16 +145,15 @@ const addCoupon = (couponCode,discount,couponUsers) => async (dispatch, getState
   try {
     dispatch({ type: ADD_COUPON_REQUEST });
     const { userSignin: { userInfo } } = getState();
-    console.log("status action")
-    // console.log(userInfo)
     const { data } = await Axios.post("/api/orders/addcoupon", {couponCode,discount,couponUsers},{
       headers:
         { Authorization: 'Bearer ' + userInfo.token }
     });
-    console.log("status success")
     dispatch({ type: ADD_COUPON_SUCCESS, payload: data })
   } catch (error) {
-    dispatch({ type: ADD_COUPON_FAIL, payload: error.message });
+    dispatch({ type: ADD_COUPON_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 }
 

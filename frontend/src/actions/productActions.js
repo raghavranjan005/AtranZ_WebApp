@@ -46,12 +46,15 @@ import Axios from 'axios';
 // };
 
 const normalListProducts =()=>async(dispatch,getState)=>{
+
     dispatch({type:NORMAL_PRODUCT_LIST_REQUEST});
     try {
       const {data} = await axios.get('/api/products/normal');
       dispatch({type:NORMAL_PRODUCT_LIST_SUCCESS,payload:data});
     } catch (error) {
-      dispatch({ type: NORMAL_PRODUCT_LIST_FAIL, payload: error.message });
+      dispatch({ type: NORMAL_PRODUCT_LIST_FAIL, payload: error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message, });
     }
 };
 
@@ -72,9 +75,10 @@ const listProducts = ({
       `/api/products?pageNumber=${pageNumber}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`
     );
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-    console.log("product list action");
   } catch (error) {
-    dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
+    dispatch({ type: PRODUCT_LIST_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 };
 
@@ -86,7 +90,9 @@ const listProductCategories = () => async (dispatch) => {
     const { data } = await Axios.get(`/api/products/categories`);
     dispatch({ type: PRODUCT_CATEGORY_LIST_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({ type: PRODUCT_CATEGORY_LIST_FAIL, payload: error.message });
+    dispatch({ type: PRODUCT_CATEGORY_LIST_FAIL,payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 };
 
@@ -116,7 +122,9 @@ const saveProduct = (product) => async (dispatch, getState) => {
       dispatch({ type: PRODUCT_SAVE_SUCCESS, payload: data });
     }
   } catch (error) {
-    dispatch({ type: PRODUCT_SAVE_FAIL, payload: error.message });
+    dispatch({ type: PRODUCT_SAVE_FAIL,payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 };
 
@@ -126,7 +134,9 @@ const detailsProduct = (productId) => async (dispatch) => {
     const { data } = await axios.get('/api/products/' + productId);
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({ type: PRODUCT_DETAILS_FAIL, payload: error.message });
+    dispatch({ type: PRODUCT_DETAILS_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 };
 
@@ -144,7 +154,9 @@ const deleteProdcut = (productId) => async (dispatch, getState) => {
     });
     dispatch({ type: PRODUCT_DELETE_SUCCESS, payload: data, success: true });
   } catch (error) {
-    dispatch({ type: PRODUCT_DELETE_FAIL, payload: error.message });
+    dispatch({ type: PRODUCT_DELETE_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 };
 
@@ -155,7 +167,6 @@ const saveProductReview = (productId, review) => async (dispatch, getState) => {
         userInfo: { token },
       },
     } = getState();
-    console.log("hello");
     dispatch({ type: PRODUCT_REVIEW_SAVE_REQUEST, payload: review });
     const { data } = await axios.post(
       `/api/products/${productId}/reviews`,
@@ -166,11 +177,12 @@ const saveProductReview = (productId, review) => async (dispatch, getState) => {
         },
       }
     );
-    console.log("review saved");
     dispatch({ type: PRODUCT_REVIEW_SAVE_SUCCESS, payload: data });
   } catch (error) {
     // report error
-    dispatch({ type: PRODUCT_REVIEW_SAVE_FAIL, payload: error.message });
+    dispatch({ type: PRODUCT_REVIEW_SAVE_FAIL, payload: error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message, });
   }
 };
 

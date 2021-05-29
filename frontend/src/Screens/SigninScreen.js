@@ -26,8 +26,8 @@ function SigninScreen(props){
         };
       }, [userInfo])
 
-    // console.log(User);
-    // console.log("hello");
+    // //console.log(User);
+    // //console.log("hello");
     
    
     const submitHandler = (e) => {

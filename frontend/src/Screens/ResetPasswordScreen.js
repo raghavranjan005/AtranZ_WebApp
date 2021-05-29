@@ -14,7 +14,7 @@ function ResetPasswordScreen(props){
     const { loading, userInfo, error } = resetPassword;
     if(userInfo)
     {
-        console.log("hehe");
+        //console.log("hehe");
     }
     const dispatch = useDispatch();
 

@@ -81,7 +81,7 @@ function orderSummaryMail(order){
         
         <tr style="border-collapse:collapse"><td style="padding:0;Margin:0;font-size:14px;line-height:21px">
             
-    Order Total: &npsp;</td><td style="padding:0;Margin:0;font-size:14px;line-height:21px">&#8377; ${order.totalPrice}</td></tr>
+    Order Total:</td><td style="padding:0;Margin:0;font-size:14px;line-height:21px">&#8377; ${order.totalPrice}</td></tr>
     
     <tr style="border-collapse:collapse"><td style="padding:0;Margin:0;font-size:14px;line-height:21px">
     Status:</td><td style="padding:0;Margin:0;font-size:14px;line-height:21px">${paymentStatus}</td></tr>
