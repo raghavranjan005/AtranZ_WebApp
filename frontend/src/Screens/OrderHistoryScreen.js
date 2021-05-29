@@ -153,9 +153,7 @@ function OrderHistoryScreen(props) {
                   <th>TOTAL</th>
                   <th>PAID</th>
                   <th>DELIVERY</th>
-                  <th>CANCELLATION REQUEST</th>
-                  <th>CANCELLED</th>
-                  <th>RETURNED</th>
+                  <th>CANCELLATION</th>
                   <th>ACTIONS</th>
                 </tr>
               </thead>
@@ -166,17 +164,16 @@ function OrderHistoryScreen(props) {
                 {/* <td>{order.createdAt.substring(0, 10)}</td> */}
                 <td>{getIST(order.createdAt)}</td>
                 <td>&#8377;{order.totalPrice.toFixed(2)}</td>
+                
                 {order.isPaid?<td><i className="fa fa-check"></i>{getIST(order.paidAt)}</td>:<td><i className="fa fa-times wrong"></i></td>} 
                 {order.isDelivered?<td><i className="fa fa-check"></i>{getIST(order.deliveredAt)}</td>
               :
               <td><i className="fa fa-times wrong"></i></td>}
-              {order.cancellationRequest?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
-              {order.isCancelled?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
-                {/* <td>{order.cancellationRequest?"YES":"NO"}</td> */}
-                {order.isReturned?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
-                {/* <td>{order.isReturned?"YES":"NO"}</td> */}
+
+              {order.isReturned?<td><button className="returned"> Returned </button></td>:
+              order.isCancelled?<td><button className="cancelled">Cancelled</button></td>:
+              order.cancellationRequest?<td><button className="request">Requested</button></td>:<td></td>}
                 <td>
-                <button class="open-button-2" onClick={() => openForm2(order._id)}>Request Cancellation</button>
                 <button
                     type="button"
                     className="small"
@@ -186,12 +183,12 @@ function OrderHistoryScreen(props) {
                   >
                     {order.isPaid || order.payment.paymentMethod !=="Online Payments" ? "Details" : "Complete Payment"}
                   </button>
-        
+
                   {!order.isPaid && order.payment.paymentMethod ==="Online Payments" &&
                   <button type="button" className="small delete-button" onClick={() => deleteHandler(order)}>
-                    <i className='fa fa-trash  trash'></i>&thinsp;
-                        Delete
+                    <i className='fa fa-trash  trash'></i>
                     </button>}
+                    <button class="open-button-4" onClick={() => openForm2(order._id)}>Request<br></br> Cancellation</button>
                 </td>
                 </tr>)}
               </tbody>

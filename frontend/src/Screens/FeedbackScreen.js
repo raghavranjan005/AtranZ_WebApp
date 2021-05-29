@@ -1,16 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Link } from 'react-router-dom';
-
-
+import smile from '../violet-smile.png'
 function FeedbackScreen() {
   
   return (
         <BrowserRouter>
-        <div>
-            <h1> This page will be updated soon. </h1>
-            <h2>For meantime you can send your Feedback to : atranzcart@gmail.com</h2>
-
-
+        <div class="container">
+          <img src={smile}></img>
+          <a href="https://forms.gle/5iMzG6Shstb8pm7S9" target="_blank">Click here to give valuable feedback      <i className="fa fa-angle-double-right"></i></a>
         </div>
         </BrowserRouter>
   );

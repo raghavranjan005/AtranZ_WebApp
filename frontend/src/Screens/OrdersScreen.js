@@ -89,7 +89,7 @@ function OrdersScreen(props) {
 
   return (loading || loadingDelete)? <LoadingBox></LoadingBox> :
     <div className="content content-margined">
-
+     <h1 className="heading">ADMIN PANEL</h1>
 
       <div className="order-header">
         <h3>Orders</h3>
@@ -181,9 +181,7 @@ function OrdersScreen(props) {
               <th>USER</th>
               <th>PAYMENT</th>
               <th>DELIVERY</th>
-              <th>CANCEL REQ</th>
-              <th>CANCELLED</th>
-              <th>RETURNED</th>
+              <th>CANCELLATION</th>
               <th>ACTIONS</th>
             </tr>
           </thead>
@@ -197,9 +195,9 @@ function OrdersScreen(props) {
               {order.isDelivered?<td><i className="fa fa-check"></i>{getIST(order.deliveredAt)}</td>
               :
               <td><i className="fa fa-times wrong"></i></td>} 
-              {order.cancellationRequest?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
-              {order.isCancelled?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
-              {order.isReturned?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
+             {order.isReturned?<td><button className="returned"> Returned </button></td>:
+              order.isCancelled?<td><button className="cancelled">Cancelled</button></td>:
+              order.cancellationRequest?<td><button className="request">Requested</button></td>:<td></td>}
               <td>
               <button class="open-button-2" onClick={() => openForm2(order._id)}>Set Order Status</button>
                 &nbsp;

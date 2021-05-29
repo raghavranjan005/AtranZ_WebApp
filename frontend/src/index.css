@@ -686,7 +686,7 @@ input {
 }
 .table td,
 .table th {
-  text-align: left;
+  text-align: center;
   border: 0.1rem solid #e4e4e4;
   padding: 0.5rem;
 }
@@ -1085,6 +1085,20 @@ input[type="checkbox"] {
   /* margin-left: 10%; */
 }
 
+.open-button-4 {
+  background-color: #963696;
+  font-size: 15px;
+  color: white;
+  padding: 2px 2px;
+  width: 30%;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+
+  /* margin-left: 10%; */
+}
+
+
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
@@ -1158,4 +1172,69 @@ input[type="checkbox"] {
   margin-left: 20rem;
   font-size: small;
   width: 10rem;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  left:25%;
+  margin-top:5%;
+  max-width: 100%;
+}
+
+.container img {
+  max-width: 50%;
+  height: auto;
+}
+
+.container a {
+    position: absolute;
+    top: 73%;
+    left: 12%;
+    color: white;
+    font-size: x-large;
+    text-decoration: none;
+    transition: left 1s;
+}
+
+
+.container a:hover {
+  left: 15%;
+}
+.fa-angle-double-right{
+  margin-left:0;
+  transition: margin-left 1s;
+}
+
+.fa-angle-double-right:hover{
+  margin-left:30px;
+}
+
+.request{
+  font-size: 10px;
+  margin:auto;
+  background-color: rgb(245, 245, 77);
+  width:70px;
+}
+
+.cancelled{
+  font-size: 10px;
+  margin:auto;
+  color:white;
+  background-color: red;
+  width:70px;
+}
+
+.returned{
+  font-size: 10px;
+  margin:auto;
+  color:white;
+  background-color: green;
+  width:70px;
+}
+
+.heading{
+  text-align: center;
+  background-color: violet;
+  color: white;
 }

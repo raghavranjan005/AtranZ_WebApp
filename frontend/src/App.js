@@ -91,7 +91,7 @@ s0.parentNode.insertBefore(s1,s0);
         </button>
       </div>
       <div className="logo">
-        <Link to="/"><img src="AtranZ-final.png" alt="AtranZ" font-color="white" height="150px" max-width="150rem"/></Link>
+        <Link to="/"><img src="AtranZ-final.png" alt="AtranZ" font-color="white"  height="150px" width="40%"/></Link>
         </div>
 
         <div className="header-links">
