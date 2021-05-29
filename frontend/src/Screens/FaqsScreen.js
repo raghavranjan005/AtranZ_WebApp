@@ -28,12 +28,13 @@ function FaqsScreen(props) {
       <li>For any payment related issue kindly contact CUSTOMER CARE.</li>
 
       <h4><i class="fa fa-truck"></i>&nbsp;DELIVERY AND CANCELLATION</h4>
-      <li>Once confirmed order will be dispatched and will be delivered within two days of order request.</li>
+      <li>Once confirmed order will be dispatched and will be delivered within two days of order request.(For FORBESGANJ, ARARIA)</li>
       <li>One can request for cancellation in order history page. We will review the request and act accordingly. <br></br>
         for updates kindly keep visiting order history panel. Also you will receive an email</li>
-      <li>Orer can only be cancelled within two days of delivery and returned items should be in good condition.</li>
+      <li>Order can only be cancelled within two days of delivery and returned items should be in good condition.</li>
       <li>For other than FORBESGANJ and ARARIA and nearby courier charge should be paid in advance seperately</li>
       <li>Shipping charges or delivery charges will be deducted and will not be refunded.</li>
+      <li>We will refund the amount paid in case of cancellation, directly to the account which was used to paid if online payment methods were used</li>
       <li>For TAKEAWAY method One can pick up his order on the same or next day of order. <br></br>
       After that order will be automatically cancelled and not valid.</li>
       <hr></hr>
