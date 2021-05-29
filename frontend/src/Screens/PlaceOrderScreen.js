@@ -39,7 +39,7 @@ function PlaceOrderScreen(props) {
  if(cartItems && shipping && payment)
  {
   var itemsPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
-  var shippingPrice = itemsPrice > 100 ? 0 : 10;
+  var shippingPrice = 10;
   var taxPrice = 0;
   var totalPrice = itemsPrice + shippingPrice;
   if(discount)

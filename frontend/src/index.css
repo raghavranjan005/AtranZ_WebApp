@@ -17,6 +17,25 @@ body {
 .fa-heart {
   color: red;
 }
+.fa-money{
+  color:rgb(134, 211, 18);
+  font-size: 3rem;
+}
+
+.fa-truck{
+  color:rgb(18, 63, 211);
+  font-size: 3rem;
+}
+.fa-tag{
+  color:rgb(18, 211, 105);
+  font-size: 3rem;
+}
+
+.fa-sign-in{
+  color:rgb(117, 86, 0);
+  font-size: 3rem;
+}
+
 
 .fa-filter {
   color: #533696;
@@ -1241,4 +1260,16 @@ input[type="checkbox"] {
 .margin-left{
   margin-left:100px;
   width: auto;
+}
+
+.feedback-margin{
+  margin-left:5%;
+}
+.red{
+  color: red;
+}
+
+.feedback-h1{
+  color:#533696;
+  font-size: x-large;
 }
