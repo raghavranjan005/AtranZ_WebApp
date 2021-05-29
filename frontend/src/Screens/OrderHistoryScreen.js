@@ -10,7 +10,7 @@ function OrderHistoryScreen(props) {
 
   const [cancellationRequest, setCancellationRequest] = useState(false);
   const [cancellationReason, setCancellationReason] = useState('choose any one reason');
-  const [orderId, setorderId] = useState(''); 
+  const [orderId, setOrderId] = useState(''); 
 
   const dispatch = useDispatch();
 
@@ -65,8 +65,10 @@ function OrderHistoryScreen(props) {
 
   //form 2
 
-  const openForm2 = () => {
+  const openForm2 = (id) => {
     document.getElementById("myForm2").style.display = "block";
+    setOrderId(id);
+    console.log(id);
   }
 
   const closeForm2 = () => {
@@ -92,7 +94,7 @@ function OrderHistoryScreen(props) {
             <h1 className="large"><i className="fa fa-shopping-bag"></i> My Orders </h1>
         </div>
     <div className="Button-grp">
-      <button class="open-button-2" onClick={() => openForm2()}>Request Cancellation</button>
+      {/* <button class="open-button-2" onClick={() => openForm2()}>Request Cancellation</button> */}
     </div>
     <div class="form-popup-2" id="myForm2">
                 <ul>
@@ -108,8 +110,8 @@ function OrderHistoryScreen(props) {
               <input type="checkbox" id="isDelivered" value="true" placeholder = "false" onChange={(e) =>{setCancellationRequest(e.target.value)} }/>
 
               <br></br><br></br>
-              <label for="orderid"><b>orderId</b></label> &nbsp;
-              <input type="text" id="isDelivered" required onChange={(e) => setorderId(e.target.value)}/>
+              {/* <label for="orderid"><b>orderId</b></label> &nbsp; */}
+              {/* <input type="text" id="isDelivered" required onChange={(e) => setorderId(e.target.value)}/> */}
               <label for="psw"><b>Cancellation Reason</b></label>
               <br></br><br></br>
               <select
@@ -150,8 +152,9 @@ function OrderHistoryScreen(props) {
                   <th>DATE</th>
                   <th>TOTAL</th>
                   <th>PAID</th>
-                  <th>DELIVERY (MM/DD/YYYY, HH:MM:SS)</th>
-                  <th>CANCELLATION</th>
+                  <th>DELIVERY</th>
+                  <th>CANCELLATION REQUEST</th>
+                  <th>CANCELLED</th>
                   <th>RETURNED</th>
                   <th>ACTIONS</th>
                 </tr>
@@ -160,17 +163,20 @@ function OrderHistoryScreen(props) {
                 {orders.map(order =><tr key={order._id}> 
 
                   <td>{order._id}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
+                {/* <td>{order.createdAt.substring(0, 10)}</td> */}
+                <td>{getIST(order.createdAt)}</td>
                 <td>&#8377;{order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? (getIST(order.paidAt) + " IST") : 'No'}</td>
+                {order.isPaid?<td><i className="fa fa-check"></i>{getIST(order.paidAt)}</td>:<td><i className="fa fa-times wrong"></i></td>} 
+                {order.isDelivered?<td><i className="fa fa-check"></i>{getIST(order.deliveredAt)}</td>
+              :
+              <td><i className="fa fa-times wrong"></i></td>}
+              {order.cancellationRequest?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
+              {order.isCancelled?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
+                {/* <td>{order.cancellationRequest?"YES":"NO"}</td> */}
+                {order.isReturned?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
+                {/* <td>{order.isReturned?"YES":"NO"}</td> */}
                 <td>
-                  {order.isDelivered
-                    ? "Delivered at "+(getIST(order.deliveredAt) + " IST")
-                    : order.deliveryStatus}
-                </td>
-                <td>{order.cancellationRequest?"YES":"NO"}</td>
-                <td>{order.isReturned?"YES":"NO"}</td>
-                <td>
+                <button class="open-button-2" onClick={() => openForm2(order._id)}>Request Cancellation</button>
                 <button
                     type="button"
                     className="small"

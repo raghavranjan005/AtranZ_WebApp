@@ -98,13 +98,13 @@ const deleteOrder = (orderId) => async (dispatch, getState) => {
   }
 }
 
-const deliveryStatus = (isDelivered,DeliveryStatus,orderId) => async (dispatch, getState) => {
+const deliveryStatus = (isDelivered,isCancelled,isReturned,isPaid,DeliveryStatus,orderId) => async (dispatch, getState) => {
   try {
     dispatch({ type: DELIVERY_STATUS_CHANGE_REQUEST });
     const { userSignin: { userInfo } } = getState();
     console.log("status action")
     console.log(userInfo)
-    const { data } = await Axios.put("/api/orders", {isDelivered,DeliveryStatus,orderId},{
+    const { data } = await Axios.put("/api/orders", {isDelivered,isCancelled,isReturned,isPaid,DeliveryStatus,orderId},{
       headers:
         { Authorization: 'Bearer ' + userInfo.token }
     });

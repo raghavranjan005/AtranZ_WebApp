@@ -96,14 +96,24 @@ router.put("/", isAuth, async (req, res) => {
   const order = await Order.findOne({ _id: req.body.orderId })
   if (order) {
       order.isDelivered = req.body.isDelivered;
+      order.isCancelled = req.body.isCancelled;
+      order.isReturned = req.body.isReturned;
+      order.isPaid = req.body.isPaid;
       if(req.body.isDelivered)
       {order.deliveredAt = Date.now();}
       else{
         order.deliveredAt='';
       }
+      if(req.body.isPaid)
+      {
+        order.paidAt = Date.now();
+      }
+      else{
+        order.paidAt = '';
+      }
       order.deliveryStatus=req.body.DeliveryStatus
       const updatedOrder = await order.save();
-      return res.send({ message: 'Staus Changed.', order: updatedOrder });
+      return res.send({ message: 'Order Updated.', order: updatedOrder });
   } else {
     return res.status(404).send({ message: 'Order not found.' })
   }

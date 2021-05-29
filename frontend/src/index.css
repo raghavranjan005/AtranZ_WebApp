@@ -32,21 +32,21 @@ body {
   font-size: medium;
   border: none;
   cursor: pointer; /* Mouse pointer on hover */
- box-shadow: #533696;
+  box-shadow: #533696;
 }
 
-.fa-times{
-  text-align:center;
+.fa-times {
+  text-align: center;
   font-size: x-large;
-  color:red;
+  color: red;
 }
 
-.fa-check{
+.fa-check {
   font-size: x-large;
-  color:green;
+  color: green;
 }
 
-.fa-trash{
+.fa-trash {
   cursor: pointer;
 }
 /* Common */
@@ -475,8 +475,8 @@ button.close-sidebar {
   width: 40rem;
   height: 40rem;
   /* overflow: hidden; */
-  object-fit: fill;
-  display: block;
+  object-fit: none;
+  /* display: block; */
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }

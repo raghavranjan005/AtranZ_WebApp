@@ -22,6 +22,9 @@ function OrdersScreen(props) {
 
 
   const [isDelivered, setIsDelivered] = useState(false);
+  const [isCancelled, setIsCancelled] = useState(false);
+  const [isReturned, setIsReturned] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
   const [DeliveryStatus, setDeliveryStatus] = useState('');
   const [orderId, setOrderId] = useState('');
 
@@ -78,7 +81,8 @@ function OrdersScreen(props) {
   const submitHandler2 = (e) => {
     e.preventDefault();
     console.log("submitted")
-    dispatch(deliveryStatus(isDelivered,DeliveryStatus,orderId));
+    console.log(isDelivered,isCancelled,isReturned,isPaid,DeliveryStatus,orderId);
+    dispatch(deliveryStatus(isDelivered,isCancelled,isReturned,isPaid,DeliveryStatus,orderId));
   };
 
 
@@ -135,10 +139,25 @@ function OrdersScreen(props) {
               </li>
               </ul>
               <form  class="form-container-pop" onSubmit={submitHandler2} >
-              <h1>Delivery Status</h1>
+              <h1>Order Actions</h1>
 
               <label for="deliveryStatus"><b>isDelivered</b></label> &nbsp;
-              <input type="checkbox" id="isDelivered" value="true" onChange={(e) =>{setIsDelivered(e.target.value)} }/>
+              <input type="checkbox" id="isDelivered" value={isDelivered} onChange={() =>{setIsDelivered(!isDelivered)} }/>
+
+              <br></br><br></br>
+
+              <label for="deliveryStatus"><b>isCancelled</b></label> &nbsp;
+              <input type="checkbox" id="isDelivered" value={isCancelled} onChange={() =>{setIsCancelled(!isCancelled)} }/>
+
+              <br></br><br></br>
+
+              <label for="deliveryStatus"><b>isReturned</b></label> &nbsp;
+              <input type="checkbox" id="isDelivered" value={isReturned} onChange={() =>{setIsReturned(!isReturned)} }/>
+              
+              <br></br><br></br>
+
+              <label for="deliveryStatus"><b>isPaid</b></label> &nbsp;
+              <input type="checkbox" id="isDelivered" value={isPaid} onChange={() =>{setIsPaid(!isPaid)} }/>
               <br></br><br></br>
               {/* <label for="orderid"><b>orderId</b></label> &nbsp;
               <input type="text" id="isDelivered" onChange={(e) => setorderId(e.target.value)}/> */}
@@ -162,23 +181,27 @@ function OrdersScreen(props) {
               <th>USER</th>
               <th>PAYMENT</th>
               <th>DELIVERY</th>
-              <th>CNCL STATUS</th>
+              <th>CANCEL REQ</th>
+              <th>CANCELLED</th>
+              <th>RETURNED</th>
               <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
             {orders.map(order => ( order.user?(<tr key={order._id}>
               <td>{order._id}</td>
-              <td>{order.createdAt}</td>
+              <td>{getIST(order.createdAt)}</td>
               <td>{order.totalPrice}</td>
               <td>{order.user.name}</td>
               {order.isPaid?<td><i className="fa fa-check"></i>{getIST(order.paidAt)}</td>:<td><i className="fa fa-times wrong"></i></td>} 
               {order.isDelivered?<td><i className="fa fa-check"></i>{getIST(order.deliveredAt)}</td>
               :
               <td><i className="fa fa-times wrong"></i></td>} 
-              <td>{order.isCancelled}</td>
+              {order.cancellationRequest?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
+              {order.isCancelled?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
+              {order.isReturned?<td><i className="fa fa-check"></i></td>:<td><i className="fa fa-times wrong"></i></td>}  
               <td>
-              <button class="open-button-2" onClick={() => openForm2(order._id)}>Set Delivery Status</button>
+              <button class="open-button-2" onClick={() => openForm2(order._id)}>Set Order Status</button>
                 &nbsp;
               <button
                     type="button"
