@@ -318,7 +318,8 @@ const removeDiscount = () => (dispatch) => {
 const logout = () => (dispatch) => {
   Cookie.remove("userInfo");
   console.log("cookies deleted");
-  dispatch({ type: USER_LOGOUT })
+  dispatch({ type: USER_LOGOUT });
+  dispatch({type:REMOVE_DISCOUNT_SUCCESS});
 }
 export { emptyCart,signin,normalEmptyCart, register, logout,verifyflagchange, update,verifyMail,
    resetpassword, resetpasswordlink,addToCart,deleteFromCart,updateCart,cartItemsList,userSaveShipping,

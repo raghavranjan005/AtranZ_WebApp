@@ -45,8 +45,11 @@ function PlaceOrderScreen(props) {
   var taxPrice = 0;
   var totalPrice = itemsPrice + shippingPrice;
   if(discount)
-  totalPrice = totalPrice - discount.discount;
-
+  {
+    totalPrice = totalPrice - discount.discount;
+    if(totalPrice<=0)
+      totalPrice=0;
+  }
  }
 
   const dispatch = useDispatch();

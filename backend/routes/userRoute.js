@@ -9,7 +9,7 @@ import Coupon from '../models/couponModel'
 // import handlebars from 'handlebars';
 // import fs from 'fs';
 // import path from 'path';
-import {resetPasswordEmail, verificationMail} from '../Templates/emailTemplates'
+import {resetPasswordEmail, verificationMail, newsLetterEmail} from '../Templates/emailTemplates'
 const bcryptsalt = process.env.BCRYPT_SALT;
 const Client_Url = process.env.CLIENT_URL;
 
