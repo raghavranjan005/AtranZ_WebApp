@@ -122,7 +122,7 @@ const resetpasswordlink = (email, password, id) => async (dispatch, getState) =>
   }
 }
 
-const addToCart = (productId,qty,id) =>async (dispatch,getState) => {
+const addToCart = (productId,qty,id,flag) =>async (dispatch,getState) => {
   const { userSignin: { userInfo } } = getState();
   dispatch ({type : USER_ADD_TO_CART_REQUEST });
   try 
@@ -132,6 +132,7 @@ const addToCart = (productId,qty,id) =>async (dispatch,getState) => {
         Authorization: 'Bearer ' + userInfo.token
       }
     });
+    console.log("add to cart action");
     dispatch({type:USER_ADD_TO_CART_SUCCESS, payload:cartItems});
     dispatch({type:USER_CARTITEMS_SUCCESS,payload:cartItems.data});
   }

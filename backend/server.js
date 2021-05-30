@@ -34,11 +34,11 @@ app.get('/api/config/razorpay', (req, res) => {
 });
 
 
-// const __dirname = path.resolve();
-const __dirname = "F:\AtranZ_WebApp";
+const __dirname = path.resolve();
+// const __dirname = "F:\AtranZ_WebApp";
 app.use('/uploads', express.static(path.join(__dirname, '/../uploads')));
-app.use(express.static(path.join(__dirname, '/../frontend/build')));
+app.use(express.static(path.join(__dirname, '/../frontend/public')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/../frontend/build/index.html`));
+  res.sendFile(path.join(`${__dirname}/../frontend/public/index.html`));
 });
 app.listen(port, () => {console.log(`server started at http://localhost:${port}`)})
