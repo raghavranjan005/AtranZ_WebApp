@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import React, {useState } from 'react';
+import {useDispatch } from 'react-redux';
 import { userSaveShipping } from '../actions/userActions';
 import CheckoutSteps from '../components/CheckoutSteps';
-import Cookie from 'js-cookie';
 
 function ShippingScreen(props) {
 

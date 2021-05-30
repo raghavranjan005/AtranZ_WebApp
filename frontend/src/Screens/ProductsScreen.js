@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import {
   saveProduct,
-  listProducts,
   deleteProdcut,
   normalListProducts,
 } from '../actions/productActions';
@@ -34,9 +33,7 @@ function ProductsScreen(props) {
 
   const productDelete = useSelector((state) => state.productDelete);
   const {
-    loading: loadingDelete,
     success: successDelete,
-    error: errorDelete,
   } = productDelete;
   const dispatch = useDispatch();
 
