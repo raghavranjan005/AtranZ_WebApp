@@ -12,12 +12,14 @@ function ShippingScreen(props) {
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [country, setCountry] = useState('');
+  const [mobile, setMobile] = useState('');
+
 
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(userSaveShipping({ name, address, city, postalCode, country }));
+    dispatch(userSaveShipping({ name,mobile, address, city, postalCode, country }));
     props.history.push('payment');
   }
   return <div>
@@ -33,7 +35,15 @@ function ShippingScreen(props) {
             <label htmlFor="name">
               Name
           </label>
-            <input type="text" name="name" id="name" onChange={(e) => setName(e.target.value)}>
+            <input type="text" name="name" id="name" required onChange={(e) => setName(e.target.value)}>
+            </input>
+          </li>
+
+          <li>
+            <label htmlFor="name">
+              Mobile No.
+          </label>
+            <input type="text" name="mobile" id="mobile" required onChange={(e) => setMobile(e.target.value)}>
             </input>
           </li>
 
@@ -41,21 +51,21 @@ function ShippingScreen(props) {
             <label htmlFor="address">
               Address
           </label>
-            <input type="text" name="address" id="address" onChange={(e) => setAddress(e.target.value)}>
+            <input type="text" name="address" id="address" required onChange={(e) => setAddress(e.target.value)}>
             </input>
           </li>
           <li>
             <label htmlFor="city">
               City
           </label>
-            <input type="text" name="city" id="city" onChange={(e) => setCity(e.target.value)}>
+            <input type="text" name="city" id="city" required onChange={(e) => setCity(e.target.value)}>
             </input>
           </li>
           <li>
             <label htmlFor="postalCode">
               Postal Code
           </label>
-            <input type="text" name="postalCode" id="postalCode" onChange={(e) => setPostalCode(e.target.value)}>
+            <input type="text" name="postalCode" id="postalCode" required onChange={(e) => setPostalCode(e.target.value)}>
             </input>
           </li>
           <li>

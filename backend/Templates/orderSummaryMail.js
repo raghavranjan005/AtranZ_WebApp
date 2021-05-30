@@ -99,7 +99,7 @@ function orderSummaryMail(order){
     <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
         
         ${order.shipping.address}, ${order.shipping.city},
-          ${order.shipping.postalCode}, ${order.shipping.country},
+          ${order.shipping.postalCode}, ${order.shipping.country}<br></br>${order.shipping.mobile}
 </p>
         
         </td></tr></table></td></tr></table> <!--[if mso]></td></tr></table><![endif]--></td></tr></table></td>

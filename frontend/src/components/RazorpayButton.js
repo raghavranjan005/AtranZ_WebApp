@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
-
+import React from 'react';
 
 function RazorpayButton(props) {
 

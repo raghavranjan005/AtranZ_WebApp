@@ -1116,6 +1116,20 @@ input[type="checkbox"] {
   /* margin-left: 10%; */
 }
 
+.open-button-5 {
+  background-color: #963696;
+  font-size: 10px;
+  color: white;
+  padding: 8px 12px;
+  width: auto;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+
+  /* margin-left: 10%; */
+}
+
+
 
 /* The popup form - hidden by default */
 .form-popup {

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {resetpasswordlink} from '../actions/userActions';
 import MessageBox from '../components/MessageBox';
 import LoadingBox from '../components/LoadingBox';

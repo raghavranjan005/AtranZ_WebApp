@@ -141,9 +141,9 @@ function PlaceOrderScreen(props) {
             Shipping
           </h4>
           <div>
-            <b>Name: </b>{shipping.name},<br></br>
+            <b>Name: </b>{shipping.name}<br></br>
             <b>Deivery Address: </b>{shipping.address}, {shipping.city},
-          {shipping.postalCode}, {shipping.country}
+          {shipping.postalCode}, {shipping.country}<br></br><b>Contact No. :</b>{shipping.mobile}
           </div>
         </div>
         <div>

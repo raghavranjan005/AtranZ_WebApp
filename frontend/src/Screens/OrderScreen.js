@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {removeDiscount} from '../actions/userActions';
 import {saveProductReview} from '../actions/productActions'
-import { emptyCart } from '../actions/userActions';
 import { detailsOrder, payOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import RazorpayButton from '../components/RazorpayButton';
@@ -104,10 +103,9 @@ function OrderScreen(props) {
               Shipping and Delivery
           </h3>
             <div>
-              NAME: {order.shipping.name}<br></br><br></br>
-              ADDRESS: <br></br>
-              {order.shipping.address}, {order.shipping.city},
-          {order.shipping.postalCode}, {order.shipping.country},
+            <b>Name: </b>{order.shipping.name}<br></br>
+            <b>Deivery Address: </b>{order.shipping.address}, {order.shipping.city},
+          {order.shipping.postalCode}, {order.shipping.country}<br></br><b>Contact No. :</b>{order.shipping.mobile}
           </div>
           <br></br>
             <div>

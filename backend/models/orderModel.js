@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 const shippingSchema = {
   name:{type:String},
+  mobile:{type:String},
   address: { type: String, required: true },
   city: { type: String, required: true },
   postalCode: { type: String, required: true },

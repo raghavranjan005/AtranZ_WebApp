@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import MessageBox from '../components/MessageBox';
-import LoadingBox from '../components/LoadingBox';
+import React from 'react';
 
 
 function FaqsScreen(props) {
