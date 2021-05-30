@@ -13,6 +13,7 @@ import bodyParser from 'body-parser';
 dotenv.config();
 
 const mongodbUrl = config.MONGODB_URL;
+const port = process.env.PORT || 5000;
 
 const app = express();
 app.use(bodyParser.json());
@@ -34,9 +35,10 @@ app.get('/api/config/razorpay', (req, res) => {
 
 
 // const __dirname = path.resolve();
+const __dirname = "F:\AtranZ_WebApp";
 app.use('/uploads', express.static(path.join(__dirname, '/../uploads')));
-app.use(express.static(path.join(__dirname, '/../frontend/public')));
+app.use(express.static(path.join(__dirname, '/../frontend/build')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/../frontend/public/index.html`));
+  res.sendFile(path.join(`${__dirname}/../frontend/build/index.html`));
 });
-app.listen(5000, () => {console.log("server started at http://localhost:5000")})
+app.listen(port, () => {console.log(`server started at http://localhost:${port}`)})

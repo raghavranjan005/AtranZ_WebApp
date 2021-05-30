@@ -34,7 +34,7 @@ const resetPasswordEmail = (link) => `
                     <tr>
                         <td style="text-align:center;">
                           <a href="http://localhost:3000/" title="logo" target="_blank">
-                            <img width="60" src="http://localhost:3000/Atranz-bag.png" title="logo" alt="logo">
+                            <img width="60" src="https://atranz.s3.ap-south-1.amazonaws.com/AtranZ-bag.png" title="logo" alt="logo">
                           </a>
                         </td>
                     </tr>
