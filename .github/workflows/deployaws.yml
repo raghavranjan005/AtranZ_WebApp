@@ -52,7 +52,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.ACCESSKEYID }}
         aws-secret-access-key: ${{ secrets.SECRETACCESSKEY }}
-        aws-region: ap-south-1b
+        aws-region: ap-south-1
         instance-ids: ${{ secrets.INSTANCEID  }}
         comment: Deploy the main branch
         working-directory: /home/ubuntu/AtranZ_WebApp
