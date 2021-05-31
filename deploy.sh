@@ -1,5 +1,6 @@
 #!/bin/sh     
 sudo git pull origin main
+mkdir raghav
 sudo npm install
 cd frontend
 npm install
