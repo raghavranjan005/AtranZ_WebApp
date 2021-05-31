@@ -57,4 +57,15 @@ jobs:
         comment: Deploy the main branch
         working-directory: /home/ubuntu/AtranZ_WebApp
         command: /bin/sh ./deploy.sh
+  
+    - name: AWS SSM Send Command
+      uses: peterkimzz/aws-ssm-send-command@1.0.1
+      with:
+        aws-access-key-id: ${{ secrets.ACCESSKEYID }}
+        aws-secret-access-key: ${{ secrets.SECRETACCESSKEY }}
+        aws-region: ap-south-1
+        instance-ids: ${{ secrets.INSTANCEID  }}
+        comment: Deploy the main branch
+        working-directory: /home/ubuntu/AtranZ_WebApp
+        command: /bin/sh ./deploy.sh
         
