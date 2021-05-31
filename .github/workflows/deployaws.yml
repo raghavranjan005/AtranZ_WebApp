@@ -37,8 +37,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: AWS SSM Send Command
-      uses: peterkimzz/aws-ssm-send-command@1.0.1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
       env:
         MONGODB_URL: ${{ secrets.MONGODB_URL }}
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
