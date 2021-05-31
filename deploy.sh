@@ -1,5 +1,5 @@
 #!/bin/sh     
-sudo git pull origin master
+sudo git pull origin main
 sudo npm install
 cd frontend
 npm install
