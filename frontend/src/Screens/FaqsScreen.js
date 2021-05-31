@@ -8,7 +8,7 @@ function FaqsScreen(props) {
     <div className="feedback-margin">
       <hr></hr>
       <h1 className="feedback-h1">ORDERS and PAYMENTS</h1>
-      <p className="red"><strong><i>For Now we are only delivering to Bihar only.</i></strong><br></br> </p>
+      <p className="red"><strong><i>For Now we are only delivering within Bihar only.</i></strong><br></br> </p>
       <p><i>We will be soon delivering in other places</i></p>
       <strong>Note : We will send order via courier for other places than FORBESGANJ, ARARIA</strong>
 
