@@ -9,5 +9,8 @@ npm install
 sudo npm run build
 mkdir tanuj4
 cd ..
+mkdir tanuj5
 sudo systemctl restart nginx
+mkdir tanuj6
 sudo pm2 restart all
+mkdir tanuj7
