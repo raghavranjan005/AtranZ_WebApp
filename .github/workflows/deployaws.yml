@@ -60,6 +60,16 @@ jobs:
   
     - name: AWS SSM Send Command
       uses: peterkimzz/aws-ssm-send-command@1.0.1
+      env:
+        MONGODB_URL: ${{ secrets.MONGODB_URL }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        BCRYPT_SALT: ${{ secrets.BCRYPT_SALT }}
+        mailId: ${{ secrets.MAILID }}
+        password: ${{ secrets.PASSWORD }}
+        RAZORPAY_KEY_ID: ${{ secrets.RAZORPAY_KEY_ID }}
+        RAZORPAY_KEY_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
+        accessKeyId: ${{ secrets.ACCESSKEYID }}
+        secretAccessKey: ${{ secrets.SECRETACCESSKEY }}
       with:
         aws-access-key-id: ${{ secrets.ACCESSKEYID }}
         aws-secret-access-key: ${{ secrets.SECRETACCESSKEY }}
