@@ -39,17 +39,6 @@ jobs:
 
     - name: AWS SSM Send Command
       uses: peterkimzz/aws-ssm-send-command@1.0.1
-      with:
-        aws-access-key-id: ${{ secrets.ACCESSKEYID }}
-        aws-secret-access-key: ${{ secrets.SECRETACCESSKEY }}
-        aws-region: ap-south-1b
-        instance-ids: ${{ secrets.INSTANCEID  }}
-        comment: Deploy the main branch
-        working-directory: /home/ubuntu/AtranZ_WebApp
-        command: /bin/sh ./deploy.sh
-
-    - name: Environment Files
-      id: envfiles
       env:
         MONGODB_URL: ${{ secrets.MONGODB_URL }}
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
@@ -60,4 +49,12 @@ jobs:
         RAZORPAY_KEY_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
         accessKeyId: ${{ secrets.ACCESSKEYID }}
         secretAccessKey: ${{ secrets.SECRETACCESSKEY }}
+      with:
+        aws-access-key-id: ${{ secrets.ACCESSKEYID }}
+        aws-secret-access-key: ${{ secrets.SECRETACCESSKEY }}
+        aws-region: ap-south-1b
+        instance-ids: ${{ secrets.INSTANCEID  }}
+        comment: Deploy the main branch
+        working-directory: /home/ubuntu/AtranZ_WebApp
+        command: /bin/sh ./deploy.sh
         
