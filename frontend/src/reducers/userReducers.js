@@ -156,7 +156,6 @@ function userCartItemsListReducer (state={ cartItems:[], shipping: {}, payment: 
     case USER_CARTITEMS_REQUEST:
       return {loading:true};
     case USER_CARTITEMS_SUCCESS:
-      console.log(action.payload);
       return {loading:false, cartItems:action.payload};
     case USER_CARTITEMS_FAIL:
       return {loading:false,error:action.payload};

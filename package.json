@@ -1,5 +1,6 @@
 {
   "name": "atranz_webapp",
+  "type": "module",
   "description": "An online shopping wesite",
   "version": "1.0.0",
   "main": "index.js",
@@ -25,6 +26,7 @@
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",

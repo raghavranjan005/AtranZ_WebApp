@@ -1,22 +1,23 @@
 import express from 'express';
-import User from '../models/userModel';
-import Product from '../models/productModel';
-import { getToken, isAuth } from '../util';
-import bcrypt, { compareSync } from 'bcryptjs';
+import User from '../models/userModel.js';
+import Product from '../models/productModel.js';
+import { getToken, isAuth } from '../util.js';
+import bcrypt from 'bcryptjs';
+import compareSync from 'bcryptjs';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
-import Coupon from '../models/couponModel'
-import {resetPasswordEmail, verificationMail, newsLetterEmail} from '../Templates/emailTemplates'
+import Coupon from '../models/couponModel.js'
+import {resetPasswordEmail, verificationMail, newsLetterEmail} from '../Templates/emailTemplates.js'
 
-const bcryptsalt = process.env.BCRYPT_SALT;
-const Client_Url = process.env.CLIENT_URL;
+const bcryptsalt = 8;
+const Client_Url = 'www.atranz.in';
 
 const authorization={
   service: 'gmail',
   secure: 'true',
   auth: {
-     user: process.env.mailId,  //your email address
-     pass: process.env.password  // your password
+     user: 'atranzcart@gmail.com',  //your email address
+     pass: 'atrang@2021'  // your password
   }
 };
 
@@ -101,7 +102,7 @@ router.post('/register', async (req, res) => {
         const transporter=nodemailer.createTransport(authorization);
         let verificationToken = crypto.randomBytes(32).toString("hex");
         user.verificationToken = verificationToken;
-        var link = `${Client_Url}verifyemail/${user.verificationToken}`;
+        var link = `www.atranz.in/verifyemail/${user.verificationToken}`;
         const output = verificationMail(link);
 
         const newUser = await user.save();
@@ -147,7 +148,6 @@ router.get('/verifyemail/:id',async (req,res)=>{
     });
     verifyuser.isVerified = true;
     await verifyuser.save();
-    console.log("hehe2")
     return res.send({
       verifyflag:true
     });
@@ -167,7 +167,7 @@ router.post('/reset-password', async (req, res) => {
       let resetToken = crypto.randomBytes(32).toString("hex");
       user.resetToken = resetToken;
       await user.save();
-      var link = `${Client_Url}resetpassword/${user.resetToken}`;
+      var link = `www.atranz.in/resetpassword/${user.resetToken}`;
       const output = resetPasswordEmail(link);
   
       const mailOptions={

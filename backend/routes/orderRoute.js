@@ -1,21 +1,21 @@
 import express from 'express';
-import Order from '../models/orderModel';
-import { isAuth, isAdmin } from '../util';
-import Coupon from '../models/couponModel';
+import Order from '../models/orderModel.js';
+import { isAuth, isAdmin } from '../util.js';
+import Coupon from '../models/couponModel.js';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
-import {resetPasswordEmail, verificationMail} from '../Templates/emailTemplates'
-import orderSummaryMail from '../Templates/orderSummaryMail'
+import {resetPasswordEmail, verificationMail} from '../Templates/emailTemplates.js'
+import orderSummaryMail from '../Templates/orderSummaryMail.js'
 
-const bcryptsalt = process.env.BCRYPT_SALT;
-const Client_Url = process.env.CLIENT_URL;
+const bcryptsalt = 8;
+const Client_Url = 'www.atranz.in';
 
 const authorization={
   service: 'gmail',
   secure: 'true',
   auth: {
-     user: process.env.mailId,  //your email address
-     pass: process.env.password               // your password
+     user: 'atranzcart@gmail.com',  //your email address
+     pass: 'atrang@2021'               // your password
   }
 };
 

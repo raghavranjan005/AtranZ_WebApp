@@ -33,7 +33,7 @@ const resetPasswordEmail = (link) => `
                     </tr>
                     <tr>
                         <td style="text-align:center;">
-                          <a href="http://localhost:3000/" title="logo" target="_blank">
+                          <a href="www.atranz.in" title="logo" target="_blank">
                             <img width="60" src="https://atranz.s3.ap-south-1.amazonaws.com/AtranZ-bag.png" title="logo" alt="logo">
                           </a>
                         </td>
@@ -78,7 +78,7 @@ const resetPasswordEmail = (link) => `
                     </tr>
                     <tr>
                         <td style="text-align:center;">
-                            <p style="font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;">&copy; <strong><a href="http://localhost:3000/">AtranZ</a></strong></p>
+                            <p style="font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;">&copy; <strong><a href="http://www.atranz.in">AtranZ</a></strong></p>
                         </td>
                     </tr>
                     <tr>
@@ -285,7 +285,7 @@ const verificationMail = (link) => `
                     <tr>
                         <td bgcolor="#FFECD1" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                             <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">Need more help?</h2>
-                            <p style="margin: 0;"><a href="#" target="_blank" style="color: #533696;">We&rsquo;re here to help you out</a></p>
+                            <p style="margin: 0;"><a href="www.atranz.in/customercare" target="_blank" style="color: #533696;">We are here to help you out</a></p>
                         </td>
                     </tr>
                 </table>

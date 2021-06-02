@@ -1,7 +1,7 @@
 #!/bin/sh     
 sudo git pull origin main
 mkdir tanuj1
-sudo npm install
+npm install
 mkdir tanuj2
 cd frontend
 mkdir tanuj3

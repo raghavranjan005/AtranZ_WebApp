@@ -5,6 +5,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './store';
+import axios from 'axios';
+
+axios.defaults.baseURL = "https://atranz.in";
 
 ReactDOM.render(
 

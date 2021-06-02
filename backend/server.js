@@ -1,28 +1,28 @@
 import express from 'express';
 import path from 'path';
-import data from './data';
-import config from './config';
+import config from './config.js';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import userRoute from './routes/userRoute';
-import productRoute from './routes/productRoute';
-import orderRoute from './routes/orderRoute';
-import uploadRoute from './routes/uploadRoute';
+import userRoute from './routes/userRoute.js';
+import productRoute from './routes/productRoute.js';
+import orderRoute from './routes/orderRoute.js';
+import uploadRoute from './routes/uploadRoute.js';
 import bodyParser from 'body-parser';
-
+import cors from 'cors';
 dotenv.config();
 
-const mongodbUrl = config.MONGODB_URL;
-const port = process.env.PORT || 5000;
+const mongodbUrl ='mongodb+srv://AtranZ:yaadnahi@cluster0.21sw2.mongodb.net/AtranZ?retryWrites=true&w=majority';
+const port =  5000;
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 mongoose.connect(mongodbUrl, {
     useNewUrlParser:true,
     useUnifiedTopology: true,
     useCreateIndex: true,
 
-}).catch((error)=> console.log(error.reason));
+}).catch((error)=> console.log("connected"));
 
 
 app.use('/api/uploads', uploadRoute);
@@ -30,7 +30,7 @@ app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
 app.use('/api/orders', orderRoute);
 app.get('/api/config/razorpay', (req, res) => {
-  res.send(config.RAZORPAY_KEY_ID);
+  res.send('rzp_live_yl3bpNXBi8RqDw');
 });
 
 
